@@ -1,9 +1,9 @@
 import { useDrag } from "react-dnd";
 
-const DraggableTile = () => {
+const DraggableTile = ({ id }) => {
     const [{ isDragging }, dragRef] = useDrag(() => ({
         type: "BOX",
-        item: {},
+        item: { id },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
