@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Board from "./Board";
+import useTasks from "../hooks/useTasks";
 
 const BoardContainer = () => {
+    const { boards: apiBoards } = useTasks();
+
     const boardTitles = ["To Do", "In Progress", "Done"];
     const [boards, setBoards] = useState({
         [boardTitles[0]]: [{ id: 1 }],
