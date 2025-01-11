@@ -1,11 +1,5 @@
 from rest_framework import serializers
-from .models import Board, Task
-
-
-class BoardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Board
-        fields = "__all__"
+from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):

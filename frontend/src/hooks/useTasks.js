@@ -1,17 +1,27 @@
 import { useState, useEffect } from "react";
-import { getApiBoards, getApiTasks, moveApiTask } from "../services/api";
+import { getApiTasks, moveApiTask } from "../services/api";
 
 const useTasks = () => {
-    const [boards, setBoards] = useState();
-    const [tasks, setTasks] = useState();
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        getApiBoards()
-            .then((response) => setBoards(response.data))
+        getApiTasks()
+            .then((response) => setTasks(response.data))
             .catch((error) => console.log(error.data));
     }, []);
 
-    return { boards, tasks };
+    const moveTask = (taskId, newStatus) => {
+        moveApiTask(taskId, newStatus).then((response) => {
+            console.log(taskId, newStatus);
+            setTasks((prev) =>
+                prev.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
+            );
+        });
+    };
+
+    console.log(tasks)
+
+    return { tasks, moveTask };
 };
 
 export default useTasks;

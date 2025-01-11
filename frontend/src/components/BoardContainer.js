@@ -3,40 +3,27 @@ import Board from "./Board";
 import useTasks from "../hooks/useTasks";
 
 const BoardContainer = () => {
-    const { boards: apiBoards } = useTasks();
-
-    const boardTitles = ["To Do", "In Progress", "Done"];
-    const [boards, setBoards] = useState({
-        [boardTitles[0]]: [{ id: 1 }],
-        [boardTitles[1]]: [],
-        [boardTitles[2]]: [],
-    });
+    const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", Done: "done" };
+    const { tasks, moveTask } = useTasks();
 
     const handleDrop = (id, targetBoard) => {
-        setBoards((prev) => {
-            const newBoards = { ...prev };
-
-            for (const board in newBoards) {
-                newBoards[board] = newBoards[board].filter((tile) => tile.id !== id);
-            }
-
-            newBoards[targetBoard].push({ id });
-            return newBoards;
-        });
+        moveTask(id, targetBoard);
     };
+    console.log(tasks);
 
     return (
         <div className="flex w-3/4 h-2/3 justify-between">
-            {boardTitles.map((title, index) => (
+            {Object.keys(boardTitles).map((title, index) => (
                 <Board
                     key={index}
                     title={title}
-                    tiles={boards[title]}
+                    titles={boardTitles}
+                    tasks={tasks.filter((task) => task.status === boardTitles[title])}
                     onDrop={handleDrop}
                 />
             ))}
         </div>
-    )
+    );
 };
 
 export default BoardContainer;
