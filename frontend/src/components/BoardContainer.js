@@ -9,7 +9,6 @@ const BoardContainer = () => {
     const handleDrop = (id, targetBoard) => {
         moveTask(id, targetBoard);
     };
-    console.log(tasks);
 
     return (
         <div className="flex w-3/4 h-2/3 justify-between">
