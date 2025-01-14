@@ -1,4 +1,5 @@
 import { useDrag } from "react-dnd";
+import Tile from "./Tile";
 
 const DraggableTile = ({ id }) => {
     const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -10,13 +11,9 @@ const DraggableTile = ({ id }) => {
     }));
 
     return (
-        <div
-            className="w-16 h-8 bg-red-500 rounded-lg cursor-move"
-            ref={dragRef}
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-            }}
-        ></div>
+        <div ref={dragRef}>
+            <Tile isDragging={isDragging} content={id}/>
+        </div>
     );
 };
 

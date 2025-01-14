@@ -12,14 +12,11 @@ const useTasks = () => {
 
     const moveTask = (taskId, newStatus) => {
         moveApiTask(taskId, newStatus).then((response) => {
-            console.log(taskId, newStatus);
             setTasks((prev) =>
                 prev.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
             );
         });
     };
-
-    console.log(tasks)
 
     return { tasks, moveTask };
 };

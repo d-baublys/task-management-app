@@ -10,9 +10,13 @@ import DeleteButton from "./components/DeleteButton";
 import DragLayer from "./components/DragLayer";
 
 function App() {
+    const test_mobile = true;
     return (
-        <DndProvider backend={isMobile ? TouchBackend : HTML5Backend} options={{ enableMouseEvents: true }}>
-            {isMobile && <DragLayer />}
+        <DndProvider
+            backend={test_mobile ? TouchBackend : HTML5Backend}
+            options={{ enableMouseEvents: true }}
+        >
+            {test_mobile && <DragLayer />}
             <div className="flex justify-center items-center w-full h-lvh">
                 <div className="flex flex-grow justify-center">
                     <div className="h-lvh">

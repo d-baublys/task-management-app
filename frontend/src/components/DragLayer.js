@@ -1,5 +1,5 @@
 import { useDragLayer } from "react-dnd";
-import DraggableTile from "./DraggableTile";
+import Tile from "./Tile";
 
 const DragLayer = () => {
     const { itemType, isDragging, item, currentOffset } = useDragLayer((monitor) => ({
@@ -18,9 +18,7 @@ const DragLayer = () => {
     return (
         <div className="fixed pointer-events-none top-0 left-0 z-[9999]">
             <div style={{ transform }}>
-                <div>
-                    <DraggableTile />
-                </div>
+                <Tile isDragging={isDragging} content={"this"}/>
             </div>
         </div>
     );
