@@ -8,9 +8,13 @@ import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
 import DragLayer from "./components/DragLayer";
+import useTasks from "./hooks/useTasks";
 
 function App() {
     const test_mobile = false;
+
+    const { tasks, moveTask, deleteTask } = useTasks();
+    
     return (
         <DndProvider
             backend={test_mobile ? TouchBackend : HTML5Backend}
@@ -20,10 +24,10 @@ function App() {
             <div className="flex justify-center items-center w-full h-lvh">
                 <div className="flex flex-grow justify-center">
                     <div className="h-lvh">
-                        <DeleteButton />
+                        <DeleteButton deleteTask={deleteTask} />
                     </div>
                 </div>
-                <BoardContainer />
+                <BoardContainer tasks={tasks} moveTask={moveTask} />
                 <div className="flex flex-grow justify-center">
                     <div className="h-lvh">
                         <CreateButton />

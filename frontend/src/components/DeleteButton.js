@@ -1,10 +1,8 @@
 import { useDrop } from "react-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import useTasks from "../hooks/useTasks";
 
-const DeleteButton = () => {
-    const { deleteTask } = useTasks();
+const DeleteButton = ({ deleteTask }) => {
     const [{ isOver }, dropRef] = useDrop(() => ({
         accept: "BOX",
         drop: (item) => deleteTask(item.id),

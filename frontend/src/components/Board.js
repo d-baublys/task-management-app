@@ -1,7 +1,7 @@
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 
-const Board = ({ title, titles, tasks, onDrop }) => {
+const Board = ({ title, titles, boardTasks, onDrop }) => {
     const [{ isOver }, dropRef] = useDrop(() => ({
         accept: "BOX",
         drop: (item) => onDrop(item.id, titles[title]),
@@ -17,7 +17,7 @@ const Board = ({ title, titles, tasks, onDrop }) => {
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
             <div className="flex flex-col gap-2 p-2">
-                {tasks.map((tile) => (
+                {boardTasks.map((tile) => (
                     <DraggableTile key={tile.id} id={tile.id} />
                 ))}
             </div>
