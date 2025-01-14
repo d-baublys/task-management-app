@@ -12,9 +12,8 @@ const Board = ({ title, titles, tasks, onDrop }) => {
 
     return (
         <div
-            className="w-1/4 h-full rounded-xl"
+            className={`w-1/4 h-full rounded-xl ${isOver ? "bg-green-500" : "bg-blue-500"}`}
             ref={dropRef}
-            style={{ backgroundColor: isOver ? "green" : "skyblue" }}
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
             <div className="flex flex-col gap-2 p-2">

@@ -10,7 +10,7 @@ import DeleteButton from "./components/DeleteButton";
 import DragLayer from "./components/DragLayer";
 
 function App() {
-    const test_mobile = true;
+    const test_mobile = false;
     return (
         <DndProvider
             backend={test_mobile ? TouchBackend : HTML5Backend}
