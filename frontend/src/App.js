@@ -33,9 +33,9 @@ function App() {
                 </div>
                 <BoardContainer tasks={tasks} moveTask={moveTask} boardTitles={boardTitles} />
                 <div className="flex flex-grow justify-center">
-                    <div className="h-lvh">
+                    <div className="flex flex-col items-end h-lvh w-btnBoard">
                         <CreateButton setShowAddPrompt={setShowAddPrompt} />
-                        {showAddPrompt && <AddTaskMenu onAdd={addTask} boardTitles={boardTitles} />}
+                        {showAddPrompt && <AddTaskMenu onAdd={addTask} boardTitles={boardTitles} setShowAddPrompt={setShowAddPrompt} />}
                     </div>
                 </div>
             </div>
