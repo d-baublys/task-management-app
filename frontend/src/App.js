@@ -7,13 +7,17 @@ import { isMobile } from "react-device-detect";
 import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
+import AddTaskMenu from "./components/AddTaskMenu";
 import DragLayer from "./components/DragLayer";
 import useTasks from "./hooks/useTasks";
 
 function App() {
     const test_mobile = false;
 
-    const { tasks, moveTask, deleteTask } = useTasks();
+    const { tasks, addTask, moveTask, deleteTask } = useTasks();
+    const [showAddPrompt, setShowAddPrompt] = useState(false);
+
+    const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", "Done": "done" };
     
     return (
         <DndProvider
@@ -27,10 +31,11 @@ function App() {
                         <DeleteButton deleteTask={deleteTask} />
                     </div>
                 </div>
-                <BoardContainer tasks={tasks} moveTask={moveTask} />
+                <BoardContainer tasks={tasks} moveTask={moveTask} boardTitles={boardTitles} />
                 <div className="flex flex-grow justify-center">
                     <div className="h-lvh">
-                        <CreateButton />
+                        <CreateButton setShowAddPrompt={setShowAddPrompt} />
+                        {showAddPrompt && <AddTaskMenu onAdd={addTask} boardTitles={boardTitles} />}
                     </div>
                 </div>
             </div>

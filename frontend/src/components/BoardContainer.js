@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Board from "./Board";
 
-const BoardContainer = ({ tasks, moveTask }) => {
-    const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", Done: "done" };
-
+const BoardContainer = ({ tasks, moveTask, boardTitles }) => {
     const handleDrop = (id, targetBoard) => {
         moveTask(id, targetBoard);
     };
