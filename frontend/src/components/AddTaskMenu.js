@@ -3,10 +3,6 @@ import { useState } from "react";
 const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
     const [newTask, setNewTask] = useState("");
 
-    const menuWidth = "500px";
-    const menuHeight = "250px";
-    const buttonHeight = "4rem";
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!newTask) return;
@@ -20,9 +16,9 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
         <div
             className={`sticky flex flex-col justify-center items-center rounded-xl bg-slate-500`}
             style={{
-                top: `calc(20% + ${buttonHeight})`,
-                width: menuWidth,
-                height: menuHeight,
+                top: "calc(var(--board-btn-top) + var(--board-btn-spacing))",
+                width: "var(--add-menu-width)",
+                height: "var(--add-menu-height)",
             }}
         >
             <div className="w-3/4 h-1/3">

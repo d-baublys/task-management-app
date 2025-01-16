@@ -5,9 +5,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      spacing: {
-        "btnBoard": "4rem",
-      },
+
     },
   },
   plugins: [],

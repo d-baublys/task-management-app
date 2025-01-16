@@ -18,24 +18,44 @@ function App() {
     const [showAddPrompt, setShowAddPrompt] = useState(false);
 
     const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", "Done": "done" };
-    
+
     return (
         <DndProvider
             backend={test_mobile ? TouchBackend : HTML5Backend}
             options={{ enableMouseEvents: true }}
         >
             {test_mobile && <DragLayer />}
-            <div className="flex justify-center items-center w-full h-lvh">
+            <div
+                className="flex justify-center items-center w-full h-lvh"
+                style={{
+                    "--board-btn-spacing": "4rem",
+                    "--board-btn-top": "20%",
+                    "--add-menu-width": "500px",
+                    "--add-menu-height": "250px",
+                }}
+            >
                 <div className="flex flex-grow justify-center">
-                    <div className="h-lvh">
+                    <div
+                        className="flex flex-col items-end h-lvh"
+                        style={{ width: "var(--board-btn-spacing)" }}
+                    >
                         <DeleteButton deleteTask={deleteTask} />
                     </div>
                 </div>
                 <BoardContainer tasks={tasks} moveTask={moveTask} boardTitles={boardTitles} />
                 <div className="flex flex-grow justify-center">
-                    <div className="flex flex-col items-end h-lvh w-btnBoard">
+                    <div
+                        className="flex flex-col items-end h-lvh"
+                        style={{ width: "var(--board-btn-spacing)" }}
+                    >
                         <CreateButton setShowAddPrompt={setShowAddPrompt} />
-                        {showAddPrompt && <AddTaskMenu onAdd={addTask} boardTitles={boardTitles} setShowAddPrompt={setShowAddPrompt} />}
+                        {showAddPrompt && (
+                            <AddTaskMenu
+                                onAdd={addTask}
+                                boardTitles={boardTitles}
+                                setShowAddPrompt={setShowAddPrompt}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

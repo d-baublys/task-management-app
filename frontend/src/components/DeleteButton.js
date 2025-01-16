@@ -1,6 +1,6 @@
 import { useDrop } from "react-dnd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import BaseButton from "./BaseButton";
 
 const DeleteButton = ({ deleteTask }) => {
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -10,16 +10,7 @@ const DeleteButton = ({ deleteTask }) => {
             isOver: monitor.isOver(),
         }),
     }));
-    return (
-        <button
-            ref={dropRef}
-            className={`sticky flex top-[20%] p-2 rounded-2xl ${
-                isOver ? "bg-slate-300" : "bg-slate-400"
-            }`}
-        >
-            <FontAwesomeIcon className="m-2 text-white size-8" icon={faTrashAlt} />
-        </button>
-    );
+    return <BaseButton dropRef={dropRef} icon={faTrashAlt} />;
 };
 
 export default DeleteButton;
