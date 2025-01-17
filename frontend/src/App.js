@@ -8,6 +8,7 @@ import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
 import AddTaskMenu from "./components/AddTaskMenu";
+import ConfirmModal from "./components/ConfirmModal";
 import DragLayer from "./components/DragLayer";
 import useTasks from "./hooks/useTasks";
 
@@ -16,6 +17,8 @@ function App() {
 
     const { tasks, addTask, moveTask, deleteTask } = useTasks();
     const [showAddPrompt, setShowAddPrompt] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [modalPromise, setModalPromise] = useState(null);
 
     const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", "Done": "done" };
 
@@ -39,7 +42,17 @@ function App() {
                         className="flex flex-col items-end h-lvh"
                         style={{ width: "var(--board-btn-spacing)" }}
                     >
-                        <DeleteButton deleteTask={deleteTask} />
+                        <DeleteButton
+                            setIsConfirmOpen={setIsConfirmOpen}
+                            setModalPromise={setModalPromise}
+                            deleteTask={deleteTask}
+                        />
+                        {isConfirmOpen && (
+                            <ConfirmModal
+                                modalPromise={modalPromise}
+                                setIsConfirmOpen={setIsConfirmOpen}
+                            />
+                        )}
                     </div>
                 </div>
                 <BoardContainer tasks={tasks} moveTask={moveTask} boardTitles={boardTitles} />
