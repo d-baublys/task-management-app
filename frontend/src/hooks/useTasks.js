@@ -32,7 +32,7 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    return { tasks, addTask, moveTask, deleteTask };
+    return { tasks, setTasks, addTask, moveTask, deleteTask };
 };
 
 export default useTasks;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Board from "./Board";
 
-const BoardContainer = ({ tasks, moveTask, boardTitles }) => {
+const BoardContainer = ({ tasks, setTasks, moveTask, boardTitles }) => {
     const handleDrop = (id, targetBoard) => {
         moveTask(id, targetBoard);
     };
@@ -13,6 +13,7 @@ const BoardContainer = ({ tasks, moveTask, boardTitles }) => {
                     key={index}
                     title={title}
                     titles={boardTitles}
+                    setTasks={setTasks}
                     boardTasks={tasks.filter((task) => task.status === boardTitles[title])}
                     onDrop={handleDrop}
                 />

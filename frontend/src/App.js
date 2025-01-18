@@ -15,12 +15,16 @@ import useTasks from "./hooks/useTasks";
 function App() {
     const test_mobile = false;
 
-    const { tasks, addTask, moveTask, deleteTask } = useTasks();
+    const { tasks, setTasks, addTask, moveTask, deleteTask } = useTasks();
     const [showAddPrompt, setShowAddPrompt] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
 
-    const boardTitles = { "To Do": "to_do", "In Progress": "in_progress", "Done": "done" };
+    const boardTitles = {
+        "To Do": "to_do",
+        "In Progress": "in_progress",
+        "Done": "done",
+    };
 
     return (
         <DndProvider
@@ -55,7 +59,12 @@ function App() {
                         )}
                     </div>
                 </div>
-                <BoardContainer tasks={tasks} moveTask={moveTask} boardTitles={boardTitles} />
+                <BoardContainer
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    moveTask={moveTask}
+                    boardTitles={boardTitles}
+                />
                 <div className="flex flex-grow justify-center">
                     <div
                         className="flex flex-col items-end h-lvh"
