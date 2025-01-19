@@ -30,8 +30,8 @@ const Board = ({ title, titles, setTasks, boardTasks, onDrop }) => {
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
             <div className="flex flex-col gap-2 p-2">
-                {boardTasks.map((tile) => (
-                    <DraggableTile key={tile.id} id={tile.id} moveRow={moveRow} />
+                {boardTasks.map((tile, index) => (
+                    <DraggableTile key={tile.id} id={tile.id} index={index} moveRow={moveRow} />
                 ))}
             </div>
         </div>

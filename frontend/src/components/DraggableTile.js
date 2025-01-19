@@ -51,7 +51,7 @@ const DraggableTile = ({ id, index, moveRow }) => {
     dragRef(drop(ref));
 
     return (
-        <div ref={dragRef}>
+        <div ref={ref} data-handler-id={collectedProps.handlerId}>
             <Tile isDragging={isDragging} content={id} />
         </div>
     );
