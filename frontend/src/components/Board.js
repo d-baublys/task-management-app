@@ -1,7 +1,6 @@
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { useCallback } from "react";
-import update from "immutability-helper";
 
 const Board = ({ title, titles, setTasks, boardTasks, onDrop }) => {
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -13,14 +12,14 @@ const Board = ({ title, titles, setTasks, boardTasks, onDrop }) => {
     }));
 
     const moveRow = useCallback((dragIndex, hoverIndex) => {
-        setTasks((prevTasks) =>
-            update(prevTasks, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, prevTasks[dragIndex]],
-                ],
-            })
-        );
+        setTasks((prevTasks) => {
+            const updatedTasks = [...prevTasks];
+            const [movedItem] = updatedTasks.splice(dragIndex, 1);
+
+            updatedTasks.splice(hoverIndex, 0, movedItem);
+
+            return updatedTasks;
+        });
     }, []);
 
     return (
