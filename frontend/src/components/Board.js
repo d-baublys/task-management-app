@@ -11,8 +11,13 @@ const Board = ({ title, titles, setTasks, boardTasks, onDrop }) => {
         }),
     }));
 
-    const moveRow = useCallback((dragIndex, hoverIndex) => {
+    const moveRow = useCallback((dragId, hoverId) => {
         setTasks((prevTasks) => {
+            const dragIndex = prevTasks.findIndex((task) => task.id === dragId);
+            const hoverIndex = prevTasks.findIndex((task) => task.id === hoverId);
+
+            if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
+
             const updatedTasks = [...prevTasks];
             const [movedItem] = updatedTasks.splice(dragIndex, 1);
 
@@ -30,7 +35,7 @@ const Board = ({ title, titles, setTasks, boardTasks, onDrop }) => {
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
             <div className="flex flex-col gap-2 p-2">
                 {boardTasks.map((tile, index) => (
-                    <DraggableTile key={tile.id} id={tile.id} index={index} moveRow={moveRow} />
+                    <DraggableTile key={tile.id} id={tile.id} moveRow={moveRow} />
                 ))}
             </div>
         </div>
