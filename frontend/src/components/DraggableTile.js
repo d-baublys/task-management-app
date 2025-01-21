@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
 
-const DraggableTile = ({ id, moveRow }) => {
+const DraggableTile = ({ id, status, position, moveRow }) => {
     const ref = useRef(null);
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
         type: "BOX",
-        item: { id },
+        item: { id, status, position },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -23,10 +23,10 @@ const DraggableTile = ({ id, moveRow }) => {
                 return;
             }
 
-            const dragId = item.id;
-            const hoverId = id;
+            const dragPosition = item.position;
+            const hoverPosition = position;
 
-            if (dragId === hoverId) {
+            if (dragPosition === hoverPosition) {
                 return;
             }
 
@@ -35,15 +35,16 @@ const DraggableTile = ({ id, moveRow }) => {
             const clientOffset = monitor.getClientOffset();
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-            if (dragId < hoverId && hoverClientY < hoverMiddleY) {
+            if (dragPosition < hoverPosition && hoverClientY < hoverMiddleY) {
                 return;
             }
 
-            if (dragId > hoverId && hoverClientY > hoverMiddleY) {
+            if (dragPosition > hoverPosition && hoverClientY > hoverMiddleY) {
                 return;
             }
 
-            moveRow(dragId, hoverId);
+            moveRow(dragPosition, hoverPosition);
+            item.position = hoverPosition;
         },
     });
 

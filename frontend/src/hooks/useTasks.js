@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { getApiTasks, createApiTask, moveApiTask, deleteApiTask } from "../services/api";
+import {
+    getApiTasks,
+    createApiTask,
+    moveApiTask,
+    reorderApiTasks,
+    deleteApiTask,
+} from "../services/api";
 
 const useTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -26,13 +32,17 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
+    const reorderTasks = (updatedTasks) => {
+        reorderApiTasks(updatedTasks).catch((error) => console.log(error.message));
+    };
+
     const deleteTask = (taskId) => {
         deleteApiTask(taskId)
             .then(() => setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)))
             .catch((error) => console.log(error.message));
     };
 
-    return { tasks, setTasks, addTask, moveTask, deleteTask };
+    return { tasks, setTasks, addTask, moveTask, reorderTasks, deleteTask };
 };
 
 export default useTasks;

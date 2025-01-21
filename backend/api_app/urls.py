@@ -8,4 +8,5 @@ router.register("tasks", views.TaskViewSet)
 app_name = "api_app"
 urlpatterns = [
     path("", include(router.urls)),
+    path("reorder/", views.ReorderTasksView.as_view())
 ]

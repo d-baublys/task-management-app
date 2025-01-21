@@ -8,3 +8,15 @@ class Task(models.Model):
         ("done", "Done"),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="to_do")
+    position = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            max_position = Task.objects.aggregate(models.Max("position"))[
+                "position__max"
+            ]
+            self.position = (max_position or 0) + 1
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ["position"]
