@@ -15,15 +15,16 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
         }),
     }));
 
-    const moveRow = useCallback((dragPosition, hoverPosition) => {
+    const moveRow = useCallback((dragId, hoverId) => {
         setTasks((prevTasks) => {
-            const dragIndex = prevTasks.findIndex((task) => task.position === dragPosition);
-            const hoverIndex = prevTasks.findIndex((task) => task.position === hoverPosition);
+            const dragIndex = prevTasks.findIndex((task) => task.id === dragId);
+            const hoverIndex = prevTasks.findIndex((task) => task.id === hoverId);
 
             if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
             const updatedTasks = [...prevTasks];
             const [movedItem] = updatedTasks.splice(dragIndex, 1);
+
             updatedTasks.splice(hoverIndex, 0, movedItem);
 
             updatedTasks.forEach((task, index) => (task.position = index));
