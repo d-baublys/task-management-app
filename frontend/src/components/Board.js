@@ -7,7 +7,18 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
         accept: "BOX",
         drop: (item) => {
             if (item.status !== titles[title]) {
-                onDrop(item.id, titles[title]);
+                setTasks((prevTasks) => {
+                    const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
+                    const updatedTasks = [...prevTasks];
+                    const [movedTask] = updatedTasks.splice(dragIndex, 1);
+                    movedTask.status = titles[title]
+
+                    updatedTasks.push(movedTask);
+
+                    reorderTasks(updatedTasks);
+
+                    return updatedTasks;
+                });
             }
         },
         collect: (monitor) => ({
@@ -23,10 +34,10 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
             if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
             const updatedTasks = [...prevTasks];
-            const [movedItem] = updatedTasks.splice(dragIndex, 1);
+            const [movedTask] = updatedTasks.splice(dragIndex, 1);
 
-            updatedTasks.splice(hoverIndex, 0, movedItem);
-            
+            updatedTasks.splice(hoverIndex, 0, movedTask);
+
             reorderTasks(updatedTasks);
 
             return updatedTasks;

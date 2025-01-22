@@ -27,7 +27,11 @@ const useTasks = () => {
     };
 
     const reorderTasks = (updatedTasks) => {
-        Promise.all(updatedTasks.map((task, index) => updateApiTask(task.id, { position: index })))
+        Promise.all(
+            updatedTasks.map((task, index) =>
+                updateApiTask(task.id, { status: task.status, position: index })
+            )
+        )
             .then(() =>
                 setTasks(() => updatedTasks.map((task, index) => ({ ...task, position: index })))
             )

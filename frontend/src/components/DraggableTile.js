@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
 
-const DraggableTile = ({ id, moveRow }) => {
+const DraggableTile = ({ id, status, moveRow }) => {
     const ref = useRef(null);
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
         type: "BOX",
-        item: { id },
+        item: { id, status },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
