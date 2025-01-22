@@ -26,8 +26,7 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
             const [movedItem] = updatedTasks.splice(dragIndex, 1);
 
             updatedTasks.splice(hoverIndex, 0, movedItem);
-
-            updatedTasks.forEach((task, index) => (task.position = index));
+            
             reorderTasks(updatedTasks);
 
             return updatedTasks;

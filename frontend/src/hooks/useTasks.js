@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    getApiTasks,
-    createApiTask,
-    moveApiTask,
-    reorderApiTasks,
-    deleteApiTask,
-} from "../services/api";
+import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
 
 const useTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -23,7 +17,7 @@ const useTasks = () => {
     };
 
     const moveTask = (taskId, newStatus) => {
-        moveApiTask(taskId, newStatus)
+        updateApiTask(taskId, { status: newStatus })
             .then(() => {
                 setTasks((prev) =>
                     prev.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
@@ -33,7 +27,11 @@ const useTasks = () => {
     };
 
     const reorderTasks = (updatedTasks) => {
-        reorderApiTasks(updatedTasks).catch((error) => console.log(error.message));
+        Promise.all(updatedTasks.map((task, index) => updateApiTask(task.id, { position: index })))
+            .then(() =>
+                setTasks(() => updatedTasks.map((task, index) => ({ ...task, position: index })))
+            )
+            .catch((error) => console.log(error.message));
     };
 
     const deleteTask = (taskId) => {
