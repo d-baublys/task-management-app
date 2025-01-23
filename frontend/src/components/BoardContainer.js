@@ -1,10 +1,6 @@
 import Board from "./Board";
 
-const BoardContainer = ({ tasks, setTasks, moveTask, reorderTasks, boardTitles }) => {
-    const handleDrop = (id, targetBoard) => {
-        moveTask(id, targetBoard);
-    };
-
+const BoardContainer = ({ tasks, setTasks, updateTasks, boardTitles }) => {
     return (
         <div className="flex w-3/4 h-2/3 justify-between">
             {Object.keys(boardTitles).map((title, index) => (
@@ -13,9 +9,8 @@ const BoardContainer = ({ tasks, setTasks, moveTask, reorderTasks, boardTitles }
                     title={title}
                     titles={boardTitles}
                     setTasks={setTasks}
-                    reorderTasks={reorderTasks}
+                    updateTasks={updateTasks}
                     boardTasks={tasks.filter((task) => task.status === boardTitles[title])}
-                    onDrop={handleDrop}
                 />
             ))}
         </div>

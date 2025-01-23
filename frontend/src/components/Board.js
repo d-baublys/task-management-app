@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { useCallback, useRef } from "react";
 
-const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) => {
+const Board = ({ title, titles, setTasks, boardTasks, updateTasks }) => {
     const excludeRef = useRef(null);
 
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -27,7 +27,7 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
 
                     updatedTasks.push(movedTask);
                     console.log("hover end board");
-                    reorderTasks(updatedTasks);
+                    updateTasks(updatedTasks);
 
                     return updatedTasks;
                 });
@@ -41,7 +41,7 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
                     const updatedTasks = [...prevTasks];
                     updatedTasks[dragIndex].status = titles[title];
                     console.log("hover move board");
-                    reorderTasks(updatedTasks);
+                    updateTasks(updatedTasks);
 
                     return updatedTasks;
                 });
@@ -59,12 +59,16 @@ const Board = ({ title, titles, setTasks, boardTasks, reorderTasks, onDrop }) =>
 
             if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
+            if (hoverIndex === prevTasks[dragIndex].position) {
+                return prevTasks;
+            }
+
             const updatedTasks = [...prevTasks];
             const [movedTask] = updatedTasks.splice(dragIndex, 1);
 
             updatedTasks.splice(hoverIndex, 0, movedTask);
             console.log("reorder hit");
-            reorderTasks(updatedTasks);
+            updateTasks(updatedTasks);
 
             return updatedTasks;
         });
