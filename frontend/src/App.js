@@ -15,7 +15,7 @@ import useTasks from "./hooks/useTasks";
 function App() {
     const test_mobile = false;
 
-    const { tasks, setTasks, addTask, updateTasks, deleteTask } = useTasks();
+    const { tasks, setTasks, addTask, updateTask, updateTasks, deleteTask } = useTasks();
     const [showAddPrompt, setShowAddPrompt] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
@@ -62,6 +62,7 @@ function App() {
                 <BoardContainer
                     tasks={tasks}
                     setTasks={setTasks}
+                    updateTask={updateTask}
                     updateTasks={updateTasks}
                     boardTitles={boardTitles}
                 />

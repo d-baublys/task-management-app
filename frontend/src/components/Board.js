@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { useCallback, useRef } from "react";
 
-const Board = ({ title, titles, setTasks, boardTasks, updateTasks }) => {
+const Board = ({ title, titles, setTasks, boardTasks, updateTask, updateTasks }) => {
     const excludeRef = useRef(null);
 
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -22,10 +22,12 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTasks }) => {
             if (item.status === titles[title] && inDropZone) {
                 setTasks((prevTasks) => {
                     const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
-                    const updatedTasks = [...prevTasks];
+                    let updatedTasks = [...prevTasks];
                     const [movedTask] = updatedTasks.splice(dragIndex, 1);
 
                     updatedTasks.push(movedTask);
+
+                    updatedTasks = updatedTasks.map((task, index) => ({ ...task, position: index }));
                     console.log("hover end board");
                     updateTasks(updatedTasks);
 
@@ -39,9 +41,10 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTasks }) => {
                 setTasks((prevTasks) => {
                     const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
                     const updatedTasks = [...prevTasks];
-                    updatedTasks[dragIndex].status = titles[title];
+                    const movedTask = updatedTasks[dragIndex];
+                    movedTask.status = titles[title];
                     console.log("hover move board");
-                    updateTasks(updatedTasks);
+                    updateTask(movedTask);
 
                     return updatedTasks;
                 });
@@ -59,16 +62,19 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTasks }) => {
 
             if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
-            if (hoverIndex === prevTasks[dragIndex].position) {
-                return prevTasks;
-            }
-
             const updatedTasks = [...prevTasks];
+            const hoveredTask = updatedTasks[hoverIndex];
             const [movedTask] = updatedTasks.splice(dragIndex, 1);
-
             updatedTasks.splice(hoverIndex, 0, movedTask);
+
+            movedTask.position = hoverIndex;
+            hoveredTask.position = dragIndex;
+
+            [movedTask, hoveredTask].forEach((task) => {
+                updateTask(task);
+            });
+
             console.log("reorder hit");
-            updateTasks(updatedTasks);
 
             return updatedTasks;
         });

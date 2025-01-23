@@ -30,19 +30,6 @@ const DraggableTile = ({ id, status, moveRow }) => {
                 return;
             }
 
-            const hoverBoundingRect = ref.current?.getBoundingClientRect();
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-            if (dragId < hoverId && hoverClientY < hoverMiddleY) {
-                return;
-            }
-
-            if (dragId > hoverId && hoverClientY > hoverMiddleY) {
-                return;
-            }
-
             moveRow(dragId, hoverId);
         },
     });

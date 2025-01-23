@@ -16,16 +16,16 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
+    const updateTask = (task, index) => {
+        updateApiTask(task.id, { status: task.status, position: index ? index : task.position  }).catch((error) =>
+            console.log(error.message)
+        );
+    };
+
     const updateTasks = (updatedTasks) => {
-        Promise.all(
-            updatedTasks.map((task, index) =>
-                updateApiTask(task.id, { status: task.status, position: index })
-            )
-        )
-            .then(() =>
-                setTasks(() => updatedTasks.map((task, index) => ({ ...task, position: index })))
-            )
-            .catch((error) => console.log(error.message));
+        Promise.all(updatedTasks.map((task, index) => updateTask(task, index))).catch((error) =>
+            console.log(error.message)
+        );
     };
 
     const deleteTask = (taskId) => {
@@ -34,7 +34,7 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    return { tasks, setTasks, addTask, updateTasks, deleteTask };
+    return { tasks, setTasks, addTask, updateTask, updateTasks, deleteTask };
 };
 
 export default useTasks;
