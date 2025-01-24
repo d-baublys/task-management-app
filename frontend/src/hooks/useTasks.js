@@ -17,12 +17,13 @@ const useTasks = () => {
     };
 
     const updateTask = (task, index) => {
-        updateApiTask(task.id, { status: task.status, position: index ? index : task.position  }).catch((error) =>
-            console.log(error.message)
-        );
+        updateApiTask(task.id, {
+            status: task.status,
+            position: index ? index : task.position,
+        }).catch((error) => console.log(error.message));
     };
 
-    const updateTasks = (updatedTasks) => {
+    const updateMultiTask = (updatedTasks) => {
         Promise.all(updatedTasks.map((task, index) => updateTask(task, index))).catch((error) =>
             console.log(error.message)
         );
@@ -34,7 +35,7 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    return { tasks, setTasks, addTask, updateTask, updateTasks, deleteTask };
+    return { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask };
 };
 
 export default useTasks;

@@ -15,7 +15,7 @@ import useTasks from "./hooks/useTasks";
 function App() {
     const test_mobile = false;
 
-    const { tasks, setTasks, addTask, updateTask, updateTasks, deleteTask } = useTasks();
+    const { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask } = useTasks();
     const [showAddPrompt, setShowAddPrompt] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
@@ -63,7 +63,7 @@ function App() {
                     tasks={tasks}
                     setTasks={setTasks}
                     updateTask={updateTask}
-                    updateTasks={updateTasks}
+                    updateMultiTask={updateMultiTask}
                     boardTitles={boardTitles}
                 />
                 <div className="flex flex-grow justify-center">

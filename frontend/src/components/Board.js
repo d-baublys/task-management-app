@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { useCallback, useRef } from "react";
 
-const Board = ({ title, titles, setTasks, boardTasks, updateTask, updateTasks }) => {
+const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boardTasks }) => {
     const excludeRef = useRef(null);
 
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -19,31 +19,34 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTask, updateTasks })
                 clientOffset.y < excludeBounding.top ||
                 clientOffset.y > excludeBounding.bottom;
 
-            if (item.status === titles[title] && inDropZone) {
+            if (item.status === boardTitles[title] && inDropZone) {
                 setTasks((prevTasks) => {
                     const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
-                    let updatedTasks = [...prevTasks];
-                    const [movedTask] = updatedTasks.splice(dragIndex, 1);
+                    let reorderedTasks = [...prevTasks];
+                    const [movedTask] = reorderedTasks.splice(dragIndex, 1);
 
-                    updatedTasks.push(movedTask);
+                    reorderedTasks.push(movedTask);
 
-                    updatedTasks = updatedTasks.map((task, index) => ({ ...task, position: index }));
-                    console.log("hover end board");
-                    updateTasks(updatedTasks);
+                    reorderedTasks = reorderedTasks.map((task, index) => ({
+                        ...task,
+                        position: index,
+                    }));
 
-                    return updatedTasks;
+                    updateMultiTask(reorderedTasks);
+
+                    return reorderedTasks;
                 });
             }
         },
         hover: (item) => {
-            if (item.status !== titles[title]) {
-                item.status = titles[title];
+            if (item.status !== boardTitles[title]) {
+                item.status = boardTitles[title];
                 setTasks((prevTasks) => {
                     const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
                     const updatedTasks = [...prevTasks];
                     const movedTask = updatedTasks[dragIndex];
-                    movedTask.status = titles[title];
-                    console.log("hover move board");
+                    movedTask.status = boardTitles[title];
+
                     updateTask(movedTask);
 
                     return updatedTasks;
@@ -62,10 +65,10 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTask, updateTasks })
 
             if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
-            const updatedTasks = [...prevTasks];
-            const hoveredTask = updatedTasks[hoverIndex];
-            const [movedTask] = updatedTasks.splice(dragIndex, 1);
-            updatedTasks.splice(hoverIndex, 0, movedTask);
+            const reorderedTasks = [...prevTasks];
+            const hoveredTask = reorderedTasks[hoverIndex];
+            const [movedTask] = reorderedTasks.splice(dragIndex, 1);
+            reorderedTasks.splice(hoverIndex, 0, movedTask);
 
             movedTask.position = hoverIndex;
             hoveredTask.position = dragIndex;
@@ -74,9 +77,7 @@ const Board = ({ title, titles, setTasks, boardTasks, updateTask, updateTasks })
                 updateTask(task);
             });
 
-            console.log("reorder hit");
-
-            return updatedTasks;
+            return reorderedTasks;
         });
     }, []);
 
