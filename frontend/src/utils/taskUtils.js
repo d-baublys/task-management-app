@@ -1,10 +1,11 @@
-export const handleBoardDrop = (
+export const processTaskMove = (
     setTasks,
+    updateTask,
     updateMultiTask,
-    item,
-    monitor,
     boardTitles,
     title,
+    item,
+    monitor,
     excludeRef
 ) => {
     const clientOffset = monitor.getClientOffset();
@@ -14,14 +15,30 @@ export const handleBoardDrop = (
     const excludeBounding = excludeRef.current?.getBoundingClientRect();
 
     const inDropZone =
-        clientOffset.x < excludeBounding.left ||
-        clientOffset.x > excludeBounding.right ||
-        clientOffset.y < excludeBounding.top ||
-        clientOffset.y > excludeBounding.bottom;
+        clientOffset.y < excludeBounding.top || clientOffset.y > excludeBounding.bottom;
 
-    if (item.status === boardTitles[title] && inDropZone) {
+    if (item.status !== boardTitles[title]) {
+        item.status = boardTitles[title];
         setTasks((prevTasks) => {
             const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
+            const updatedTasks = [...prevTasks];
+            const movedTask = updatedTasks[dragIndex];
+            movedTask.status = boardTitles[title];
+
+            updateTask(movedTask);
+
+            return updatedTasks;
+        });
+    }
+
+    if (inDropZone) {
+        setTasks((prevTasks) => {
+            const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
+
+            if (dragIndex === prevTasks.length - 1) {
+                return prevTasks;
+            }
+
             let reorderedTasks = [...prevTasks];
             const [movedTask] = reorderedTasks.splice(dragIndex, 1);
 
@@ -39,23 +56,7 @@ export const handleBoardDrop = (
     }
 };
 
-export const handleMoveTask = (setTasks, updateTask, item, boardTitles, title) => {
-    if (item.status !== boardTitles[title]) {
-        item.status = boardTitles[title];
-        setTasks((prevTasks) => {
-            const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
-            const updatedTasks = [...prevTasks];
-            const movedTask = updatedTasks[dragIndex];
-            movedTask.status = boardTitles[title];
-
-            updateTask(movedTask);
-
-            return updatedTasks;
-        });
-    }
-};
-
-export const handleReorderTasks = (setTasks, updateTask, item, id, ref) => {
+export const processTaskSwap = (setTasks, updateTask, item, id, ref) => {
     if (!ref.current) {
         return;
     }

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
-import { handleReorderTasks } from "../utils/taskUtils";
+import { processTaskSwap } from "../utils/taskUtils";
 
 const DraggableTile = ({ id, status, setTasks, updateTask }) => {
     const ref = useRef(null);
@@ -20,7 +20,7 @@ const DraggableTile = ({ id, status, setTasks, updateTask }) => {
             handlerId: monitor.getHandlerId(),
         }),
         hover: (item) => {
-            handleReorderTasks(setTasks, updateTask, item, id, ref);
+            processTaskSwap(setTasks, updateTask, item, id, ref);
         },
     });
 

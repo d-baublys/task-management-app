@@ -1,26 +1,24 @@
 import { useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
-import { handleBoardDrop, handleMoveTask } from "../utils/taskUtils";
+import { processTaskMove } from "../utils/taskUtils";
 
 const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boardTasks }) => {
     const excludeRef = useRef(null);
 
     const [{ isOver }, dropRef] = useDrop(() => ({
         accept: "BOX",
-        drop: (item, monitor) => {
-            handleBoardDrop(
+        hover: (item, monitor) => {
+            processTaskMove(
                 setTasks,
+                updateTask,
                 updateMultiTask,
-                item,
-                monitor,
                 boardTitles,
                 title,
+                item,
+                monitor,
                 excludeRef
             );
-        },
-        hover: (item) => {
-            handleMoveTask(setTasks, updateTask, item, boardTitles, title);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
