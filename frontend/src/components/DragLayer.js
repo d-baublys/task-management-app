@@ -18,7 +18,7 @@ const DragLayer = () => {
     return (
         <div className="fixed pointer-events-none top-0 left-0 z-[9999]">
             <div style={{ transform }}>
-                <Tile isDragging={isDragging} content={item.id}/>
+                <Tile isDragging={isDragging} content={item.id} />
             </div>
         </div>
     );

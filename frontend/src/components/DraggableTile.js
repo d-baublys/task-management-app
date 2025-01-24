@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
+import { handleReorderTasks } from "../utils/taskUtils";
 
-const DraggableTile = ({ id, status, moveRow }) => {
+const DraggableTile = ({ id, status, setTasks, updateTask }) => {
     const ref = useRef(null);
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -18,19 +19,8 @@ const DraggableTile = ({ id, status, moveRow }) => {
         collect: (monitor) => ({
             handlerId: monitor.getHandlerId(),
         }),
-        hover: (item, monitor) => {
-            if (!ref.current) {
-                return;
-            }
-
-            const dragId = item.id;
-            const hoverId = id;
-
-            if (dragId === hoverId) {
-                return;
-            }
-
-            moveRow(dragId, hoverId);
+        hover: (item) => {
+            handleReorderTasks(setTasks, updateTask, item, id, ref);
         },
     });
 
