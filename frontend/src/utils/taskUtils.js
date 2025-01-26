@@ -1,4 +1,4 @@
-export const debounce = (func, delay = 1500) => {
+export const debounce = (func, delay = 1000) => {
     let timer;
     return (...args) => {
         clearTimeout(timer);
@@ -35,39 +35,37 @@ export const processTaskMove = (
     const inDropZone =
         clientOffset.y < excludeBounding.top || clientOffset.y > excludeBounding.bottom;
 
-    if (item.status !== boardTitles[title]) {
-        item.status = boardTitles[title];
-        setTasks((prevTasks) => {
-            const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
-            const updatedTasks = [...prevTasks];
-            const movedTask = updatedTasks[dragIndex];
+    setTasks((prevTasks) => {
+        const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
+        const reorderedTasks = [...prevTasks];
+
+        if (item.status !== boardTitles[title]) {
+            item.status = boardTitles[title];
+
+            const movedTask = reorderedTasks[dragIndex];
             movedTask.status = boardTitles[title];
 
             debouncedUpdateTask(movedTask, updateTask);
 
-            return updatedTasks;
-        });
-    }
+            return reorderedTasks;
+        }
 
-    if (inDropZone) {
-        setTasks((prevTasks) => {
-            const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
-
+        if (inDropZone) {
             if (dragIndex === prevTasks.length - 1) {
                 return prevTasks;
             }
 
-            const reorderedTasks = [...prevTasks];
             const [movedTask] = reorderedTasks.splice(dragIndex, 1);
 
             reorderedTasks.push(movedTask);
-            reorderedTasks.forEach((task, index) => task.position = index);
+            reorderedTasks.forEach((task, index) => (task.position = index));
 
             debouncedUpdateMultiTask(reorderedTasks, updateMultiTask);
 
             return reorderedTasks;
-        });
-    }
+        }
+        return prevTasks;
+    });
 };
 
 export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref) => {
@@ -95,7 +93,7 @@ export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref) => {
 
         movedTask.position = hoverIndex;
         hoveredTask.position = dragIndex;
-        
+
         debouncedUpdateMultiTask(reorderedTasks, updateMultiTask);
 
         return reorderedTasks;
