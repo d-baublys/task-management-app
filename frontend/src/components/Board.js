@@ -31,14 +31,14 @@ const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boar
             ref={dropRef}
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
-            <div ref={excludeRef} className="flex flex-col w-full gap-2 px-2">
+            <div ref={excludeRef} className="flex flex-col w-full">
                 {boardTasks.map((tile, index) => (
                     <DraggableTile
                         key={tile.id}
                         id={tile.id}
                         status={tile.status}
                         setTasks={setTasks}
-                        updateTask={updateTask}
+                        updateMultiTask={updateMultiTask}
                         position={tile.position}
                     />
                 ))}

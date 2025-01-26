@@ -3,7 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
 import { processTaskSwap } from "../utils/taskUtils";
 
-const DraggableTile = ({ id, status, setTasks, updateTask }) => {
+const DraggableTile = ({ id, status, setTasks, updateMultiTask }) => {
     const ref = useRef(null);
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -20,14 +20,14 @@ const DraggableTile = ({ id, status, setTasks, updateTask }) => {
             handlerId: monitor.getHandlerId(),
         }),
         hover: (item) => {
-            processTaskSwap(setTasks, updateTask, item, id, ref);
+            processTaskSwap(setTasks, updateMultiTask, item, id, ref);
         },
     });
 
     dragRef(drop(ref));
 
     return (
-        <div ref={ref} data-handler-id={collectedProps.handlerId}>
+        <div className="p-2" ref={ref} data-handler-id={collectedProps.handlerId}>
             <Tile isDragging={isDragging} content={id} />
         </div>
     );

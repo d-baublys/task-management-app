@@ -1,3 +1,21 @@
+export const debounce = (func, delay = 1500) => {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            return func(...args);
+        }, delay);
+    };
+};
+
+const debouncedUpdateTask = debounce((task, updateTask) => {
+    updateTask(task);
+});
+
+const debouncedUpdateMultiTask = debounce((tasks, updateMultiTask) => {
+    updateMultiTask(tasks);
+});
+
 export const processTaskMove = (
     setTasks,
     updateTask,
@@ -25,7 +43,7 @@ export const processTaskMove = (
             const movedTask = updatedTasks[dragIndex];
             movedTask.status = boardTitles[title];
 
-            updateTask(movedTask);
+            debouncedUpdateTask(movedTask, updateTask);
 
             return updatedTasks;
         });
@@ -39,24 +57,20 @@ export const processTaskMove = (
                 return prevTasks;
             }
 
-            let reorderedTasks = [...prevTasks];
+            const reorderedTasks = [...prevTasks];
             const [movedTask] = reorderedTasks.splice(dragIndex, 1);
 
             reorderedTasks.push(movedTask);
+            reorderedTasks.forEach((task, index) => task.position = index);
 
-            reorderedTasks = reorderedTasks.map((task, index) => ({
-                ...task,
-                position: index,
-            }));
-
-            updateMultiTask(reorderedTasks);
+            debouncedUpdateMultiTask(reorderedTasks, updateMultiTask);
 
             return reorderedTasks;
         });
     }
 };
 
-export const processTaskSwap = (setTasks, updateTask, item, id, ref) => {
+export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref) => {
     if (!ref.current) {
         return;
     }
@@ -81,10 +95,8 @@ export const processTaskSwap = (setTasks, updateTask, item, id, ref) => {
 
         movedTask.position = hoverIndex;
         hoveredTask.position = dragIndex;
-
-        [movedTask, hoveredTask].forEach((task) => {
-            updateTask(task);
-        });
+        
+        debouncedUpdateMultiTask(reorderedTasks, updateMultiTask);
 
         return reorderedTasks;
     });
