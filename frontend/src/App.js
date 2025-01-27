@@ -9,6 +9,7 @@ import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
 import AddTaskMenu from "./components/AddTaskMenu";
 import ConfirmModal from "./components/ConfirmModal";
+import DarkBackdrop from "./components/DarkBackdrop";
 import DragLayer from "./components/DragLayer";
 import useTasks from "./hooks/useTasks";
 
@@ -17,6 +18,7 @@ function App() {
 
     const { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask } = useTasks();
     const [showAddPrompt, setShowAddPrompt] = useState(false);
+    const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
 
@@ -47,16 +49,12 @@ function App() {
                         style={{ width: "var(--board-btn-spacing)" }}
                     >
                         <DeleteButton
+                            isDeleteMode={isDeleteMode}
+                            setIsDeleteMode={setIsDeleteMode}
                             setIsConfirmOpen={setIsConfirmOpen}
                             setModalPromise={setModalPromise}
                             deleteTask={deleteTask}
                         />
-                        {isConfirmOpen && (
-                            <ConfirmModal
-                                modalPromise={modalPromise}
-                                setIsConfirmOpen={setIsConfirmOpen}
-                            />
-                        )}
                     </div>
                 </div>
                 <BoardContainer
@@ -81,6 +79,13 @@ function App() {
                         )}
                     </div>
                 </div>
+                {isDeleteMode && <DarkBackdrop zIndex={500}/>}
+                {isConfirmOpen && (
+                    <ConfirmModal
+                        modalPromise={modalPromise}
+                        setIsConfirmOpen={setIsConfirmOpen}
+                    />
+                )}
             </div>
             <div className="h-[1500px]"></div>
         </DndProvider>

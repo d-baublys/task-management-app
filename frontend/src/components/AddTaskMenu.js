@@ -1,14 +1,16 @@
 import { useState } from "react";
 
 const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
-    const [newTask, setNewTask] = useState("");
+    const [status, setStatus] = useState("");
+    const [description, setDescription] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!newTask) return;
+        if (!status) return;
 
-        onAdd(boardTitles[newTask]);
-        setNewTask("");
+        onAdd(boardTitles[status], description);
+        setStatus("");
+        setDescription("");
         setShowAddPrompt((prev) => !prev);
     };
 
@@ -27,8 +29,8 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
                     onSubmit={handleSubmit}
                 >
                     <select
-                        value={newTask}
-                        onChange={(e) => setNewTask(e.target.value)}
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
                         className="w-full h-8"
                     >
                         <option value="" disabled></option>
@@ -38,6 +40,8 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
                             </option>
                         ))}
                     </select>
+                    <input value={description} onChange={(e) => setDescription(e.target.value)} className="w-full h-8">
+                    </input>
                     <button type="submit" className="rounded-xl w-1/3 h-8 bg-white">
                         Add Task
                     </button>

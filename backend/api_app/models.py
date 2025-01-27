@@ -8,6 +8,8 @@ class Task(models.Model):
         ("done", "Done"),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="to_do")
+    description = models.CharField(max_length=255)
+    # due_date = models.DateField()
     position = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):

@@ -1,3 +1,5 @@
+import DarkBackdrop from "./DarkBackdrop";
+
 const ConfirmModal = ({ modalPromise, setIsConfirmOpen }) => {
     const handleConfirm = () => {
         modalPromise(true);
@@ -10,7 +12,7 @@ const ConfirmModal = ({ modalPromise, setIsConfirmOpen }) => {
     };
 
     return (
-        <div className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50">
+        <DarkBackdrop>
             <div
                 className="flex flex-col justify-center items-center rounded-2xl bg-white"
                 style={{ width: "var(--add-menu-width)", height: "var(--add-menu-height)" }}
@@ -31,7 +33,7 @@ const ConfirmModal = ({ modalPromise, setIsConfirmOpen }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </DarkBackdrop>
     );
 };
 

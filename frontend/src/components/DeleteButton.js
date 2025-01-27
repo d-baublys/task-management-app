@@ -1,16 +1,31 @@
+import { useEffect, useRef } from "react";
 import { useDrop } from "react-dnd";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BaseButton from "./BaseButton";
 
-const DeleteButton = ({ setIsConfirmOpen, setModalPromise, deleteTask }) => {
+const DeleteButton = ({
+    isDeleteMode,
+    setIsDeleteMode,
+    setIsConfirmOpen,
+    setModalPromise,
+    deleteTask,
+}) => {
+    const isDeleteModeRef = useRef(isDeleteMode);
+
+    useEffect(() => {
+        isDeleteModeRef.current = isDeleteMode;
+    }, [isDeleteMode]);
+
     const showModal = () => {
         return new Promise((resolve) => {
+            setIsDeleteMode(false);
             setIsConfirmOpen(true);
             setModalPromise(() => resolve);
         });
     };
 
     const handleDrop = async (item) => {
+        if (!isDeleteModeRef.current) return;
         const result = await showModal();
         if (result) {
             deleteTask(item.id);
@@ -24,7 +39,15 @@ const DeleteButton = ({ setIsConfirmOpen, setModalPromise, deleteTask }) => {
             isOver: monitor.isOver(),
         }),
     }));
-    return <BaseButton dropRef={dropRef} isOver={isOver} icon={faTrashAlt} />;
+    return (
+        <BaseButton
+            onClick={() => setIsDeleteMode((prev) => !prev)}
+            dropRef={dropRef}
+            isOver={isOver && isDeleteMode}
+            icon={faTrashAlt}
+            zIndex={600}
+        />
+    );
 };
 
 export default DeleteButton;

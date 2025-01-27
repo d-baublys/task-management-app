@@ -37,6 +37,7 @@ const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boar
                         key={tile.id}
                         id={tile.id}
                         status={tile.status}
+                        description={tile.description}
                         setTasks={setTasks}
                         updateMultiTask={updateMultiTask}
                         position={tile.position}
