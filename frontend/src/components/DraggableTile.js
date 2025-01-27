@@ -27,7 +27,7 @@ const DraggableTile = ({ id, status, description, setTasks, updateMultiTask, isD
     dragRef(drop(ref));
 
     return (
-        <div className="p-2 z-[550]" ref={ref} data-handler-id={collectedProps.handlerId}>
+        <div className="p-2 z-[600]" ref={ref} data-handler-id={collectedProps.handlerId}>
             <Tile isDragging={isDragging} content={description} />
         </div>
     );

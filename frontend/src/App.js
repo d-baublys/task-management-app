@@ -80,12 +80,15 @@ function App() {
                         )}
                     </div>
                 </div>
-                {isDeleteMode && <DarkBackdrop zIndex={500}/>}
-                {isConfirmOpen && (
-                    <ConfirmModal
-                        modalPromise={modalPromise}
-                        setIsConfirmOpen={setIsConfirmOpen}
-                    />
+                {(isDeleteMode || isConfirmOpen) && (
+                    <DarkBackdrop setIsDeleteMode={setIsDeleteMode} setIsConfirmOpen={setIsConfirmOpen} zIndex={isDeleteMode ? 500 : 1000}>
+                        {isConfirmOpen && (
+                            <ConfirmModal
+                                modalPromise={modalPromise}
+                                setIsConfirmOpen={setIsConfirmOpen}
+                            />
+                        )}
+                    </DarkBackdrop>
                 )}
             </div>
             <div className="h-[1500px]"></div>

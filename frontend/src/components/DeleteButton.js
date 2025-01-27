@@ -45,7 +45,7 @@ const DeleteButton = ({
             dropRef={dropRef}
             isOver={isOver && isDeleteMode}
             icon={faTrashAlt}
-            zIndex={600}
+            zIndex={550}
         />
     );
 };
