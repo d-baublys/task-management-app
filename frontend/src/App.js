@@ -28,6 +28,12 @@ function App() {
         "Done": "done",
     };
 
+    const offMenuClick = (e) => {
+        if (showAddPrompt && !document.querySelector(".add-menu").contains(e.target)) {
+            setShowAddPrompt(false);
+        }
+    };
+
     return (
         <DndProvider
             backend={test_mobile ? TouchBackend : HTML5Backend}
@@ -35,6 +41,7 @@ function App() {
         >
             {test_mobile && <DragLayer />}
             <div
+                onClick={offMenuClick}
                 className="flex justify-center items-center w-full h-lvh"
                 style={{
                     "--board-btn-spacing": "4rem",
@@ -81,7 +88,11 @@ function App() {
                     </div>
                 </div>
                 {(isDeleteMode || isConfirmOpen) && (
-                    <DarkBackdrop setIsDeleteMode={setIsDeleteMode} setIsConfirmOpen={setIsConfirmOpen} zIndex={isDeleteMode ? 500 : 1000}>
+                    <DarkBackdrop
+                        setIsDeleteMode={setIsDeleteMode}
+                        setIsConfirmOpen={setIsConfirmOpen}
+                        zIndex={isDeleteMode ? 500 : 1000}
+                    >
                         {isConfirmOpen && (
                             <ConfirmModal
                                 modalPromise={modalPromise}
