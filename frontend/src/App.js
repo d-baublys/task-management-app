@@ -63,6 +63,7 @@ function App() {
                     updateTask={updateTask}
                     updateMultiTask={updateMultiTask}
                     boardTitles={boardTitles}
+                    isDeleteMode={isDeleteMode}
                 />
                 <div className="flex flex-grow justify-center">
                     <div

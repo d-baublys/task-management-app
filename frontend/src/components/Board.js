@@ -3,7 +3,7 @@ import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { processTaskMove } from "../utils/taskUtils";
 
-const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boardTasks }) => {
+const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boardTasks, isDeleteMode }) => {
     const excludeRef = useRef(null);
 
     const [{ isOver }, dropRef] = useDrop(() => ({
@@ -41,6 +41,7 @@ const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boar
                         setTasks={setTasks}
                         updateMultiTask={updateMultiTask}
                         position={tile.position}
+                        isDeleteMode={isDeleteMode}
                     />
                 ))}
             </div>

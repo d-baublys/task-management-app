@@ -32,8 +32,7 @@ export const processTaskMove = (
 
     const excludeBounding = excludeRef.current?.getBoundingClientRect();
 
-    const inDropZone =
-        clientOffset.y < excludeBounding.top || clientOffset.y > excludeBounding.bottom;
+    const inDropZone = clientOffset.y > excludeBounding.bottom;
 
     setTasks((prevTasks) => {
         const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
@@ -68,8 +67,8 @@ export const processTaskMove = (
     });
 };
 
-export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref) => {
-    if (!ref.current) {
+export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref, isDeleteMode) => {
+    if (!ref.current || isDeleteMode) {
         return;
     }
 
