@@ -2,7 +2,7 @@ import Board from "./Board";
 
 const BoardContainer = ({ tasks, setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode}) => {
     return (
-        <div className="flex w-3/4 h-2/3 justify-between">
+        <div className="flex w-3/4 h-2/3 gap-x-[2%] justify-between">
             {Object.keys(boardTitles).map((title, index) => (
                 <Board
                     key={index}

@@ -27,7 +27,7 @@ const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boar
 
     return (
         <div
-            className={`w-1/4 h-full rounded-xl ${isOver ? "bg-green-500" : "bg-blue-500"}`}
+            className={`w-full h-full rounded-xl ${isOver ? "bg-green-500" : "bg-blue-500"}`}
             ref={dropRef}
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
@@ -38,6 +38,7 @@ const Board = ({ setTasks, updateTask, updateMultiTask, boardTitles, title, boar
                         id={tile.id}
                         status={tile.status}
                         description={tile.description}
+                        dueDate={tile.due_date}
                         setTasks={setTasks}
                         updateMultiTask={updateMultiTask}
                         position={tile.position}

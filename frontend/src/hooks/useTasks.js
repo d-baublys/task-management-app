@@ -10,8 +10,8 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     }, []);
 
-    const addTask = (status, description) => {
-        createApiTask(status, description)
+    const addTask = (status, description, dueDate) => {
+        createApiTask(status, description, dueDate)
             .then((response) => setTasks((prevTasks) => [...prevTasks, response.data]))
             .catch((error) => console.log(error.message));
     };

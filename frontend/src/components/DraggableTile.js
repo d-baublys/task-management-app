@@ -3,7 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import Tile from "./Tile";
 import { processTaskSwap } from "../utils/taskUtils";
 
-const DraggableTile = ({ id, status, description, setTasks, updateMultiTask, isDeleteMode }) => {
+const DraggableTile = ({ id, status, description, dueDate, setTasks, updateMultiTask, isDeleteMode }) => {
     const ref = useRef(null);
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -28,7 +28,7 @@ const DraggableTile = ({ id, status, description, setTasks, updateMultiTask, isD
 
     return (
         <div className="p-2 z-[600]" ref={ref} data-handler-id={collectedProps.handlerId}>
-            <Tile isDragging={isDragging} content={description} />
+            <Tile isDragging={isDragging} description={description} dueDate={dueDate} />
         </div>
     );
 };
