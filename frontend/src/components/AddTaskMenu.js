@@ -18,7 +18,7 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
 
     return (
         <div
-            className={`add-menu sticky flex flex-col justify-center items-center rounded-xl bg-slate-500`}
+            className={`add-menu sticky flex flex-col justify-center items-center rounded-xl bg-slate-500 z-[600]`}
             style={{
                 top: "calc(var(--board-btn-top) + var(--board-btn-spacing))",
                 width: "var(--add-menu-width)",
