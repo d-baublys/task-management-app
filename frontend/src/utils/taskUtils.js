@@ -1,4 +1,4 @@
-export const debounce = (func, delay = 1000) => {
+export const debounce = (func, delay = 500) => {
     let timer;
     return (...args) => {
         clearTimeout(timer);
@@ -67,7 +67,15 @@ export const processTaskMove = (
     });
 };
 
-export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref, isDeleteMode) => {
+export const processTaskSwap = (
+    setTasks,
+    updateMultiTask,
+    item,
+    monitor,
+    id,
+    ref,
+    isDeleteMode
+) => {
     if (!ref.current || isDeleteMode) {
         return;
     }
@@ -79,11 +87,29 @@ export const processTaskSwap = (setTasks, updateMultiTask, item, id, ref, isDele
         return;
     }
 
+    const clientOffset = monitor.getClientOffset();
+
+    if (!clientOffset) {
+        return;
+    }
+
+    const refBounding = ref.current?.getBoundingClientRect();
+    const halfHeight = (refBounding.bottom - refBounding.top) / 2;
+    const relativeCursorY = clientOffset.y - refBounding.top;
+
     setTasks((prevTasks) => {
         const dragIndex = prevTasks.findIndex((task) => task.id === dragId);
         const hoverIndex = prevTasks.findIndex((task) => task.id === hoverId);
 
         if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
+
+        if (dragIndex < hoverIndex && relativeCursorY < halfHeight) {
+            return prevTasks;
+        }
+
+        if (dragIndex > hoverIndex && relativeCursorY > halfHeight) {
+            return prevTasks;
+        }
 
         const reorderedTasks = [...prevTasks];
         const hoveredTask = reorderedTasks[hoverIndex];
