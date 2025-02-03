@@ -12,19 +12,27 @@ const DraggableTile = ({
     setTasks,
     updateMultiTask,
     isDeleteMode,
-    dragging,
-    setDragging,
+    activeTaskId,
+    setActiveTaskId,
+    draggable,
+    setDraggable,
+    setIsEditOpen,
 }) => {
     const ref = useRef(null);
+    let timerRef = useRef(null);
 
-    const [, dragRef] = useDrag(() => ({
-        type: "BOX",
-        item: () => {
-            setDragging(id);
-            return { id, status };
-        },
-        end: () => setDragging(null),
-    }));
+    const [, dragRef] = useDrag(
+        () => ({
+            type: "BOX",
+            canDrag: () => draggable,
+            item: () => {
+                setActiveTaskId(id);
+                return { id, status };
+            },
+            end: () => setActiveTaskId(null),
+        }),
+        [draggable]
+    );
 
     const [{ handlerId }, drop] = useDrop({
         accept: "BOX",
@@ -35,6 +43,18 @@ const DraggableTile = ({
             processTaskSwap(setTasks, updateMultiTask, item, monitor, id, ref, isDeleteMode);
         },
     });
+    const handleMouseDown = () => {
+        setActiveTaskId(id);
+        timerRef.current = setTimeout(() => setDraggable(true), 100);
+    };
+
+    const handleMouseUp = () => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            setIsEditOpen(true);
+        }
+        setDraggable(false);
+    };
 
     dragRef(drop(ref));
 
@@ -42,16 +62,14 @@ const DraggableTile = ({
         <motion.div
             layout
             initial={{ scale: 1 }}
-            animate={{ scale: dragging === id ? 1.1 : 1 }}
+            animate={{ scale: activeTaskId === id ? 1.1 : 1 }}
             className="p-2 z-[600]"
             ref={ref}
             data-handler-id={handlerId}
+            onMouseUp={handleMouseUp}
+            onMouseDown={handleMouseDown}
         >
-            <Tile
-                isDragging={dragging === id ? true : false}
-                description={description}
-                dueDate={dueDate}
-            />
+            <Tile isDragging={activeTaskId === id} description={description} dueDate={dueDate} />
         </motion.div>
     );
 };

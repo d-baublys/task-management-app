@@ -9,6 +9,7 @@ import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
 import AddTaskMenu from "./components/AddTaskMenu";
 import ConfirmModal from "./components/ConfirmModal";
+import EditModal from "./components/EditModal";
 import DarkBackdrop from "./components/DarkBackdrop";
 import DragLayer from "./components/DragLayer";
 import useTasks from "./hooks/useTasks";
@@ -20,7 +21,9 @@ function App() {
     const [showAddPrompt, setShowAddPrompt] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
+    const [activeTaskId, setActiveTaskId] = useState(null);
 
     const boardTitles = {
         "To Do": "to_do",
@@ -71,6 +74,10 @@ function App() {
                     updateMultiTask={updateMultiTask}
                     boardTitles={boardTitles}
                     isDeleteMode={isDeleteMode}
+                    isEditOpen={isEditOpen}
+                    setIsEditOpen={setIsEditOpen}
+                    activeTaskId={activeTaskId}
+                    setActiveTaskId={setActiveTaskId}
                 />
                 <div className="flex flex-grow justify-center">
                     <div
@@ -87,16 +94,28 @@ function App() {
                         )}
                     </div>
                 </div>
-                {(isDeleteMode || isConfirmOpen) && (
+                {(isDeleteMode || isConfirmOpen || isEditOpen) && (
                     <DarkBackdrop
                         setIsDeleteMode={setIsDeleteMode}
                         setIsConfirmOpen={setIsConfirmOpen}
+                        setIsEditOpen={setIsEditOpen}
                         zIndex={isDeleteMode ? 500 : 1000}
                     >
                         {isConfirmOpen && (
                             <ConfirmModal
                                 modalPromise={modalPromise}
                                 setIsConfirmOpen={setIsConfirmOpen}
+                            />
+                        )}
+                        {isEditOpen && (
+                            <EditModal
+                                tasks={tasks}
+                                boardTitles={boardTitles}
+                                setIsEditOpen={setIsEditOpen}
+                                onEdit={updateTask}
+                                activeTaskId={activeTaskId}
+                                setActiveTaskId={setActiveTaskId}
+                                setTasks={setTasks}
                             />
                         )}
                     </DarkBackdrop>

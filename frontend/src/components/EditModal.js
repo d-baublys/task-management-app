@@ -1,29 +1,50 @@
 import { useState } from "react";
 
-const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
-    const [status, setStatus] = useState("");
-    const [description, setDescription] = useState("");
-    const [dueDate, setDueDate] = useState(null);
+const EditModal = ({
+    boardTitles,
+    setIsEditOpen,
+    onEdit,
+    activeTaskId,
+    setActiveTaskId,
+    tasks,
+    setTasks,
+}) => {
+    const [currentTask] = tasks.filter((task) => task.id === activeTaskId);
+
+    const handleCancel = () => {
+        setActiveTaskId(null);
+        setIsEditOpen((prev) => !prev);
+        return;
+    };
+
+    const [status, setStatus] = useState(currentTask.status);
+    const [description, setDescription] = useState(currentTask.description);
+    const [dueDate, setDueDate] = useState(currentTask.due_date);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!status || !description || !dueDate) return;
 
-        onAdd(boardTitles[status], description, dueDate);
-        setStatus("");
-        setDescription("");
-        setDueDate(null);
-        setShowAddPrompt((prev) => !prev);
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === currentTask.id
+                    ? { ...task, status, description, due_date: dueDate }
+                    : task
+            )
+        );
+
+        onEdit(currentTask, null, status, description, dueDate);
+        // setStatus("");
+        // setDescription("");
+        // setDueDate(null);
+        setActiveTaskId(null);
+        setIsEditOpen((prev) => !prev);
     };
 
     return (
         <div
-            className={`add-menu sticky flex flex-col justify-center items-center rounded-xl bg-slate-500 z-[600]`}
-            style={{
-                top: "calc(var(--board-btn-top) + var(--board-btn-spacing))",
-                width: "var(--add-menu-width)",
-                height: "var(--add-menu-height)",
-            }}
+            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500"
+            style={{ width: "var(--add-menu-width)", height: "var(--add-menu-height)" }}
         >
             <div className="w-3/4 h-2/3">
                 <form
@@ -39,7 +60,7 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
                             Select task status...
                         </option>
                         {Object.keys(boardTitles).map((key) => (
-                            <option key={boardTitles[key]} value={boardTitles[key]}>
+                            <option key={key} value={boardTitles[key]}>
                                 {key}
                             </option>
                         ))}
@@ -56,7 +77,14 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
                         onChange={(e) => setDueDate(e.target.value)}
                     />
                     <button type="submit" className="rounded-xl w-1/3 h-8 bg-white">
-                        Add Task
+                        Save Changes
+                    </button>
+                    <button
+                        type="reset"
+                        onClick={handleCancel}
+                        className="rounded-xl w-1/3 h-8 bg-white"
+                    >
+                        Cancel
                     </button>
                 </form>
             </div>
@@ -64,4 +92,4 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
     );
 };
 
-export default AddTaskMenu;
+export default EditModal;

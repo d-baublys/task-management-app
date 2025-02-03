@@ -16,9 +16,11 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    const updateTask = (task, index) => {
+    const updateTask = (task, index, status, description, dueDate) => {
         updateApiTask(task.id, {
-            status: task.status,
+            status: status ? status : task.status,
+            description: description ? description : task.description,
+            due_date: dueDate ? dueDate : task.due_date,
             position: index ? index : task.position,
         }).catch((error) => console.log(error.message));
     };

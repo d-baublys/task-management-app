@@ -8,8 +8,13 @@ const BoardContainer = ({
     updateMultiTask,
     boardTitles,
     isDeleteMode,
+    isEditOpen,
+    setIsEditOpen,
+    activeTaskId,
+    setActiveTaskId,
 }) => {
-    const [dragging, setDragging] = useState(null);
+    const [draggable, setDraggable] = useState(false);
+
     return (
         <div className="flex w-3/4 h-2/3 gap-x-[2%] justify-between">
             {Object.keys(boardTitles).map((title, index) => (
@@ -22,8 +27,12 @@ const BoardContainer = ({
                     title={title}
                     boardTasks={tasks.filter((task) => task.status === boardTitles[title])}
                     isDeleteMode={isDeleteMode}
-                    dragging={dragging}
-                    setDragging={setDragging}
+                    activeTaskId={activeTaskId}
+                    setActiveTaskId={setActiveTaskId}
+                    draggable={draggable}
+                    setDraggable={setDraggable}
+                    isEditOpen={isEditOpen}
+                    setIsEditOpen={setIsEditOpen}
                 />
             ))}
         </div>

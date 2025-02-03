@@ -11,8 +11,12 @@ const Board = ({
     title,
     boardTasks,
     isDeleteMode,
-    dragging,
-    setDragging,
+    activeTaskId,
+    setActiveTaskId,
+    draggable,
+    setDraggable,
+    isEditOpen,
+    setIsEditOpen,
 }) => {
     const excludeRef = useRef(null);
 
@@ -53,8 +57,12 @@ const Board = ({
                         updateMultiTask={updateMultiTask}
                         position={tile.position}
                         isDeleteMode={isDeleteMode}
-                        dragging={dragging}
-                        setDragging={setDragging}
+                        activeTaskId={activeTaskId}
+                        setActiveTaskId={setActiveTaskId}
+                        draggable={draggable}
+                        setDraggable={setDraggable}
+                        isEditOpen={isEditOpen}
+                        setIsEditOpen={setIsEditOpen}
                     />
                 ))}
             </div>
