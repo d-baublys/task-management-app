@@ -1,25 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AppContext from "../context/AppContext";
 
-const EditModal = ({
-    boardTitles,
-    setIsEditOpen,
-    onEdit,
-    activeTaskId,
-    setActiveTaskId,
-    tasks,
-    setTasks,
-}) => {
+const EditModal = () => {
+    const {
+        boardTitles,
+        setIsEditOpen,
+        updateTask,
+        activeTaskId,
+        setActiveTaskId,
+        tasks,
+        setTasks,
+    } = useContext(AppContext);
+
     const [currentTask] = tasks.filter((task) => task.id === activeTaskId);
-
-    const handleCancel = () => {
-        setActiveTaskId(null);
-        setIsEditOpen((prev) => !prev);
-        return;
-    };
-
-    const [status, setStatus] = useState(currentTask.status);
-    const [description, setDescription] = useState(currentTask.description);
-    const [dueDate, setDueDate] = useState(currentTask.due_date);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,13 +26,23 @@ const EditModal = ({
             )
         );
 
-        onEdit(currentTask, null, status, description, dueDate);
+        updateTask(currentTask, null, status, description, dueDate);
         // setStatus("");
         // setDescription("");
         // setDueDate(null);
         setActiveTaskId(null);
         setIsEditOpen((prev) => !prev);
     };
+
+    const handleCancel = () => {
+        setActiveTaskId(null);
+        setIsEditOpen((prev) => !prev);
+        return;
+    };
+
+    const [status, setStatus] = useState(currentTask.status);
+    const [description, setDescription] = useState(currentTask.description);
+    const [dueDate, setDueDate] = useState(currentTask.due_date);
 
     return (
         <div

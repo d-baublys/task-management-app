@@ -1,24 +1,23 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
 import Tile from "./Tile";
+import AppContext from "../context/AppContext";
 import { processTaskSwap } from "../utils/taskUtils";
 
-const DraggableTile = ({
-    id,
-    status,
-    description,
-    dueDate,
-    setTasks,
-    updateMultiTask,
-    isDeleteMode,
-    activeTaskId,
-    setActiveTaskId,
-    draggable,
-    setDraggable,
-    setIsEditOpen,
-}) => {
-    const ref = useRef(null);
+const DraggableTile = ({ id, status, description, dueDate }) => {
+    const {
+        setTasks,
+        updateMultiTask,
+        isDeleteMode,
+        setIsEditOpen,
+        draggable,
+        setDraggable,
+        activeTaskId,
+        setActiveTaskId,
+    } = useContext(AppContext);
+
+    const elementRef = useRef(null);
     let timerRef = useRef(null);
 
     const [, dragRef] = useDrag(
@@ -34,13 +33,13 @@ const DraggableTile = ({
         [draggable]
     );
 
-    const [{ handlerId }, drop] = useDrop({
+    const [{ handlerId }, dropRef] = useDrop({
         accept: "BOX",
         collect: (monitor) => ({
             handlerId: monitor.getHandlerId(),
         }),
         hover: (item, monitor) => {
-            processTaskSwap(setTasks, updateMultiTask, item, monitor, id, ref, isDeleteMode);
+            processTaskSwap(setTasks, updateMultiTask, item, monitor, id, elementRef, isDeleteMode);
         },
     });
     const handleMouseDown = () => {
@@ -56,7 +55,7 @@ const DraggableTile = ({
         setDraggable(false);
     };
 
-    dragRef(drop(ref));
+    dragRef(dropRef(elementRef));
 
     return (
         <motion.div
@@ -64,12 +63,12 @@ const DraggableTile = ({
             initial={{ scale: 1 }}
             animate={{ scale: activeTaskId === id ? 1.1 : 1 }}
             className="p-2 z-[600]"
-            ref={ref}
+            ref={elementRef}
             data-handler-id={handlerId}
             onMouseUp={handleMouseUp}
             onMouseDown={handleMouseDown}
         >
-            <Tile isDragging={activeTaskId === id} description={description} dueDate={dueDate} />
+            <Tile isDragging={activeTaskId === id && draggable} description={description} dueDate={dueDate} />
         </motion.div>
     );
 };

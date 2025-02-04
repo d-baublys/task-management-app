@@ -1,15 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useDrop } from "react-dnd";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BaseButton from "./BaseButton";
+import AppContext from "../context/AppContext";
 
-const DeleteButton = ({
-    isDeleteMode,
-    setIsDeleteMode,
-    setIsConfirmOpen,
-    setModalPromise,
-    deleteTask,
-}) => {
+const DeleteButton = () => {
+    const { deleteTask, isDeleteMode, setIsConfirmOpen, setModalPromise, setIsDeleteMode } =
+        useContext(AppContext);
+
     const isDeleteModeRef = useRef(isDeleteMode);
 
     useEffect(() => {

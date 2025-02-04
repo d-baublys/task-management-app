@@ -31,7 +31,6 @@ export const processTaskMove = (
     if (!clientOffset) return;
 
     const excludeBounding = excludeRef.current?.getBoundingClientRect();
-
     const inDropZone = clientOffset.y > excludeBounding.bottom;
 
     setTasks((prevTasks) => {

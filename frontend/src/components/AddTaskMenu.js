@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AppContext from "../context/AppContext";
 
-const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
+const AddTaskMenu = () => {
+    const { addTask, setShowAddPrompt, boardTitles } = useContext(AppContext);
+
     const [status, setStatus] = useState("");
     const [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState(null);
@@ -9,7 +12,7 @@ const AddTaskMenu = ({ onAdd, boardTitles, setShowAddPrompt }) => {
         e.preventDefault();
         if (!status || !description || !dueDate) return;
 
-        onAdd(boardTitles[status], description, dueDate);
+        addTask(boardTitles[status], description, dueDate);
         setStatus("");
         setDescription("");
         setDueDate(null);

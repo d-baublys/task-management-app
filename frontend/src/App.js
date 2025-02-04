@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { isMobile } from "react-device-detect";
+import AppContext from "./context/AppContext";
+import { offMenuClick } from "./utils/helpers";
 
 import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
@@ -12,117 +14,56 @@ import ConfirmModal from "./components/ConfirmModal";
 import EditModal from "./components/EditModal";
 import DarkBackdrop from "./components/DarkBackdrop";
 import DragLayer from "./components/DragLayer";
-import useTasks from "./hooks/useTasks";
 
 function App() {
     const test_mobile = false;
 
-    const { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask } = useTasks();
-    const [showAddPrompt, setShowAddPrompt] = useState(false);
-    const [isDeleteMode, setIsDeleteMode] = useState(false);
-    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [modalPromise, setModalPromise] = useState(null);
-    const [activeTaskId, setActiveTaskId] = useState(null);
-
-    const boardTitles = {
-        "To Do": "to_do",
-        "In Progress": "in_progress",
-        "Done": "done",
-    };
-
-    const offMenuClick = (e) => {
-        if (showAddPrompt && !document.querySelector(".add-menu").contains(e.target)) {
-            setShowAddPrompt(false);
-        }
-    };
+    const { showAddPrompt, setShowAddPrompt, isDeleteMode, isConfirmOpen, isEditOpen } =
+        useContext(AppContext);
 
     return (
-        <DndProvider
-            backend={test_mobile ? TouchBackend : HTML5Backend}
-            options={{ enableMouseEvents: true }}
+        <div
+            onClick={(e) => offMenuClick(e, showAddPrompt, setShowAddPrompt)}
+            className="flex justify-center items-center w-full h-lvh"
+            style={{
+                "--board-btn-spacing": "4rem",
+                "--board-btn-top": "20%",
+                "--add-menu-width": "500px",
+                "--add-menu-height": "250px",
+            }}
         >
-            {test_mobile && <DragLayer />}
-            <div
-                onClick={offMenuClick}
-                className="flex justify-center items-center w-full h-lvh"
-                style={{
-                    "--board-btn-spacing": "4rem",
-                    "--board-btn-top": "20%",
-                    "--add-menu-width": "500px",
-                    "--add-menu-height": "250px",
-                }}
+            <DndProvider
+                backend={test_mobile ? TouchBackend : HTML5Backend}
+                options={{ enableMouseEvents: true }}
             >
+                {test_mobile && <DragLayer />}
                 <div className="flex flex-grow justify-center">
                     <div
                         className="flex flex-col items-end h-lvh"
                         style={{ width: "var(--board-btn-spacing)" }}
                     >
-                        <DeleteButton
-                            isDeleteMode={isDeleteMode}
-                            setIsDeleteMode={setIsDeleteMode}
-                            setIsConfirmOpen={setIsConfirmOpen}
-                            setModalPromise={setModalPromise}
-                            deleteTask={deleteTask}
-                        />
+                        <DeleteButton />
                     </div>
                 </div>
-                <BoardContainer
-                    tasks={tasks}
-                    setTasks={setTasks}
-                    updateTask={updateTask}
-                    updateMultiTask={updateMultiTask}
-                    boardTitles={boardTitles}
-                    isDeleteMode={isDeleteMode}
-                    isEditOpen={isEditOpen}
-                    setIsEditOpen={setIsEditOpen}
-                    activeTaskId={activeTaskId}
-                    setActiveTaskId={setActiveTaskId}
-                />
+                <BoardContainer />
                 <div className="flex flex-grow justify-center">
                     <div
                         className="flex flex-col items-end h-lvh"
                         style={{ width: "var(--board-btn-spacing)" }}
                     >
-                        <CreateButton setShowAddPrompt={setShowAddPrompt} />
-                        {showAddPrompt && (
-                            <AddTaskMenu
-                                onAdd={addTask}
-                                boardTitles={boardTitles}
-                                setShowAddPrompt={setShowAddPrompt}
-                            />
-                        )}
+                        <CreateButton />
+                        {showAddPrompt && <AddTaskMenu />}
                     </div>
                 </div>
-                {(isDeleteMode || isConfirmOpen || isEditOpen) && (
-                    <DarkBackdrop
-                        setIsDeleteMode={setIsDeleteMode}
-                        setIsConfirmOpen={setIsConfirmOpen}
-                        setIsEditOpen={setIsEditOpen}
-                        zIndex={isDeleteMode ? 500 : 1000}
-                    >
-                        {isConfirmOpen && (
-                            <ConfirmModal
-                                modalPromise={modalPromise}
-                                setIsConfirmOpen={setIsConfirmOpen}
-                            />
-                        )}
-                        {isEditOpen && (
-                            <EditModal
-                                tasks={tasks}
-                                boardTitles={boardTitles}
-                                setIsEditOpen={setIsEditOpen}
-                                onEdit={updateTask}
-                                activeTaskId={activeTaskId}
-                                setActiveTaskId={setActiveTaskId}
-                                setTasks={setTasks}
-                            />
-                        )}
-                    </DarkBackdrop>
-                )}
-            </div>
-            <div className="h-[1500px]"></div>
-        </DndProvider>
+                <div className="h-[1500px]"></div>
+            </DndProvider>
+            {(isDeleteMode || isConfirmOpen || isEditOpen) && (
+                <DarkBackdrop zIndex={isDeleteMode ? 500 : 1000}>
+                    {isConfirmOpen && <ConfirmModal />}
+                    {isEditOpen && <EditModal />}
+                </DarkBackdrop>
+            )}
+        </div>
     );
 }
 

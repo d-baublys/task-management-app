@@ -1,4 +1,9 @@
-const ConfirmModal = ({ modalPromise, setIsConfirmOpen }) => {
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
+
+const ConfirmModal = () => {
+    const { modalPromise, setIsConfirmOpen } = useContext(AppContext);
+
     const handleConfirm = () => {
         modalPromise(true);
         setIsConfirmOpen(false);
