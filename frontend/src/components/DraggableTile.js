@@ -3,8 +3,8 @@ import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
 import Tile from "./Tile";
 import AppContext from "../context/AppContext";
-import { processTaskSwap } from "../utils/taskUtils";
-import { taskMouseDown } from "../utils/helpers";
+import { processTaskSwap } from "../helpers/dndHelpers";
+import useHandleClicks from "../hooks/useHandleClicks";
 
 const DraggableTile = ({ id, status, description, dueDate }) => {
     const {
@@ -16,6 +16,8 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
         activeTaskId,
         setActiveTaskId,
     } = useContext(AppContext);
+
+    const { taskMouseDown } = useHandleClicks();
 
     const elementRef = useRef(null);
 
@@ -66,7 +68,7 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
             className="p-2 z-[600]"
             ref={elementRef}
             data-handler-id={handlerId}
-            onMouseDown={() => taskMouseDown(id, isDeleteMode, setActiveTaskId, setDraggable)}
+            onMouseDown={() => taskMouseDown(id)}
         >
             <Tile
                 isDragging={draggable && activeTaskId === id}

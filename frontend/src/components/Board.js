@@ -2,7 +2,7 @@ import { useContext, useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import AppContext from "../context/AppContext";
-import { processTaskMove } from "../utils/taskUtils";
+import { processTaskMove } from "../helpers/dndHelpers";
 
 const Board = ({ title, boardTasks }) => {
     const { setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode } =

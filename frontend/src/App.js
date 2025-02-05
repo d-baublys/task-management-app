@@ -4,7 +4,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { isMobile } from "react-device-detect";
 import AppContext from "./context/AppContext";
-import { offMenuClick, taskMouseUp } from "./utils/helpers";
+import useHandleClicks from "./hooks/useHandleClicks";
 
 import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
@@ -18,25 +18,13 @@ import DragLayer from "./components/DragLayer";
 function App() {
     const test_mobile = false;
 
-    const {
-        showAddPrompt,
-        setShowAddPrompt,
-        isDeleteMode,
-        isConfirmOpen,
-        isEditOpen,
-        draggable,
-        setDraggable,
-        setIsEditOpen,
-        activeTaskId,
-        setActiveTaskId,
-    } = useContext(AppContext);
+    const { showAddPrompt, isDeleteMode, isConfirmOpen, isEditOpen } = useContext(AppContext);
+    const { offMenuClick, taskMouseUp } = useHandleClicks();
 
     return (
         <div
-            onClick={(e) => offMenuClick(e, showAddPrompt, setShowAddPrompt)}
-            onMouseUp={() =>
-                taskMouseUp(draggable, setDraggable, activeTaskId, setActiveTaskId, setIsEditOpen)
-            }
+            onClick={(e) => offMenuClick(e)}
+            onMouseUp={() => taskMouseUp()}
             className="flex justify-center items-center w-full h-lvh"
             style={{
                 "--board-btn-spacing": "4rem",
