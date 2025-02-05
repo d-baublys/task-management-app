@@ -4,13 +4,13 @@ import { motion } from "motion/react";
 import Tile from "./Tile";
 import AppContext from "../context/AppContext";
 import { processTaskSwap } from "../utils/taskUtils";
+import { taskMouseDown } from "../utils/helpers";
 
 const DraggableTile = ({ id, status, description, dueDate }) => {
     const {
         setTasks,
         updateMultiTask,
         isDeleteMode,
-        setIsEditOpen,
         draggable,
         setDraggable,
         activeTaskId,
@@ -18,42 +18,43 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
     } = useContext(AppContext);
 
     const elementRef = useRef(null);
-    let timerRef = useRef(null);
 
     const [, dragRef] = useDrag(
         () => ({
             type: "BOX",
             canDrag: () => draggable,
             item: () => {
-                setActiveTaskId(id);
                 return { id, status };
             },
-            end: () => setActiveTaskId(null),
+            end: () => {
+                setActiveTaskId(null);
+                setDraggable(false);
+            },
         }),
         [draggable]
     );
 
-    const [{ handlerId }, dropRef] = useDrop({
-        accept: "BOX",
-        collect: (monitor) => ({
-            handlerId: monitor.getHandlerId(),
-        }),
-        hover: (item, monitor) => {
-            processTaskSwap(setTasks, updateMultiTask, item, monitor, id, elementRef, isDeleteMode);
+    const [{ handlerId }, dropRef] = useDrop(
+        {
+            accept: "BOX",
+            canDrop: () => !isDeleteMode,
+            collect: (monitor) => ({
+                handlerId: monitor.getHandlerId(),
+            }),
+            hover: (item, monitor) => {
+                processTaskSwap(
+                    setTasks,
+                    updateMultiTask,
+                    item,
+                    monitor,
+                    id,
+                    elementRef,
+                    isDeleteMode
+                );
+            },
         },
-    });
-    const handleMouseDown = () => {
-        setActiveTaskId(id);
-        timerRef.current = setTimeout(() => setDraggable(true), 100);
-    };
-
-    const handleMouseUp = () => {
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-            setIsEditOpen(true);
-        }
-        setDraggable(false);
-    };
+        [isDeleteMode]
+    );
 
     dragRef(dropRef(elementRef));
 
@@ -65,10 +66,13 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
             className="p-2 z-[600]"
             ref={elementRef}
             data-handler-id={handlerId}
-            onMouseUp={handleMouseUp}
-            onMouseDown={handleMouseDown}
+            onMouseDown={() => taskMouseDown(id, isDeleteMode, setActiveTaskId, setDraggable)}
         >
-            <Tile isDragging={activeTaskId === id && draggable} description={description} dueDate={dueDate} />
+            <Tile
+                isDragging={draggable && activeTaskId === id}
+                description={description}
+                dueDate={dueDate}
+            />
         </motion.div>
     );
 };

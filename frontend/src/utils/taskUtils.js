@@ -24,11 +24,12 @@ export const processTaskMove = (
     title,
     item,
     monitor,
-    excludeRef
+    excludeRef,
+    isDeleteMode
 ) => {
     const clientOffset = monitor.getClientOffset();
 
-    if (!clientOffset) return;
+    if (!clientOffset || isDeleteMode) return;
 
     const excludeBounding = excludeRef.current?.getBoundingClientRect();
     const inDropZone = clientOffset.y > excludeBounding.bottom;
@@ -49,9 +50,7 @@ export const processTaskMove = (
         }
 
         if (inDropZone) {
-            if (dragIndex === prevTasks.length - 1) {
-                return prevTasks;
-            }
+            if (dragIndex === prevTasks.length - 1) return prevTasks;
 
             const [movedTask] = reorderedTasks.splice(dragIndex, 1);
 
@@ -75,22 +74,16 @@ export const processTaskSwap = (
     ref,
     isDeleteMode
 ) => {
-    if (!ref.current || isDeleteMode) {
-        return;
-    }
+    if (!ref.current || isDeleteMode) return;
 
     const dragId = item.id;
     const hoverId = id;
 
-    if (dragId === hoverId) {
-        return;
-    }
+    if (dragId === hoverId) return;
 
     const clientOffset = monitor.getClientOffset();
 
-    if (!clientOffset) {
-        return;
-    }
+    if (!clientOffset) return;
 
     const refBounding = ref.current?.getBoundingClientRect();
     const halfHeight = (refBounding.bottom - refBounding.top) / 2;
@@ -102,13 +95,8 @@ export const processTaskSwap = (
 
         if (dragIndex === -1 || hoverIndex === -1) return prevTasks;
 
-        if (dragIndex < hoverIndex && relativeCursorY < halfHeight) {
-            return prevTasks;
-        }
-
-        if (dragIndex > hoverIndex && relativeCursorY > halfHeight) {
-            return prevTasks;
-        }
+        if (dragIndex < hoverIndex && relativeCursorY < halfHeight) return prevTasks;
+        if (dragIndex > hoverIndex && relativeCursorY > halfHeight) return prevTasks;
 
         const reorderedTasks = [...prevTasks];
         const hoveredTask = reorderedTasks[hoverIndex];

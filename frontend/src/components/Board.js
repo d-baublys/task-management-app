@@ -5,28 +5,34 @@ import AppContext from "../context/AppContext";
 import { processTaskMove } from "../utils/taskUtils";
 
 const Board = ({ title, boardTasks }) => {
-    const { setTasks, updateTask, updateMultiTask, boardTitles } = useContext(AppContext);
+    const { setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode } =
+        useContext(AppContext);
 
     const excludeRef = useRef(null);
 
-    const [{ isOver }, dropRef] = useDrop(() => ({
-        accept: "BOX",
-        hover: (item, monitor) => {
-            processTaskMove(
-                setTasks,
-                updateTask,
-                updateMultiTask,
-                boardTitles,
-                title,
-                item,
-                monitor,
-                excludeRef
-            );
-        },
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
+    const [{ isOver }, dropRef] = useDrop(
+        () => ({
+            accept: "BOX",
+            canDrop: () => !isDeleteMode,
+            hover: (item, monitor) => {
+                processTaskMove(
+                    setTasks,
+                    updateTask,
+                    updateMultiTask,
+                    boardTitles,
+                    title,
+                    item,
+                    monitor,
+                    excludeRef,
+                    isDeleteMode
+                );
+            },
+            collect: (monitor) => ({
+                isOver: monitor.isOver(),
+            }),
         }),
-    }));
+        [isDeleteMode]
+    );
 
     return (
         <div

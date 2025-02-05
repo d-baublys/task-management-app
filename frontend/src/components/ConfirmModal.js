@@ -16,7 +16,7 @@ const ConfirmModal = () => {
 
     return (
         <div
-            className="flex flex-col justify-center items-center rounded-2xl bg-white"
+            className="confirm-modal flex flex-col justify-center items-center rounded-2xl bg-white"
             style={{ width: "var(--add-menu-width)", height: "var(--add-menu-height)" }}
         >
             <p className="mb-8">Are you sure you want to delete this task?</p>

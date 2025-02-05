@@ -14,6 +14,10 @@ const EditModal = () => {
 
     const [currentTask] = tasks.filter((task) => task.id === activeTaskId);
 
+    const [status, setStatus] = useState(currentTask.status);
+    const [description, setDescription] = useState(currentTask.description);
+    const [dueDate, setDueDate] = useState(currentTask.due_date);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!status || !description || !dueDate) return;
@@ -40,13 +44,9 @@ const EditModal = () => {
         return;
     };
 
-    const [status, setStatus] = useState(currentTask.status);
-    const [description, setDescription] = useState(currentTask.description);
-    const [dueDate, setDueDate] = useState(currentTask.due_date);
-
     return (
         <div
-            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500"
+            className="edit-modal flex flex-col justify-center items-center rounded-2xl bg-gray-500"
             style={{ width: "var(--add-menu-width)", height: "var(--add-menu-height)" }}
         >
             <div className="w-3/4 h-2/3">
