@@ -48,38 +48,49 @@ const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => 
                 height: "var(--modal-height)",
             }}
         >
-            <div className="w-3/4 h-2/3">
+            <div className="w-3/4 h-3/4">
                 <form
                     className="flex flex-col justify-between items-center h-full"
                     onSubmit={handleAction}
                 >
-                    <select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                        className="w-full h-8 px-2 rounded-md"
-                    >
-                        <option value="" disabled hidden>
-                            Select task status...
-                        </option>
-                        {Object.keys(boardTitles).map((key) => (
-                            <option key={boardTitles[key]} value={boardTitles[key]}>
-                                {key}
+                    <fieldset className="w-full p-1 border-2 rounded-lg">
+                        <legend className="text-white mx-1 px-1">Task Status</legend>
+                        <select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="w-full h-8 px-2 rounded-md"
+                        >
+                            <option value="" disabled hidden>
+                                Select status...
                             </option>
-                        ))}
-                    </select>
-                    <input
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full h-8 px-2 rounded-md"
-                        placeholder="Enter task description..."
-                    />
-                    <input
-                        type="date"
-                        value={dueDate}
-                        className="h-8 rounded-md"
-                        onChange={(e) => setDueDate(e.target.value)}
-                    />
-                    <div className="flex gap-2">
+                            {Object.keys(boardTitles).map((key) => (
+                                <option key={boardTitles[key]} value={boardTitles[key]}>
+                                    {key}
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
+                    <fieldset className="w-full p-1 border-2 rounded-lg">
+                        <legend className="text-white mx-1 px-1">Task Description</legend>
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="w-full px-2 rounded-md resize-none"
+                            rows={5}
+                            placeholder="Enter description..."
+                            maxLength={255}
+                        />
+                    </fieldset>
+                    <fieldset className="p-1 border-2 rounded-lg">
+                        <legend className="text-white mx-1 px-1">Due By</legend>
+                        <input
+                            type="date"
+                            value={dueDate}
+                            className="h-8 px-1 rounded-md"
+                            onChange={(e) => setDueDate(e.target.value)}
+                        />
+                    </fieldset>
+                    <div className="flex gap-8 mt-8">
                         <ModalButton type={"submit"}>{modalAction}</ModalButton>
                         <ModalButton type={"reset"} onClick={handleCancel}>
                             Cancel

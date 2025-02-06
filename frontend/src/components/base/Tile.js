@@ -10,7 +10,7 @@ const Tile = ({ isDragging, description, dueDate }) => {
     return (
         <div
             className={`w-full bg-red-500 p-2 rounded-lg break-all ${
-                isDragging ? "opacity-50" : ""
+                isDragging ? "opacity-50" : "hover:opacity-80"
             } ${isDragging || isDeleteMode ? "cursor-move" : "cursor-pointer"}`}
         >
             <div className={`w full px-2 py-1 rounded-md bg-white`}>{description}</div>

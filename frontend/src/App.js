@@ -24,12 +24,12 @@ function App() {
     return (
         <div
             onMouseUp={() => taskMouseUp()}
-            className="flex justify-center items-center w-full h-lvh"
+            className="flex w-full min-h-screen"
             style={{
                 "--board-btn-spacing": "4rem",
                 "--board-btn-top": "20%",
                 "--modal-width": "600px",
-                "--modal-height": "300px",
+                "--modal-height": "600px",
             }}
         >
             <DndProvider
@@ -37,18 +37,14 @@ function App() {
                 options={{ enableMouseEvents: true }}
             >
                 {test_mobile && <DragLayer />}
-                <div className="flex flex-grow justify-center">
-                    <div
-                        className="flex flex-col h-lvh"
-                    >
+                <div className="flex flex-grow justify-center min-h-screen">
+                    <div className="flex flex-col h-full">
                         <DeleteButton />
                     </div>
                 </div>
                 <BoardContainer />
-                <div className="flex flex-grow justify-center">
-                    <div
-                        className="flex flex-col h-lvh"
-                    >
+                <div className="flex flex-grow justify-center min-h-screen">
+                    <div className="flex flex-col h-full">
                         <CreateButton />
                     </div>
                 </div>
