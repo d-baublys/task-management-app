@@ -5,13 +5,12 @@ let timer = null;
 
 const useHandleClicks = () => {
     const {
-        draggable,
-        setDraggable,
+        dragAllowed,
+        setDragAllowed,
         activeTaskId,
         setActiveTaskId,
         setIsEditOpen,
-        showAddPrompt,
-        setShowAddPrompt,
+        setIsAddOpen,
         isDeleteMode,
         setIsDeleteMode,
         setIsConfirmOpen,
@@ -19,38 +18,39 @@ const useHandleClicks = () => {
 
     const taskMouseDown = (id) => {
         setActiveTaskId(id);
-        isDeleteMode ? setDraggable(true) : (timer = setTimeout(() => setDraggable(true), 100));
+        isDeleteMode ? setDragAllowed(true) : (timer = setTimeout(() => setDragAllowed(true), 100));
     };
 
     const taskMouseUp = () => {
-        if (!draggable && activeTaskId !== null && timer) {
+        if (!dragAllowed && activeTaskId !== null && timer) {
             setIsEditOpen(true);
-        } else if (draggable) {
+        } else if (dragAllowed) {
             setActiveTaskId(null);
         }
         clearTimeout(timer);
-        setDraggable(false);
+        timer = null;
+        setDragAllowed(false);
     };
 
-    const containsClick = (e, clsName) => {
-        const element = document.querySelector(clsName);
+    const containsClick = (e, elementId) => {
+        const element = document.getElementById(elementId);
         return element ? element.contains(e.target) : false;
     };
 
-    const offMenuClick = (e) => {
-        if (showAddPrompt && !containsClick(e, ".add-menu")) {
-            setShowAddPrompt(false);
-        }
-    };
-
     const backdropClick = (e) => {
-        if (!containsClick(e, ".confirm-modal") && !containsClick(e, ".edit-modal")) {
-            setIsDeleteMode(false);
+        if (
+            !containsClick(e, "add-modal") &&
+            !containsClick(e, "edit-modal") &&
+            !containsClick(e, "confirm-modal")
+        ) {
+            setActiveTaskId(null);
+            setIsAddOpen(false);
             setIsEditOpen(false);
             setIsConfirmOpen(false);
+            setIsDeleteMode(false);
         }
     };
-    return { taskMouseDown, taskMouseUp, containsClick, offMenuClick, backdropClick };
+    return { taskMouseDown, taskMouseUp, containsClick, backdropClick };
 };
 
 export default useHandleClicks;

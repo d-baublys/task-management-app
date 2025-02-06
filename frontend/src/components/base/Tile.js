@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
-import AppContext from "../context/AppContext";
+import AppContext from "../../context/AppContext";
 
 const Tile = ({ isDragging, description, dueDate }) => {
     const { isDeleteMode } = useContext(AppContext);

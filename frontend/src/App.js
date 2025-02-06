@@ -9,7 +9,7 @@ import useHandleClicks from "./hooks/useHandleClicks";
 import BoardContainer from "./components/BoardContainer";
 import CreateButton from "./components/CreateButton";
 import DeleteButton from "./components/DeleteButton";
-import AddTaskMenu from "./components/AddTaskMenu";
+import AddModal from "./components/AddModal";
 import ConfirmModal from "./components/ConfirmModal";
 import EditModal from "./components/EditModal";
 import DarkBackdrop from "./components/DarkBackdrop";
@@ -18,19 +18,18 @@ import DragLayer from "./components/DragLayer";
 function App() {
     const test_mobile = false;
 
-    const { showAddPrompt, isDeleteMode, isConfirmOpen, isEditOpen } = useContext(AppContext);
-    const { offMenuClick, taskMouseUp } = useHandleClicks();
+    const { isAddOpen, isDeleteMode, isConfirmOpen, isEditOpen } = useContext(AppContext);
+    const { taskMouseUp } = useHandleClicks();
 
     return (
         <div
-            onClick={(e) => offMenuClick(e)}
             onMouseUp={() => taskMouseUp()}
             className="flex justify-center items-center w-full h-lvh"
             style={{
                 "--board-btn-spacing": "4rem",
                 "--board-btn-top": "20%",
-                "--add-menu-width": "500px",
-                "--add-menu-height": "250px",
+                "--modal-width": "600px",
+                "--modal-height": "300px",
             }}
         >
             <DndProvider
@@ -40,8 +39,7 @@ function App() {
                 {test_mobile && <DragLayer />}
                 <div className="flex flex-grow justify-center">
                     <div
-                        className="flex flex-col items-end h-lvh"
-                        style={{ width: "var(--board-btn-spacing)" }}
+                        className="flex flex-col h-lvh"
                     >
                         <DeleteButton />
                     </div>
@@ -49,17 +47,16 @@ function App() {
                 <BoardContainer />
                 <div className="flex flex-grow justify-center">
                     <div
-                        className="flex flex-col items-end h-lvh"
-                        style={{ width: "var(--board-btn-spacing)" }}
+                        className="flex flex-col h-lvh"
                     >
                         <CreateButton />
-                        {showAddPrompt && <AddTaskMenu />}
                     </div>
                 </div>
                 <div className="h-[1500px]"></div>
             </DndProvider>
-            {(isDeleteMode || isConfirmOpen || isEditOpen) && (
+            {(isAddOpen || isDeleteMode || isConfirmOpen || isEditOpen) && (
                 <DarkBackdrop zIndex={isDeleteMode ? 500 : 1000}>
+                    {isAddOpen && <AddModal />}
                     {isConfirmOpen && <ConfirmModal />}
                     {isEditOpen && <EditModal />}
                 </DarkBackdrop>

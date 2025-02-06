@@ -1,5 +1,5 @@
 import { useDragLayer } from "react-dnd";
-import Tile from "./Tile";
+import Tile from "./base/Tile";
 
 const DragLayer = () => {
     const { itemType, isDragging, item, currentOffset } = useDragLayer((monitor) => ({

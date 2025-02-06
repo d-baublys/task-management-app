@@ -5,12 +5,12 @@ const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
     const { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask } = useTasks();
-    const [showAddPrompt, setShowAddPrompt] = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
-    const [draggable, setDraggable] = useState(false);
+    const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState(null);
 
     const boardTitles = {
@@ -29,11 +29,11 @@ export const ContextProvider = ({ children }) => {
                 updateMultiTask,
                 deleteTask,
                 boardTitles,
-                showAddPrompt,
-                setShowAddPrompt,
+                isAddOpen,
+                setIsAddOpen,
                 isDeleteMode,
-                draggable,
-                setDraggable,
+                dragAllowed,
+                setDragAllowed,
                 isConfirmOpen,
                 setIsConfirmOpen,
                 setIsDeleteMode,

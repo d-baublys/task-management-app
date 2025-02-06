@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { useDrop } from "react-dnd";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import BaseButton from "./BaseButton";
+import BoardButton from "./base/BoardButton";
 import AppContext from "../context/AppContext";
 
 const DeleteButton = () => {
@@ -38,7 +38,7 @@ const DeleteButton = () => {
         }),
     }));
     return (
-        <BaseButton
+        <BoardButton
             onClick={() => setIsDeleteMode((prev) => !prev)}
             dropRef={dropRef}
             isOver={isOver && isDeleteMode}

@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
-import Tile from "./Tile";
+import Tile from "./base/Tile";
 import AppContext from "../context/AppContext";
 import { processTaskSwap } from "../helpers/dndHelpers";
 import useHandleClicks from "../hooks/useHandleClicks";
@@ -11,8 +11,8 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
         setTasks,
         updateMultiTask,
         isDeleteMode,
-        draggable,
-        setDraggable,
+        dragAllowed,
+        setDragAllowed,
         activeTaskId,
         setActiveTaskId,
     } = useContext(AppContext);
@@ -24,16 +24,16 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
     const [, dragRef] = useDrag(
         () => ({
             type: "BOX",
-            canDrag: () => draggable,
+            canDrag: () => dragAllowed,
             item: () => {
                 return { id, status };
             },
             end: () => {
                 setActiveTaskId(null);
-                setDraggable(false);
+                setDragAllowed(false);
             },
         }),
-        [draggable]
+        [dragAllowed]
     );
 
     const [{ handlerId }, dropRef] = useDrop(
@@ -71,7 +71,7 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
             onMouseDown={() => taskMouseDown(id)}
         >
             <Tile
-                isDragging={draggable && activeTaskId === id}
+                isDragging={dragAllowed && activeTaskId === id}
                 description={description}
                 dueDate={dueDate}
             />
