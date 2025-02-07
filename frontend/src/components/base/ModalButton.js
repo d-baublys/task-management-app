@@ -1,4 +1,4 @@
-const ModalButton = ({ children, type, onClick }) => {
+const ModalButton = ({ children, type = "button", onClick }) => {
     return (
         <button
             type={type}

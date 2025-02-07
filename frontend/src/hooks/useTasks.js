@@ -16,19 +16,32 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    const updateTask = ({ task, status, description, dueDate, index }) => {
+    const updateTask = ({ task, status, description, dueDate, index }) =>
         updateApiTask(task.id, {
-            status: status ? status : task.status,
-            description: description ? description : task.description,
-            due_date: dueDate ? dueDate : task.due_date,
-            position: index ? index : task.position,
+            status: status || task.status,
+            description: description || task.description,
+            due_date: dueDate || task.due_date,
+            position: index !== undefined ? index : task.position,
         }).catch((error) => console.log(error.message));
+
+    const saveTask = ({ currentTask, status, description, dueDate }) => {
+        if (currentTask) {
+            updateTask({ task: currentTask, status, description, dueDate }).then(() =>
+                setTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                        task.id === currentTask.id
+                            ? { ...task, status, description, due_date: dueDate }
+                            : task
+                    )
+                )
+            );
+        } else {
+            addTask({ status, description, dueDate });
+        }
     };
 
     const updateMultiTask = (updatedTasks) => {
-        Promise.all(updatedTasks.map((task, index) => updateTask({ task, index }))).catch((error) =>
-            console.log(error.message)
-        );
+        updatedTasks.map((task, index) => updateTask({ task, index }));
     };
 
     const deleteTask = (taskId) => {
@@ -37,7 +50,7 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     };
 
-    return { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask };
+    return { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask };
 };
 
 export default useTasks;

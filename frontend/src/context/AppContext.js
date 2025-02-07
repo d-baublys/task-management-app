@@ -4,7 +4,7 @@ import useTasks from "../hooks/useTasks";
 const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { tasks, setTasks, addTask, updateTask, updateMultiTask, deleteTask } = useTasks();
+    const { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -26,6 +26,7 @@ export const ContextProvider = ({ children }) => {
                 setTasks,
                 addTask,
                 updateTask,
+                saveTask,
                 updateMultiTask,
                 deleteTask,
                 boardTitles,

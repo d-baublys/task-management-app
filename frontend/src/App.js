@@ -30,6 +30,7 @@ function App() {
                 "--board-btn-top": "20%",
                 "--modal-width": "600px",
                 "--modal-height": "600px",
+                "--modal-drop-shadow": "0 0 50px rgba(0,0,0,0.25)",
             }}
         >
             <DndProvider

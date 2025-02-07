@@ -2,32 +2,18 @@ import { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
 import ModalButton from "./ModalButton";
 
-const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => {
-    const { boardTitles, setActiveTaskId, setTasks } = useContext(AppContext);
+const Modal = ({ modalId, modalAction, modalSetter, currentTask }) => {
+    const { boardTitles, setActiveTaskId, saveTask } = useContext(AppContext);
 
-    const [status, setStatus] = useState(currentTask ? currentTask.status : "");
-    const [description, setDescription] = useState(currentTask ? currentTask.description : "");
-    const [dueDate, setDueDate] = useState(currentTask ? currentTask.due_date : "");
+    const [status, setStatus] = useState(currentTask?.status || "");
+    const [description, setDescription] = useState(currentTask?.description || "");
+    const [dueDate, setDueDate] = useState(currentTask?.due_date || "");
 
-    const handleAction = (e) => {
+    const handleSave = (e) => {
         e.preventDefault();
         if (!status || !description || !dueDate) return;
 
-        taskFunc({ task: currentTask, status, description, dueDate });
-
-        if (currentTask) {
-            setTasks((prevTasks) =>
-                prevTasks.map((task) =>
-                    task.id === currentTask.id
-                        ? { ...task, status, description, due_date: dueDate }
-                        : task
-                )
-            );
-        }
-
-        setStatus("");
-        setDescription("");
-        setDueDate(null);
+        saveTask({ currentTask, status, description, dueDate });
         setActiveTaskId(null);
         modalSetter(false);
     };
@@ -41,7 +27,7 @@ const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => 
     return (
         <div
             id={modalId}
-            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500"
+            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500 drop-shadow-[--modal-drop-shadow]"
             style={{
                 width: "var(--modal-width)",
                 height: "var(--modal-height)",
@@ -50,7 +36,7 @@ const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => 
             <div className="w-3/4 h-3/4">
                 <form
                     className="flex flex-col justify-between items-center h-full"
-                    onSubmit={handleAction}
+                    onSubmit={handleSave}
                 >
                     <fieldset className="w-full p-1 border-2 rounded-lg">
                         <legend className="text-white mx-1 px-1">Task Status</legend>
@@ -91,9 +77,7 @@ const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => 
                     </fieldset>
                     <div className="flex gap-8 mt-8">
                         <ModalButton type={"submit"}>{modalAction}</ModalButton>
-                        <ModalButton type={"reset"} onClick={handleCancel}>
-                            Cancel
-                        </ModalButton>
+                        <ModalButton onClick={handleCancel}>Cancel</ModalButton>
                     </div>
                 </form>
             </div>

@@ -14,6 +14,7 @@ const useHandleClicks = () => {
         isDeleteMode,
         setIsDeleteMode,
         setIsConfirmOpen,
+        modalPromise,
     } = useContext(AppContext);
 
     const taskMouseDown = (id) => {
@@ -43,6 +44,7 @@ const useHandleClicks = () => {
             !containsClick(e, "edit-modal") &&
             !containsClick(e, "confirm-modal")
         ) {
+            modalPromise && modalPromise(false);
             setActiveTaskId(null);
             setIsAddOpen(false);
             setIsEditOpen(false);
