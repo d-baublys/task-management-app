@@ -9,7 +9,7 @@ export const debounce = (func, delay = 500) => {
 };
 
 const debouncedUpdateTask = debounce((task, updateTask) => {
-    updateTask(task);
+    updateTask({task});
 });
 
 const debouncedUpdateMultiTask = debounce((tasks, updateMultiTask) => {

@@ -13,10 +13,9 @@ const Modal = ({ modalId, modalAction, taskFunc, modalSetter, currentTask }) => 
         e.preventDefault();
         if (!status || !description || !dueDate) return;
 
-        if (modalAction === "Add Task") {
-            taskFunc(boardTitles[status], description, dueDate);
-        } else {
-            taskFunc(currentTask, null, status, description, dueDate);
+        taskFunc({ task: currentTask, status, description, dueDate });
+
+        if (currentTask) {
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
                     task.id === currentTask.id

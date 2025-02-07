@@ -10,13 +10,13 @@ const useTasks = () => {
             .catch((error) => console.log(error.message));
     }, []);
 
-    const addTask = (status, description, dueDate) => {
+    const addTask = ({ status, description, dueDate }) => {
         createApiTask(status, description, dueDate)
             .then((response) => setTasks((prevTasks) => [...prevTasks, response.data]))
             .catch((error) => console.log(error.message));
     };
 
-    const updateTask = (task, index, status, description, dueDate) => {
+    const updateTask = ({ task, status, description, dueDate, index }) => {
         updateApiTask(task.id, {
             status: status ? status : task.status,
             description: description ? description : task.description,
@@ -26,7 +26,7 @@ const useTasks = () => {
     };
 
     const updateMultiTask = (updatedTasks) => {
-        Promise.all(updatedTasks.map((task, index) => updateTask(task, index))).catch((error) =>
+        Promise.all(updatedTasks.map((task, index) => updateTask({ task, index }))).catch((error) =>
             console.log(error.message)
         );
     };
