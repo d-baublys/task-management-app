@@ -36,7 +36,7 @@ const Board = ({ title, boardTasks }) => {
 
     return (
         <div
-            className={`w-full rounded-xl py-2 ${isOver ? "bg-green-500" : "bg-blue-500"}`}
+            className={`w-full rounded-xl min-h-[3000px] py-2 ${isOver ? "bg-green-500" : "bg-blue-500"}`}
             ref={dropRef}
         >
             <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>

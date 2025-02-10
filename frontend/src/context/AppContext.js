@@ -1,10 +1,13 @@
 import { useState, createContext } from "react";
 import useTasks from "../hooks/useTasks";
+import useAuth from "../hooks/useAuth";
 
 const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks();
+    const { user, login, logout } = useAuth();
+    const { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } =
+        useTasks();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -22,6 +25,9 @@ export const ContextProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
+                user,
+                login,
+                logout,
                 tasks,
                 setTasks,
                 addTask,
