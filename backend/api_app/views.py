@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
@@ -23,7 +24,7 @@ def login_view(request):
 
     if user:
         refresh = RefreshToken.for_user(user)
-        response = Response({"message": "Login successful"})
+        response = Response({"message": "Login successful", "username": username})
         response.set_cookie(
             key="refresh_token",
             value=str(refresh),

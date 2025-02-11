@@ -6,7 +6,7 @@ const useAuth = () => {
 
     const login = (username, password) => {
         loginApi(username, password)
-            .then((response) => setUser(response.data))
+            .then((response) => setUser(response.data.username))
             .catch((error) => console.log(error.message));
     };
 
@@ -14,7 +14,7 @@ const useAuth = () => {
         logoutApi().then(() => setUser(null));
     };
 
-    return { user, login, logout };
+    return { user, setUser, login, logout };
 };
 
 export default useAuth;
