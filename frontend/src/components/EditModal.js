@@ -3,7 +3,7 @@ import AppContext from "../context/AppContext";
 import Modal from "./base/Modal";
 
 const EditModal = () => {
-    const { setIsEditOpen, activeTaskId, tasks } = useContext(AppContext);
+    const { isEditOpen, setIsEditOpen, activeTaskId, tasks } = useContext(AppContext);
 
     const [currentTask] = tasks.filter((task) => task.id === activeTaskId);
 
@@ -11,6 +11,7 @@ const EditModal = () => {
         <Modal
             modalId={"edit-modal"}
             modalAction={"Save Changes"}
+            modalState={isEditOpen}
             modalSetter={setIsEditOpen}
             currentTask={currentTask}
         />

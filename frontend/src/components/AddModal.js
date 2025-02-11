@@ -3,9 +3,16 @@ import AppContext from "../context/AppContext";
 import Modal from "./base/Modal";
 
 const AddModal = () => {
-    const { setIsAddOpen } = useContext(AppContext);
+    const { isAddOpen, setIsAddOpen } = useContext(AppContext);
 
-    return <Modal modalId={"add-modal"} modalAction={"Add Task"} modalSetter={setIsAddOpen} />;
+    return (
+        <Modal
+            modalId={"add-modal"}
+            modalAction={"Add Task"}
+            modalState={isAddOpen}
+            modalSetter={setIsAddOpen}
+        />
+    );
 };
 
 export default AddModal;

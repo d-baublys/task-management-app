@@ -1,9 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import ModalButton from "./base/ModalButton";
 
 const ConfirmModal = () => {
-    const { modalPromise, setIsConfirmOpen } = useContext(AppContext);
+    const { modalPromise, isConfirmOpen, setIsConfirmOpen } = useContext(AppContext);
+
+    useEffect(() => {
+        isConfirmOpen
+            ? (document.body.style.overflow = "hidden")
+            : document.body.removeAttribute("style");
+
+        return () => {
+            document.body.removeAttribute("style");
+        };
+    }, [isConfirmOpen]);
 
     const handleConfirm = () => {
         modalPromise(true);

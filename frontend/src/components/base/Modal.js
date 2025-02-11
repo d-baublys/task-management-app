@@ -1,13 +1,23 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../../context/AppContext";
 import ModalButton from "./ModalButton";
 
-const Modal = ({ modalId, modalAction, modalSetter, currentTask }) => {
+const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) => {
     const { boardTitles, setActiveTaskId, saveTask } = useContext(AppContext);
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");
     const [dueDate, setDueDate] = useState(currentTask?.due_date || "");
+
+    useEffect(() => {
+        modalState
+            ? (document.body.style.overflow = "hidden")
+            : document.body.removeAttribute("style");
+
+        return () => {
+            document.body.removeAttribute("style");
+        };
+    }, [modalState]);
 
     const handleSave = (e) => {
         e.preventDefault();
