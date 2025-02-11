@@ -1,6 +1,5 @@
 import { format } from "date-fns";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { FaCalendarAlt } from "react-icons/fa";
 import { useContext } from "react";
 import AppContext from "../../context/AppContext";
 
@@ -15,10 +14,10 @@ const Tile = ({ isDragging, description, dueDate }) => {
         >
             <div className={`w full px-2 py-1 rounded-md bg-white`}>{description}</div>
             <div className="mt-2 text-white">
-                <span>
-                    <FontAwesomeIcon className="pr-2" icon={faCalendarAlt}></FontAwesomeIcon>
-                    {format(new Date(dueDate), "LLLL do")}
-                </span>
+                <div className="flex items-center">
+                    <FaCalendarAlt className="inline pr-2 text-[1.33rem]" />
+                    <span>{format(new Date(dueDate), "LLLL do")}</span>
+                </div>
             </div>
         </div>
     );

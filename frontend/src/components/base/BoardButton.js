@@ -1,6 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as FaIcons from "react-icons/fa";
 
-const BoardButton = ({ onClick, dropRef, isOver, icon, zIndex = 10 }) => {
+const BoardButton = ({ onClick, dropRef, isOver, iconName, zIndex = 10 }) => {
+    const Icon = FaIcons[iconName];
+
     return (
         <button
             onClick={onClick}
@@ -15,7 +17,7 @@ const BoardButton = ({ onClick, dropRef, isOver, icon, zIndex = 10 }) => {
                 zIndex: zIndex,
             }}
         >
-            <FontAwesomeIcon className="m-2 text-white size-8" icon={icon} />
+            <Icon className="m-2 text-white size-8" />
         </button>
     );
 };

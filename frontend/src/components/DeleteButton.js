@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
 import { useDrop } from "react-dnd";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import BoardButton from "./base/BoardButton";
 import AppContext from "../context/AppContext";
 
@@ -42,7 +41,7 @@ const DeleteButton = () => {
             onClick={() => setIsDeleteMode((prev) => !prev)}
             dropRef={dropRef}
             isOver={isOver && isDeleteMode}
-            icon={faTrashAlt}
+            iconName={"FaTrashAlt"}
             zIndex={550}
         />
     );

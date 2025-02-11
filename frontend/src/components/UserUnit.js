@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { IoPerson, IoPersonOutline, IoCaretDown, IoCaretUp } from "react-icons/io5";
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
@@ -26,12 +25,18 @@ const UserUnit = () => {
 
     return (
         <div className="flex flex-col items-end h-8 text-lg">
-            <span>
-                <FontAwesomeIcon icon={faUser} className="px-2"></FontAwesomeIcon>
-                <span onClick={handleClick} className="cursor-pointer">
+            <div className="flex items-center min-h-full">
+                {user ? <IoPerson className="mr-2" /> : <IoPersonOutline className="mr-2" />}
+                <span onClick={handleClick} className="cursor-pointer translate-y-[-3px]">
                     {user ? user : "Log In"}
                 </span>
-            </span>
+                {user &&
+                    (isDropdownActive ? (
+                        <IoCaretDown className={"ml-1"} />
+                    ) : (
+                        <IoCaretUp className={"ml-1"} />
+                    ))}
+            </div>
             {isDropdownActive && (
                 <div className="mt-4 bg-yellow-400 z-50 rounded-sm">
                     <ul className="block w-32 h-12 px-2 py-1">
