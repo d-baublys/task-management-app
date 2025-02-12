@@ -6,7 +6,7 @@ const BoardContainer = () => {
     const { tasks, boardTitles } = useContext(AppContext);
 
     return (
-        <div className="flex justify-between w-full h-full p-4 gap-x-[2%] rounded-2xl bg-purple-500">
+        <div className="flex justify-between w-full h-full gap-x-[2%]">
             {Object.keys(boardTitles).map((title, index) => (
                 <Board
                     key={index}

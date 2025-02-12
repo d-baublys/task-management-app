@@ -6,7 +6,7 @@ import AppContext from "../context/AppContext";
 const UserUnit = () => {
     const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-    const { user, setUser, logout } = useContext(AppContext);
+    const { user, logout } = useContext(AppContext);
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -17,24 +17,23 @@ const UserUnit = () => {
         }
     };
 
-    const handleLogOut = () => {
-        logout();
+    const handleLogOut = async () => {
+        await logout();
         navigate("/login");
-        setUser(null);
     };
 
     return (
         <div className="flex flex-col items-end h-8 text-lg">
             <div className="flex items-center min-h-full">
                 {user ? <IoPerson className="mr-2" /> : <IoPersonOutline className="mr-2" />}
-                <span onClick={handleClick} className="cursor-pointer translate-y-[-3px]">
+                <span onClick={handleClick} className="cursor-pointer">
                     {user ? user : "Log In"}
                 </span>
                 {user &&
                     (isDropdownActive ? (
-                        <IoCaretDown className={"ml-1"} />
+                        <IoCaretDown className={"ml-1 translate-y-[3px]"} />
                     ) : (
-                        <IoCaretUp className={"ml-1"} />
+                        <IoCaretUp className={"ml-1 translate-y-[3px]"} />
                     ))}
             </div>
             {isDropdownActive && (

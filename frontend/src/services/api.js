@@ -12,4 +12,5 @@ export const deleteApiTask = (taskId) => api.delete(`tasks/${taskId}/`);
 
 export const loginApi = (username, password) =>
     api.post("login/", { username, password }, { withCredentials: true });
-export const logoutApi = () => api.post("logout/", { withCredentials: true });
+export const logoutApi = () => api.post("logout/", {}, { withCredentials: true });
+export const checkApiAuth = () => api.get("check-auth/", { withCredentials: true });

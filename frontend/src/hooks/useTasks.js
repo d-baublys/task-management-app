@@ -7,13 +7,13 @@ const useTasks = () => {
     useEffect(() => {
         getApiTasks()
             .then((response) => setTasks(response.data))
-            .catch((error) => console.log(error.message));
+            .catch((error) => console.error("Error fetching task data: ", error));
     }, []);
 
     const addTask = ({ status, description, dueDate }) => {
         createApiTask(status, description, dueDate)
             .then((response) => setTasks((prevTasks) => [...prevTasks, response.data]))
-            .catch((error) => console.log(error.message));
+            .catch((error) => console.error("Error saving new task: ", error));
     };
 
     const updateTask = ({ task, status, description, dueDate, index }) =>
@@ -22,7 +22,7 @@ const useTasks = () => {
             description: description || task.description,
             due_date: dueDate || task.due_date,
             position: index !== undefined ? index : task.position,
-        }).catch((error) => console.log(error.message));
+        }).catch((error) => console.error("Error updating task: ", error));
 
     const saveTask = ({ currentTask, status, description, dueDate }) => {
         if (currentTask) {
@@ -47,7 +47,7 @@ const useTasks = () => {
     const deleteTask = (taskId) => {
         deleteApiTask(taskId)
             .then(() => setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)))
-            .catch((error) => console.log(error.message));
+            .catch((error) => console.error("Error deleting task: ", error));
     };
 
     return { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask };

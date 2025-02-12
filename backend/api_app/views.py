@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.models import User
+from rest_framework_simplejwt.exceptions import InvalidToken
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -41,3 +42,18 @@ def logout_view(request):
     response = Response({"message": "Logout successful"})
     response.delete_cookie("refresh_token")
     return response
+
+
+@api_view(["GET"])
+def check_auth_view(request):
+    refresh_token = request.COOKIES.get("refresh_token")
+
+    if not refresh_token:
+        return Response({"error": "No refresh token"}, status=401)
+
+    try:
+        refresh = RefreshToken(refresh_token)
+        user = User.objects.get(id=refresh["user_id"])
+        return Response({"username": user.username})
+    except (InvalidToken, User.DoesNotExist):
+        return Response({"error": "Invalid token"}, status=401)

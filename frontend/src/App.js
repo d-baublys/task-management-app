@@ -6,7 +6,9 @@ import Main from "./pages/Main";
 import { useContext } from "react";
 
 function App() {
-    const { user } = useContext(AppContext);
+    const { user, loading } = useContext(AppContext);
+
+    if (loading) return;
 
     return (
         <Router>
