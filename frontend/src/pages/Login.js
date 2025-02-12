@@ -21,31 +21,33 @@ const Login = () => {
     };
 
     return (
-        <PageTemplate>
-            <div className="w-1/2">
+        <PageTemplate style={{ "--tile-drop-shadow": "0 0 50px rgba(0,0,0,0.33)" }}>
+            <div className="w-1/2 max-w-[37.5rem]">
                 <form
                     onSubmit={handleSubmit}
-                    className="flex flex-col justify-center items-center gap-4 w-full"
+                    className="flex flex-col justify-center items-center p-4 gap-4 w-full min-w-min rounded-md drop-shadow-[--tile-drop-shadow] bg-white translate-y-[25%]"
                 >
-                    <fieldset className="border-2 w-full">
+                    <fieldset className="w-full">
                         <legend>Username</legend>
                         <input
-                            className="bg-gray-400 w-full"
+                            className="bg-gray-400 w-full p-2 my-1"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </fieldset>
-                    <fieldset className="border-2 w-full">
+                    <fieldset className="w-full">
                         <legend>Password</legend>
                         <input
-                            className="bg-gray-400 w-full"
+                            className="bg-gray-400 w-full p-2 my-1"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </fieldset>
-                    <ModalButton type={"submit"}>Log In</ModalButton>
+                    <ModalButton type={"submit"} className="w-full mt-4 !bg-gray-600 text-white">
+                        Log In
+                    </ModalButton>
                 </form>
             </div>
         </PageTemplate>

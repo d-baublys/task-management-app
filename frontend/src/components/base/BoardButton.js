@@ -7,8 +7,8 @@ const BoardButton = ({ onClick, dropRef, isOver, iconName, zIndex = 10 }) => {
         <button
             onClick={onClick}
             ref={dropRef}
-            className={`sticky flex justify-center items-center rounded-full hover:drop-shadow-md active:drop-shadow-md hover:bg-slate-300 ${
-                isOver ? "bg-slate-300 drop-shadow-md" : "bg-slate-400"
+            className={`sticky flex justify-center items-center rounded-full hover:drop-shadow-md active:drop-shadow-md hover:bg-[--theme-lighter] ${
+                isOver ? "bg-[--theme-lighter] drop-shadow-md" : "bg-[--theme-light]"
             }`}
             style={{
                 top: "var(--board-btn-top)",

@@ -65,7 +65,7 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
             layout
             initial={{ scale: 1 }}
             animate={{ scale: activeTaskId === id ? 1.1 : 1 }}
-            className="p-2 z-[600]"
+            className={`p-2 ${dragAllowed || isDeleteMode ? "z-[600]" : "z-0"}`} 
             ref={elementRef}
             data-handler-id={handlerId}
             onMouseDown={() => taskMouseDown(id)}

@@ -10,7 +10,7 @@ const EditModal = () => {
     return (
         <Modal
             modalId={"edit-modal"}
-            modalAction={"Save Changes"}
+            modalAction={"Save"}
             modalState={isEditOpen}
             modalSetter={setIsEditOpen}
             currentTask={currentTask}

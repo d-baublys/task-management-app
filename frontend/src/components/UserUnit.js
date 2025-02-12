@@ -23,23 +23,30 @@ const UserUnit = () => {
     };
 
     return (
-        <div className="flex flex-col items-end h-8 text-lg">
-            <div className="flex items-center min-h-full">
-                {user ? <IoPerson className="mr-2" /> : <IoPersonOutline className="mr-2" />}
-                <span onClick={handleClick} className="cursor-pointer">
+        <div className="relative">
+            <div onClick={handleClick} className="relative flex items-center px-2 py-1 bg-white hover:text-white hover:bg-gray-400 hover:border-gray-400 hover:drop-shadow-md border-[1px] rounded-3xl border-black cursor-pointer z-20">
+                {user ? (
+                    <IoPerson className="mr-1 p-1 rounded-full bg-gray-300 text-[1.5rem] -translate-x-[4px]" />
+                ) : (
+                    <IoPersonOutline className="mr-1 p-1 rounded-full bg-gray-300 text-[1.5rem] -translate-x-[4px]" />
+                )}
+                <span>
                     {user ? user : "Log In"}
                 </span>
                 {user &&
                     (isDropdownActive ? (
-                        <IoCaretDown className={"ml-1 translate-y-[3px]"} />
+                        <IoCaretUp className={"ml-1 translate-y-[2px]"} />
                     ) : (
-                        <IoCaretUp className={"ml-1 translate-y-[3px]"} />
+                        <IoCaretDown className={"ml-1 translate-y-[2px]"} />
                     ))}
             </div>
             {isDropdownActive && (
-                <div className="mt-4 bg-yellow-400 z-50 rounded-sm">
-                    <ul className="block w-32 h-12 px-2 py-1">
-                        <li onClick={handleLogOut} className="cursor-pointer">
+                <div className="absolute flex flex-col justify-end top-1/2 left-0 w-full bg-gray-200 rounded-bl-2xl rounded-br-2xl text-sm drop-shadow-lg z-10">
+                    <ul className="block w-full p-2 mt-12">
+                        <li
+                            onClick={handleLogOut}
+                            className="cursor-pointer border-t-[1px] border-black"
+                        >
                             Log Out
                         </li>
                     </ul>

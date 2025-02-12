@@ -48,7 +48,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                     className="flex flex-col justify-between items-center h-full"
                     onSubmit={handleSave}
                 >
-                    <fieldset className="w-full p-1 border-2 rounded-lg">
+                    <fieldset className="w-full pb-2 pl-2 pr-2 border-2 rounded-xl">
                         <legend className="text-white mx-1 px-1">Task Status</legend>
                         <select
                             value={status}
@@ -65,7 +65,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             ))}
                         </select>
                     </fieldset>
-                    <fieldset className="w-full p-1 border-2 rounded-lg">
+                    <fieldset className="w-full pb-2 pl-2 pr-2 border-2 rounded-xl">
                         <legend className="text-white mx-1 px-1">Task Description</legend>
                         <textarea
                             value={description}
@@ -76,7 +76,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             maxLength={255}
                         />
                     </fieldset>
-                    <fieldset className="p-1 border-2 rounded-lg">
+                    <fieldset className="pb-2 pl-2 pr-2 border-2 rounded-xl">
                         <legend className="text-white mx-1 px-1">Due By</legend>
                         <input
                             type="date"

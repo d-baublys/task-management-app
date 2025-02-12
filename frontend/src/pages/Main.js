@@ -33,6 +33,12 @@ function Main() {
                     "--modal-width": "600px",
                     "--modal-height": "600px",
                     "--modal-drop-shadow": "0 0 50px rgba(0,0,0,0.25)",
+                    "--board-drop-shadow": "0 0 5px rgba(0,0,0,0.25)",
+                    "--theme-lightest": "rgb(219 234 254 / 1)",
+                    "--theme-lighter": "rgb(173, 201, 239)",
+                    "--theme-light": "rgb(131, 195, 232)",
+                    "--theme-medium": "rgb(118, 191, 234)",
+                    "--theme-dark": "rgb(85, 176, 230)",
                 }}
             >
                 <BoardContainer />

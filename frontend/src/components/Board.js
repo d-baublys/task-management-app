@@ -36,12 +36,12 @@ const Board = ({ title, boardTasks }) => {
 
     return (
         <div
-            className={`w-full rounded-xl min-h-[3000px] py-2 ${
-                isOver && !isDeleteMode ? "bg-green-500" : "bg-blue-500"
+            className={`w-full rounded-xl min-h-full py-2 drop-shadow-[--board-drop-shadow] ${
+                isOver && !isDeleteMode ? "bg-[--theme-lighter]" : "bg-[--theme-lightest]"
             }`}
             ref={dropRef}
         >
-            <h2 className="py-2 text-center text-white text-xl font-bold">{title}</h2>
+            <h2 className="py-2 text-center text-gray-600 text-xl font-semibold">{title}</h2>
             <div ref={excludeRef} className="flex flex-col w-full">
                 {boardTasks.map((tile) => (
                     <DraggableTile

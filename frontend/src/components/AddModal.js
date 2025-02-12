@@ -8,7 +8,7 @@ const AddModal = () => {
     return (
         <Modal
             modalId={"add-modal"}
-            modalAction={"Add Task"}
+            modalAction={"Add"}
             modalState={isAddOpen}
             modalSetter={setIsAddOpen}
         />
