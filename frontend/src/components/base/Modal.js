@@ -37,11 +37,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
     return (
         <div
             id={modalId}
-            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500 drop-shadow-[--modal-drop-shadow]"
-            style={{
-                width: "var(--modal-width)",
-                height: "var(--modal-height)",
-            }}
+            className="flex flex-col justify-center items-center w-modal-width h-modal-height rounded-2xl bg-gray-500 drop-shadow-modal"
         >
             <div className="w-3/4 h-3/4">
                 <form

@@ -21,11 +21,11 @@ const Login = () => {
     };
 
     return (
-        <PageTemplate style={{ "--tile-drop-shadow": "0 0 50px rgba(0,0,0,0.33)" }}>
+        <PageTemplate>
             <div className="w-1/2 max-w-[37.5rem]">
                 <form
                     onSubmit={handleSubmit}
-                    className="flex flex-col justify-center items-center p-4 gap-4 w-full min-w-min rounded-md drop-shadow-[--tile-drop-shadow] bg-white translate-y-[25%]"
+                    className="flex flex-col justify-center items-center p-4 gap-4 w-full min-w-min rounded-md bg-white translate-y-[25%]"
                 >
                     <fieldset className="w-full">
                         <legend>Username</legend>

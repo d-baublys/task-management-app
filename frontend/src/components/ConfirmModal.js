@@ -28,8 +28,7 @@ const ConfirmModal = () => {
     return (
         <div
             id="confirm-modal"
-            className="flex flex-col justify-center items-center rounded-2xl bg-gray-500 drop-shadow-[--modal-drop-shadow]"
-            style={{ width: "var(--modal-width)", height: "calc(var(--modal-height) / 2)" }}
+            className="flex flex-col justify-center items-center w-modal-width h-confirm-height rounded-2xl bg-gray-500 drop-shadow-modal"
         >
             <p className="mb-8 text-white">Are you sure you want to delete this task?</p>
             <div className="flex justify-between w-1/2 h-1/4 gap-8">

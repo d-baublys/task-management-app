@@ -9,7 +9,7 @@ const PageTemplate = ({
     style,
 }) => {
     return (
-        <div onMouseUp={onMouseUp} className="flex w-full min-h-full" style={style}>
+        <div onMouseUp={onMouseUp} className="flex w-full min-h-full">
             <div className="flex flex-grow justify-center min-h-full">{leftContent}</div>
             <div className="flex flex-col w-3/4 h-auto pb-32">
                 <Header />
