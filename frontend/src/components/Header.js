@@ -3,7 +3,7 @@ import UserUnit from "./UserUnit";
 const Header = () => {
     return (
         <div className="flex justify-between items-center w-full h-32 shrink-0">
-            <div className="flex justify-center items-center h-full text-3xl font-medium">
+            <div className="flex justify-center items-center h-full text-2xl md:text-3xl font-medium text-gray-600">
                 DB's Task Management App
             </div>
             <div className="flex justify-end items-center flex-1 h-full">

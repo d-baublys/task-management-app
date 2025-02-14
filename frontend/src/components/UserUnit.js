@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { IoPerson, IoPersonOutline, IoCaretDown, IoCaretUp } from "react-icons/io5";
+import { IoPerson, IoPersonOutline, IoCaretUp, IoLogOut } from "react-icons/io5";
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
@@ -23,35 +23,44 @@ const UserUnit = () => {
     };
 
     return (
-        <div className="relative">
-            <div onClick={handleClick} className="relative flex items-center px-2 py-1 bg-white hover:text-white hover:bg-gray-400 hover:border-gray-400 hover:drop-shadow-md border-[1px] rounded-3xl border-black cursor-pointer z-20">
-                {user ? (
-                    <IoPerson className="mr-1 p-1 rounded-full bg-gray-300 text-[1.5rem] -translate-x-[4px]" />
-                ) : (
-                    <IoPersonOutline className="mr-1 p-1 rounded-full bg-gray-300 text-[1.5rem] -translate-x-[4px]" />
+        <div className="relative text-gray-600">
+            <div
+                onClick={handleClick}
+                className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl text-sm transition cursor-pointer z-20"
+            >
+                <div className="rounded-full mr-1 p-1 bg-white -translate-x-[4px]">
+                    {user ? <IoPerson /> : <IoPersonOutline />}
+                </div>
+                <span className="group-hover:text-white">{user ? user : "Log In"}</span>
+                {user && (
+                    <div
+                        className={`ml-1 translate-y-[1px] group-hover:text-white transition ${
+                            isDropdownActive ? "rotate-0" : "rotate-180"
+                        }`}
+                    >
+                        <IoCaretUp />
+                    </div>
                 )}
-                <span>
-                    {user ? user : "Log In"}
-                </span>
-                {user &&
-                    (isDropdownActive ? (
-                        <IoCaretUp className={"ml-1 translate-y-[2px]"} />
-                    ) : (
-                        <IoCaretDown className={"ml-1 translate-y-[2px]"} />
-                    ))}
             </div>
-            {isDropdownActive && (
-                <div className="absolute flex flex-col justify-end top-1/2 left-0 w-full bg-gray-200 rounded-bl-2xl rounded-br-2xl text-sm drop-shadow-lg z-10">
-                    <ul className="block w-full p-2 mt-12">
+            <div
+                className={`absolute flex flex-col justify-end top-1/2 right-0 w-36 min-h-24 bg-theme-light rounded-tl-2xl rounded-bl-2xl rounded-br-2xl text-sm transition duration-200 ease-in-out origin-top drop-shadow-lg z-10 ${
+                    isDropdownActive ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+                }`}
+            >
+                {isDropdownActive && (
+                    <ul className="block w-full p-2">
                         <li
                             onClick={handleLogOut}
-                            className="cursor-pointer border-t-[1px] border-black"
+                            className="cursor-pointer border-t-[1px] border-gray-600"
                         >
-                            Log Out
+                            <div className="flex items-center mt-1 hover:bg-theme-lighter">
+                                <IoLogOut className="text-lg mr-2" />
+                                Log Out
+                            </div>
                         </li>
                     </ul>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

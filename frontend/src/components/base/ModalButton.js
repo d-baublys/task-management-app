@@ -3,7 +3,7 @@ const ModalButton = ({ children, type = "button", onClick, className }) => {
         <button
             type={type}
             onClick={onClick}
-            className={`rounded-md w-40 h-16 bg-white hover:opacity-80 active:opacity-80 font-medium text-lg text-gray-500 ${className}`}
+            className={`rounded-md w-40 h-16 bg-gray-500 hover:opacity-80 active:opacity-80 font-medium text-lg text-gray-100 ${className}`}
         >
             {children}
         </button>
