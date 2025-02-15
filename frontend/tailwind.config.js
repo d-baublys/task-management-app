@@ -10,9 +10,10 @@ module.exports = {
                 "theme-dark": "rgb(102, 169, 229)",
             },
             spacing: {
-                "board-btn-spacing": "4rem",
+                "board-btn-spacing-xl": "5rem",
+                "board-btn-spacing-lg": "4rem",
                 "board-btn-spacing-sm": "3rem",
-                "board-btn-top": "20%",
+                "board-btn-top": "33%",
             },
             width: {
                 "modal-width": "500px",

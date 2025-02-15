@@ -1,14 +1,20 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import ModalButton from "../components/base/ModalButton";
 import { useNavigate } from "react-router-dom";
 import PageTemplate from "../components/PageTemplate";
 
 const Login = () => {
-    const { login } = useContext(AppContext);
+    const { user, login } = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/main");
+        }
+    }, [navigate, user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

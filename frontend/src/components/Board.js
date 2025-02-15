@@ -41,7 +41,7 @@ const Board = ({ title, boardTasks }) => {
             }`}
             ref={dropRef}
         >
-            <h2 className="py-2 text-center text-gray-600 text-xl font-semibold">{title}</h2>
+            <h2 className="py-2 text-center text-gray-600 text-lg md:text-xl font-semibold">{title}</h2>
             <div ref={excludeRef} className="flex flex-col w-full">
                 {boardTasks.map((tile) => (
                     <DraggableTile
