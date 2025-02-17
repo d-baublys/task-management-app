@@ -3,6 +3,7 @@ import { loginApi, logoutApi } from "../services/api";
 import { checkApiAuth } from "../services/api";
 
 const useAuth = () => {
+    const [error, setError] = useState("");
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -27,13 +28,14 @@ const useAuth = () => {
             setUser(response.data.username);
             return response;
         } catch (error) {
+            error.response.data.error && setError(error.response.data.error);
             throw error;
         }
     };
 
     const logout = () => logoutApi().then(() => setUser(null));
 
-    return { user, setUser, login, logout, loading, setLoading };
+    return { user, setUser, login, logout, loading, setLoading, error, setError };
 };
 
 export default useAuth;

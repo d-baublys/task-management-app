@@ -25,7 +25,7 @@ def login_view(request):
 
     if user:
         refresh = RefreshToken.for_user(user)
-        response = Response({"message": "Login successful", "username": username})
+        response = Response({"message": "Log in successful", "username": username})
         response.set_cookie(
             key="refresh_token",
             value=str(refresh),
@@ -34,12 +34,17 @@ def login_view(request):
             samesite="Lax",
         )
         return response
-    return Response({"error": "Invalid credentials"}, status=400)
+    return Response(
+        {
+            "error": "Incorrect username or password. Please check your credentials and try again."
+        },
+        status=400,
+    )
 
 
 @api_view(["POST"])
 def logout_view(request):
-    response = Response({"message": "Logout successful"})
+    response = Response({"message": "Log out successful"})
     response.delete_cookie("refresh_token")
     return response
 

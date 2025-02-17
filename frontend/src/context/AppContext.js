@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { user, setUser, login, logout, loading, setLoading } = useAuth();
+    const { user, setUser, login, logout, loading, setLoading, error, setError } = useAuth();
     const { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } =
         useTasks();
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -31,6 +31,8 @@ export const ContextProvider = ({ children }) => {
                 logout,
                 loading,
                 setLoading,
+                error,
+                setError,
                 tasks,
                 setTasks,
                 addTask,
