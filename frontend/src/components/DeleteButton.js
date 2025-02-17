@@ -25,7 +25,7 @@ const DeleteButton = () => {
         if (!isDeleteModeRef.current) return;
         const result = await showModal();
         if (result) {
-            deleteTask(item.id);
+            await deleteTask(item.id);
         }
     };
 

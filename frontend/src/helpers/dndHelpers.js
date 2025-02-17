@@ -2,14 +2,14 @@ export const debounce = (func, delay = 300) => {
     let timer;
     return (...args) => {
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            return func(...args);
+        timer = setTimeout(async () => {
+            await func(...args);
         }, delay);
     };
 };
 
 const debouncedUpdateTask = debounce((task, updateTask) => {
-    updateTask({task});
+    updateTask({ task });
 });
 
 const debouncedUpdateMultiTask = debounce((tasks, updateMultiTask) => {

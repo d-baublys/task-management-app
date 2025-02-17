@@ -19,11 +19,11 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
         };
     }, [modalState]);
 
-    const handleSave = (e) => {
+    const handleSave = async (e) => {
         e.preventDefault();
         if (!status || !description || !dueDate) return;
 
-        saveTask({ currentTask, status, description, dueDate });
+        await saveTask({ currentTask, status, description, dueDate });
         setActiveTaskId(null);
         modalSetter(false);
     };
