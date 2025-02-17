@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
 import { IoLogOut } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-const Dropdown = ({ navigate, isDropdownActive, setIsDropdownActive }) => {
-    const { logout } = useContext(AppContext);
+const Dropdown = () => {
+    const { logout, isDropdownActive, setIsDropdownActive } = useContext(AppContext);
+    const navigate = useNavigate();
 
     const handleLogOut = async () => {
         await logout();

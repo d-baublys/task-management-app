@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { loginApi, logoutApi } from "../services/api";
 import { checkApiAuth } from "../services/api";
 
-const useAuth = () => {
-    const [error, setError] = useState("");
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
+const useAuth = (setUser, setLoading, setError) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
@@ -35,7 +31,7 @@ const useAuth = () => {
 
     const logout = () => logoutApi().then(() => setUser(null));
 
-    return { user, setUser, login, logout, loading, setLoading, error, setError };
+    return { login, logout };
 };
 
 export default useAuth;

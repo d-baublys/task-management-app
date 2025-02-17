@@ -5,16 +5,21 @@ import useAuth from "../hooks/useAuth";
 const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { user, setUser, login, logout, loading, setLoading, error, setError } = useAuth();
-    const { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } =
-        useTasks();
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [tasks, setTasks] = useState([]);
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isDropdownActive, setIsDropdownActive] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
     const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState(null);
+
+    const { login, logout } = useAuth(setUser, setLoading, setError);
+    const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(setTasks);
 
     const boardTitles = {
         "To Do": "to_do",
@@ -53,6 +58,8 @@ export const ContextProvider = ({ children }) => {
                 setModalPromise,
                 isEditOpen,
                 setIsEditOpen,
+                isDropdownActive,
+                setIsDropdownActive,
                 activeTaskId,
                 setActiveTaskId,
             }}

@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
 
-const useTasks = () => {
-    const [tasks, setTasks] = useState([]);
-
+const useTasks = (setTasks) => {
     useEffect(() => {
         const getTasks = async () => {
             try {
@@ -78,7 +76,7 @@ const useTasks = () => {
         }
     };
 
-    return { tasks, setTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask };
+    return { addTask, updateTask, saveTask, updateMultiTask, deleteTask };
 };
 
 export default useTasks;
