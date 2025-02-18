@@ -37,3 +37,11 @@ body {
 .tile {
     overflow-wrap: anywhere;
 }
+
+.toast {
+    transition: opacity 1s linear, transform 0s linear 1s;
+}
+
+.toast.visible {
+    transition: opacity 1s linear, transform 0s linear;
+}

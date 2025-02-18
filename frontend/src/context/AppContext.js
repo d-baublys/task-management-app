@@ -17,6 +17,7 @@ export const ContextProvider = ({ children }) => {
     const [modalPromise, setModalPromise] = useState(null);
     const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState(null);
+    const [notification, setNotification] = useState("");
 
     const { login, logout } = useAuth(setUser, setLoading, setError);
     const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(setTasks);
@@ -62,6 +63,8 @@ export const ContextProvider = ({ children }) => {
                 setIsDropdownActive,
                 activeTaskId,
                 setActiveTaskId,
+                notification,
+                setNotification,
             }}
         >
             {children}

@@ -6,7 +6,7 @@ import PageTemplate from "./base/PageTemplate";
 import { IoAlertCircle } from "react-icons/io5";
 
 const Login = () => {
-    const { user, login, error, setError } = useContext(AppContext);
+    const { user, login, error, setError, setNotification } = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
@@ -25,6 +25,7 @@ const Login = () => {
             await login(username, password, rememberMe);
             setError("");
             navigate("/main");
+            setTimeout(() => setNotification("Logged in successfully!"), 100)
         } catch (error) {
             console.error("Error logging in: ", error);
         }

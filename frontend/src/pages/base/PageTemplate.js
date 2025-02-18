@@ -1,4 +1,5 @@
 import Header from "../../components/Header";
+import ToastNotification from "../../components/ToastNotification";
 
 const PageTemplate = ({ children, leftContent, rightContent, overlayContent, onMouseUp }) => {
     return (
@@ -18,6 +19,7 @@ const PageTemplate = ({ children, leftContent, rightContent, overlayContent, onM
             <div className="flex flex-col flex-grow items-center min-w-board-btn-spacing-sm min-h-full mx-2 md:mx-4">
                 {rightContent}
             </div>
+            <ToastNotification />
             {overlayContent}
         </div>
     );
