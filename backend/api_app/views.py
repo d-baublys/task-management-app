@@ -1,3 +1,4 @@
+from datetime import timedelta
 from rest_framework import viewsets
 from .models import Task
 from .serializers import TaskSerializer
@@ -21,10 +22,16 @@ class TaskViewSet(viewsets.ModelViewSet):
 def login_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
+    remember_me = request.data.get("remember_me")
+
     user = authenticate(username=username, password=password)
 
     if user:
         refresh = RefreshToken.for_user(user)
+
+        if remember_me:
+            refresh.set_exp(lifetime=timedelta(days=7))
+
         response = Response({"message": "Log in successful", "username": username})
         response.set_cookie(
             key="refresh_token",
@@ -33,6 +40,7 @@ def login_view(request):
             secure=False,  # Set to False for development
             samesite="Lax",
         )
+
         return response
     return Response(
         {

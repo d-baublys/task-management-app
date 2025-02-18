@@ -9,6 +9,7 @@ const Login = () => {
     const { user, login, error, setError } = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +22,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            await login(username, password);
+            await login(username, password, rememberMe);
             setError("");
             navigate("/main");
         } catch (error) {
@@ -30,6 +31,7 @@ const Login = () => {
 
         setUsername("");
         setPassword("");
+        setRememberMe(false);
     };
 
     return (
@@ -37,7 +39,7 @@ const Login = () => {
             <div className="w-1/2 max-w-[37.5rem]">
                 <div
                     className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white text-gray-600 drop-shadow-md transition-[height] origin-top ${
-                        error ? "h-[22rem]" : "h-[18.75rem]"
+                        error ? "h-[23rem]" : "h-[20rem]"
                     }`}
                 >
                     <form
@@ -62,7 +64,15 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </fieldset>
-                        <ModalButton type={"submit"} className="w-full mt-4">
+                        <span className="flex w-full gap-2 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={() => setRememberMe((prev) => !prev)}
+                            />
+                            Remember Me
+                        </span>
+                        <ModalButton type={"submit"} className="w-full">
                             Log In
                         </ModalButton>
                     </form>

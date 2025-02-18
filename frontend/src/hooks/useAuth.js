@@ -18,9 +18,9 @@ const useAuth = (setUser, setLoading, setError) => {
         checkAuth();
     }, []);
 
-    const login = async (username, password) => {
+    const login = async (username, password, rememberMe) => {
         try {
-            const response = await loginApi(username, password);
+            const response = await loginApi(username, password, rememberMe);
             setUser(response.data.username);
             return response;
         } catch (error) {
