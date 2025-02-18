@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
 
-const useTasks = (setTasks) => {
+const useTasks = (setTasks, showToast) => {
     useEffect(() => {
         const getTasks = async () => {
             try {
@@ -9,6 +9,7 @@ const useTasks = (setTasks) => {
                 setTasks(response.data);
             } catch (error) {
                 console.error("Error fetching task data: ", error);
+                showToast("failure", "Error fetching task data!");
             }
         };
         getTasks();
@@ -18,10 +19,12 @@ const useTasks = (setTasks) => {
         try {
             const response = await createApiTask(status, description, dueDate);
             setTasks((prevTasks) => [...prevTasks, response.data]);
+            showToast("success", "Task added!");
 
             return response;
         } catch (error) {
             console.error("Error saving new task: ", error);
+            showToast("failure", "Error adding task!");
         }
     };
 
@@ -37,6 +40,7 @@ const useTasks = (setTasks) => {
             return response;
         } catch (error) {
             console.error("Error updating task: ", error);
+            showToast("failure", "Error updating task!");
         }
     };
 
@@ -50,6 +54,7 @@ const useTasks = (setTasks) => {
                         : task
                 )
             );
+            showToast("success", "Task saved!");
 
             return response;
         } else {
@@ -69,10 +74,12 @@ const useTasks = (setTasks) => {
         try {
             const response = await deleteApiTask(taskId);
             setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+            showToast("success", "Task deleted!");
 
             return response;
         } catch (error) {
             console.error("Error deleting task: ", error);
+            showToast("failure", "Error deleting task!");
         }
     };
 

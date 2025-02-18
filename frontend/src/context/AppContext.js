@@ -1,6 +1,7 @@
 import { useState, createContext } from "react";
 import useTasks from "../hooks/useTasks";
 import useAuth from "../hooks/useAuth";
+import miscHelpers from "../helpers/miscHelpers";
 
 const AppContext = createContext();
 
@@ -14,13 +15,18 @@ export const ContextProvider = ({ children }) => {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDropdownActive, setIsDropdownActive] = useState(false);
+    const [isToastOpen, setIsToastOpen] = useState(false);
     const [modalPromise, setModalPromise] = useState(null);
     const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState(null);
-    const [notification, setNotification] = useState("");
+    const [notification, setNotification] = useState(null);
 
     const { login, logout } = useAuth(setUser, setLoading, setError);
-    const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(setTasks);
+    const showToast = miscHelpers(setNotification, setIsToastOpen);
+    const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
+        setTasks,
+        showToast
+    );
 
     const boardTitles = {
         "To Do": "to_do",
@@ -65,6 +71,9 @@ export const ContextProvider = ({ children }) => {
                 setActiveTaskId,
                 notification,
                 setNotification,
+                isToastOpen,
+                setIsToastOpen,
+                showToast,
             }}
         >
             {children}

@@ -38,10 +38,14 @@ body {
     overflow-wrap: anywhere;
 }
 
-.toast {
-    transition: opacity 1s linear, transform 0s linear 1s;
+.toast.gradual-on {
+    transition: opacity 1s ease, transform 0s;
 }
 
-.toast.visible {
-    transition: opacity 1s linear, transform 0s linear;
+.toast.gradual-off {
+    transition: opacity 1s linear, transform 0s 1s;
+}
+
+.toast.instant-off {
+    transition: opacity 0s, transform 0s;
 }

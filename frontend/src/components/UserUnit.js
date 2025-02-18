@@ -20,7 +20,7 @@ const UserUnit = () => {
         <div className="relative text-gray-600">
             <div
                 onClick={handleClick}
-                className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl text-sm transition cursor-pointer z-20"
+                className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl text-sm md:text-base transition cursor-pointer z-20"
             >
                 <div className="rounded-full mr-1 p-1 bg-white -translate-x-[4px]">
                     {user ? <IoPerson /> : <IoPersonOutline />}
