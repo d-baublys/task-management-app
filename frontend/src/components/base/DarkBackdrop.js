@@ -1,4 +1,4 @@
-import useHandleClicks from "../hooks/useHandleClicks";
+import useHandleClicks from "../../hooks/useHandleClicks";
 
 const DarkBackdrop = ({ children, zIndex }) => {
     const { backdropClick } = useHandleClicks();

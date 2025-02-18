@@ -4,7 +4,7 @@ import AppContext from "../context/AppContext";
 import AddModal from "./AddModal";
 import ConfirmModal from "./ConfirmModal";
 import EditModal from "./EditModal";
-import DarkBackdrop from "./DarkBackdrop";
+import DarkBackdrop from "./base/DarkBackdrop";
 
 const BackdropUnit = () => {
     const { isAddOpen, isDeleteMode, isConfirmOpen, isEditOpen } = useContext(AppContext);

@@ -1,7 +1,7 @@
 import AppContext from "./context/AppContext";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import ProtectedRoute from "./components/base/ProtectedRoute";
+import ProtectedRoute from "./pages/base/ProtectedRoute";
 import Main from "./pages/Main";
 import { useContext } from "react";
 

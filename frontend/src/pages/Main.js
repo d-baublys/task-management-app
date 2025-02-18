@@ -6,7 +6,7 @@ import useHandleClicks from "../hooks/useHandleClicks";
 
 import BoardContainer from "../components/BoardContainer";
 import DragLayer from "../components/DragLayer";
-import PageTemplate from "../components/PageTemplate";
+import PageTemplate from "./base/PageTemplate";
 import LeftColumn from "../components/LeftColumn";
 import RightColumn from "../components/RightColumn";
 import BackdropUnit from "../components/BackdropUnit";

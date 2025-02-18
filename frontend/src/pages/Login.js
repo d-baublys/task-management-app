@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import ModalButton from "../components/base/ModalButton";
 import { useNavigate } from "react-router-dom";
-import PageTemplate from "../components/PageTemplate";
+import PageTemplate from "./base/PageTemplate";
 import { IoAlertCircle } from "react-icons/io5";
 
 const Login = () => {
