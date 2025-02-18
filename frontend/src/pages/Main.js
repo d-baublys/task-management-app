@@ -7,9 +7,9 @@ import useHandleClicks from "../hooks/useHandleClicks";
 import BoardContainer from "../components/BoardContainer";
 import DragLayer from "../components/DragLayer";
 import PageTemplate from "./base/PageTemplate";
-import LeftColumn from "../components/LeftColumn";
-import RightColumn from "../components/RightColumn";
 import BackdropUnit from "../components/BackdropUnit";
+import DeleteButton from "../components/DeleteButton";
+import CreateButton from "../components/CreateButton";
 
 function Main() {
     const test_mobile = false;
@@ -23,8 +23,8 @@ function Main() {
         >
             {test_mobile && <DragLayer />}
             <PageTemplate
-                leftContent={<LeftColumn />}
-                rightContent={<RightColumn />}
+                leftContent={<DeleteButton />}
+                rightContent={<CreateButton />}
                 overlayContent={<BackdropUnit />}
                 onMouseUp={() => taskMouseUp()}
             >
