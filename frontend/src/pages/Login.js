@@ -36,13 +36,13 @@ const Login = () => {
         <PageTemplate>
             <div className="w-1/2 max-w-[37.5rem]">
                 <div
-                    className={`relative top-[15%] rounded-md bg-white text-gray-600 drop-shadow-md transition-[height] origin-top ${
+                    className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white text-gray-600 drop-shadow-md transition-[height] origin-top ${
                         error ? "h-[22rem]" : "h-[18.75rem]"
                     }`}
                 >
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col items-center p-4 pt-10 gap-4 w-full min-w-min min-h-min"
+                        className="flex flex-col items-center mx-4 mt-10 gap-4 min-w-min"
                     >
                         <fieldset className="w-full">
                             <legend className="mb-1">Username</legend>
@@ -62,22 +62,24 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </fieldset>
-                        <ModalButton type={"submit"} className="w-full mt-4 mb-2">
+                        <ModalButton type={"submit"} className="w-full mt-4">
                             Log In
                         </ModalButton>
-                        <div
-                            className={`flex items-start text-red-500 text-xs gap-1 mb-2 transition ${
-                                error ? "opacity-100" : "opacity-0"
-                            }`}
-                        >
-                            {error && (
-                                <>
-                                    <IoAlertCircle className="inline text-base" />
-                                    {error}
-                                </>
-                            )}
-                        </div>
                     </form>
+                    <div
+                        className={`flex flex-col justify-center h-full mx-4 transition ${
+                            error ? "opacity-100" : "opacity-0"
+                        }`}
+                    >
+                        {error && (
+                            <span
+                                className={`flex justify-center items-start text-red-500 text-xs gap-1`}
+                            >
+                                <IoAlertCircle className="min-w-fit min-h-fit text-base" />
+                                {error}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
         </PageTemplate>
