@@ -46,7 +46,7 @@ def login_view(request):
         {
             "error": "Incorrect username or password. Please check your credentials and try again."
         },
-        status=400,
+        status=401,
     )
 
 

@@ -28,6 +28,7 @@ const Login = () => {
             showToast("success", "Log in successful!");
         } catch (error) {
             console.error("Error logging in: ", error);
+            error.response.status !== 401 && showToast("failure", "Error logging in!");
         }
 
         setUsername("");

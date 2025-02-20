@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { loginApi, logoutApi } from "../services/api";
-import { checkApiAuth } from "../services/api";
+import { checkApiAuth, loginApi, logoutApi } from "../services/api";
+// import { checkApiAuth, loginApi, logoutApi, checkApiAuthFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
 const useAuth = (setUser, setLoading, setError) => {
     useEffect(() => {
@@ -24,12 +24,19 @@ const useAuth = (setUser, setLoading, setError) => {
             setUser(response.data.username);
             return response;
         } catch (error) {
-            error.response.data.error && setError(error.response.data.error);
+            error.response.status === 401 && setError(error.response.data.error);
             throw error;
         }
     };
 
-    const logout = () => logoutApi().then(() => setUser(null));
+    const logout = async () => {
+        try {
+            await logoutApi();
+            setUser(null);
+        } catch (error) {
+            throw error;
+        }
+    };
 
     return { login, logout };
 };

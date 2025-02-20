@@ -84,3 +84,82 @@ export const deleteApiTaskFail = () => {
         }, 500);
     });
 };
+
+export const checkApiAuth = () => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                data: {
+                    username: "mock_user",
+                },
+            });
+        }, 500);
+    });
+};
+
+export const loginApi = () => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                data: {
+                    username: "mock_user",
+                },
+            });
+        }, 500);
+    });
+};
+
+export const logoutApi = () => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                data: {
+                    message: "Log out successful",
+                },
+            });
+        }, 500);
+    });
+};
+
+export const checkApiAuthFail = () => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error("Mocked authentication error"));
+        }, 500);
+    });
+};
+
+export const loginApiAuthFail = () => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject({
+                response: {
+                    status: 401,
+                    data: {
+                        error: "Incorrect username or password. Please check your credentials and try again.",
+                    },
+                },
+            });
+        }, 500);
+    });
+};
+
+export const loginApiServerFail = () => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject({
+                response: {
+                    status: 500,
+                },
+            });
+        }, 500);
+    });
+};
+
+export const logoutApiFail = () => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error("Mocked logout error"));
+        }, 500);
+    });
+};
