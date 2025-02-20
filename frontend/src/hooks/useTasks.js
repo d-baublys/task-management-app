@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
+// import { getApiTasks, createApiTask, updateApiTask, deleteApiTask, getApiTasksFail, createApiTaskFail, updateApiTaskFail, deleteApiTaskFail } from "../services/api.mock";
 
 const useTasks = (setTasks, showToast) => {
     useEffect(() => {
@@ -41,22 +42,32 @@ const useTasks = (setTasks, showToast) => {
         } catch (error) {
             console.error("Error updating task: ", error);
             showToast("failure", "Error updating task!");
+            throw error;
         }
     };
 
     const saveTask = async ({ currentTask, status, description, dueDate }) => {
         if (currentTask) {
-            const response = await updateTask({ task: currentTask, status, description, dueDate });
-            setTasks((prevTasks) =>
-                prevTasks.map((task) =>
-                    task.id === currentTask.id
-                        ? { ...task, status, description, due_date: dueDate }
-                        : task
-                )
-            );
-            showToast("success", "Task saved!");
+            try {
+                const response = await updateTask({
+                    task: currentTask,
+                    status,
+                    description,
+                    dueDate,
+                });
+                setTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                        task.id === currentTask.id
+                            ? { ...task, status, description, due_date: dueDate }
+                            : task
+                    )
+                );
+                showToast("success", "Task saved!");
 
-            return response;
+                return response;
+            } catch (error) {
+                console.error("Error updating task from edit mode: ", error);
+            }
         } else {
             return await addTask({ status, description, dueDate });
         }

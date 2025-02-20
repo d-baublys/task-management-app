@@ -8,12 +8,20 @@ export const debounce = (func, delay = 300) => {
     };
 };
 
-const debouncedUpdateTask = debounce((task, updateTask) => {
-    updateTask({ task });
+const debouncedUpdateTask = debounce(async (task, updateTask) => {
+    try {
+        await updateTask({ task });
+    } catch (error) {
+        console.error("Error saving moved task: ", error);
+    }
 });
 
-const debouncedUpdateMultiTask = debounce((tasks, updateMultiTask) => {
-    updateMultiTask(tasks);
+const debouncedUpdateMultiTask = debounce(async (tasks, updateMultiTask) => {
+    try {
+        await updateMultiTask(tasks);
+    } catch (error) {
+        console.error("Error saving reordered tasks: ", error);
+    }
 });
 
 export const processTaskMove = (
