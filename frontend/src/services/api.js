@@ -14,3 +14,9 @@ export const loginApi = (username, password, rememberMe) =>
     api.post("login/", { username, password, remember_me: rememberMe }, { withCredentials: true });
 export const logoutApi = () => api.post("logout/", {}, { withCredentials: true });
 export const checkApiAuth = () => api.get("check-auth/", { withCredentials: true });
+
+export const toggleTokenHeader = (accessToken) => {
+    accessToken
+        ? (api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`)
+        : delete api.defaults.headers.common["Authorization"];
+};

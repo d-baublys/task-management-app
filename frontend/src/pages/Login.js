@@ -6,17 +6,15 @@ import PageTemplate from "./base/PageTemplate";
 import { IoAlertCircle } from "react-icons/io5";
 
 const Login = () => {
-    const { user, login, error, setError, showToast } = useContext(AppContext);
+    const { isAuthenticated, login, error, setError, showToast } = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
-            navigate("/main");
-        }
-    }, [navigate, user]);
+        isAuthenticated && navigate("/main");
+    }, [navigate, isAuthenticated]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

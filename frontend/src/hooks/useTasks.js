@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
 // import { getApiTasks, createApiTask, updateApiTask, deleteApiTask, getApiTasksFail, createApiTaskFail, updateApiTaskFail, deleteApiTaskFail } from "../services/api.mock";
 
-const useTasks = (setTasks, showToast) => {
+const useTasks = (isAuthenticated, setTasks, showToast) => {
     useEffect(() => {
         const getTasks = async () => {
             try {
@@ -13,8 +13,8 @@ const useTasks = (setTasks, showToast) => {
                 showToast("failure", "Error fetching task data!");
             }
         };
-        getTasks();
-    }, []);
+        isAuthenticated && getTasks();
+    }, [isAuthenticated]);
 
     const addTask = async ({ status, description, dueDate }) => {
         try {

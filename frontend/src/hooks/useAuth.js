@@ -1,27 +1,46 @@
 import { useEffect } from "react";
-import { checkApiAuth, loginApi, logoutApi } from "../services/api";
+import { checkApiAuth, loginApi, logoutApi, toggleTokenHeader } from "../services/api";
 // import { checkApiAuth, loginApi, logoutApi, checkApiAuthFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
-const useAuth = (setUser, setLoading, setError) => {
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const response = await checkApiAuth();
-                setUser(response.data.username);
-            } catch (error) {
-                console.error("Authentication error: ", error);
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-        checkAuth();
-    }, []);
+const useAuth = (setIsAuthenticated, setUser, setLoading, setError, showToast) => {
+    const checkAuth = async () => {
+        try {
+            const response = await checkApiAuth();
+            toggleTokenHeader(response.data.access_token);
+            setIsAuthenticated(true);
+            setUser(response.data.username);
+
+            return response;
+        } catch (error) {
+            console.error("Authentication error: ", error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const checkAuthOnLoad = async () => {
+        try {
+            await checkAuth();
+        } catch (error) {
+            console.log("Ignore - unauthenticated on page load...");
+        }
+    };
+
+    const monitorAccess = async () => {
+        try {
+            await checkAuth();
+        } catch {
+            await logout();
+            showToast("failure", "You have been logged out!");
+        }
+    };
 
     const login = async (username, password, rememberMe) => {
         try {
             const response = await loginApi(username, password, rememberMe);
-            setUser(response.data.username);
+            await checkAuth();
+
             return response;
         } catch (error) {
             error.response.status === 401 && setError(error.response.data.error);
@@ -32,11 +51,20 @@ const useAuth = (setUser, setLoading, setError) => {
     const logout = async () => {
         try {
             await logoutApi();
+            toggleTokenHeader();
+            setIsAuthenticated(false);
             setUser(null);
         } catch (error) {
             throw error;
         }
     };
+
+    useEffect(() => {
+        checkAuthOnLoad();
+        const monitorInterval = setInterval(() => monitorAccess(), 60 * 5 * 1000);
+
+        return () => clearInterval(monitorInterval);
+    }, []);
 
     return { login, logout };
 };

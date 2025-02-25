@@ -6,6 +6,7 @@ import miscHelpers from "../helpers/miscHelpers";
 const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -21,9 +22,10 @@ export const ContextProvider = ({ children }) => {
     const [activeTaskId, setActiveTaskId] = useState(null);
     const [notification, setNotification] = useState(null);
 
-    const { login, logout } = useAuth(setUser, setLoading, setError);
     const showToast = miscHelpers(setNotification, setIsToastOpen);
+    const { login, logout } = useAuth(setIsAuthenticated, setUser, setLoading, setError, showToast);
     const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
+        isAuthenticated,
         setTasks,
         showToast
     );
@@ -37,6 +39,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
+                isAuthenticated,
+                setIsAuthenticated,
                 user,
                 setUser,
                 login,

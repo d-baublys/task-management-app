@@ -3,8 +3,8 @@ import AppContext from "../../context/AppContext";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-    const { user } = useContext(AppContext);
-    return user ? <Outlet /> : <Navigate to="/login" replace />;
+    const { isAuthenticated } = useContext(AppContext);
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

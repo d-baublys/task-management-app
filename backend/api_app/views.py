@@ -5,7 +5,7 @@ from .serializers import TaskSerializer
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import InvalidToken
 from django.contrib.auth import authenticate
@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 
 
 class TaskViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -67,6 +68,8 @@ def check_auth_view(request):
     try:
         refresh = RefreshToken(refresh_token)
         user = User.objects.get(id=refresh["user_id"])
-        return Response({"username": user.username})
+        access_token = str(refresh.access_token)
+
+        return Response({"username": user.username, "access_token": access_token})
     except (InvalidToken, User.DoesNotExist):
         return Response({"error": "Invalid token"}, status=401)
