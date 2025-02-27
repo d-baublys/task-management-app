@@ -85,7 +85,7 @@ export const deleteApiTaskFail = () => {
     });
 };
 
-export const checkApiAuth = () => {
+export const getTokenApi = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
@@ -121,7 +121,7 @@ export const logoutApi = () => {
     });
 };
 
-export const checkApiAuthFail = () => {
+export const getTokenApiFail = () => {
     return new Promise((_, reject) => {
         setTimeout(() => {
             reject(new Error("Mocked authentication error"));

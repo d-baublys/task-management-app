@@ -47,9 +47,9 @@ class AuthenticationTests(TestCase):
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
 
-        auth_response = self.client.get("/api/check-auth/")
-        self.assertEqual(auth_response.status_code, 200)
-        self.assertTrue(auth_response.data.get("access_token"))
+        get_token_response = self.client.get("/api/token/")
+        self.assertEqual(get_token_response.status_code, 200)
+        self.assertTrue(get_token_response.data.get("access_token"))
 
     def test_access_token_expiry(self):
         """
@@ -98,8 +98,8 @@ class TaskTests(TestCase):
         self.client.post(
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
-        auth_response = self.client.get("/api/check-auth/")
-        access_token = auth_response.data.get("access_token")
+        get_token_response = self.client.get("/api/token/")
+        access_token = get_token_response.data.get("access_token")
 
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
@@ -117,8 +117,8 @@ class TaskTests(TestCase):
         self.client.post(
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
-        auth_response = self.client.get("/api/check-auth/")
-        access_token = auth_response.data.get("access_token")
+        get_token_response = self.client.get("/api/token/")
+        access_token = get_token_response.data.get("access_token")
 
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
@@ -138,8 +138,8 @@ class TaskTests(TestCase):
         self.client.post(
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
-        auth_response = self.client.get("/api/check-auth/")
-        access_token = auth_response.data.get("access_token")
+        get_token_response = self.client.get("/api/token/")
+        access_token = get_token_response.data.get("access_token")
 
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
@@ -168,8 +168,8 @@ class TaskTests(TestCase):
         self.client.post(
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
-        auth_response = self.client.get("/api/check-auth/")
-        access_token = auth_response.data.get("access_token")
+        get_token_response = self.client.get("/api/token/")
+        access_token = get_token_response.data.get("access_token")
 
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
@@ -191,8 +191,8 @@ class TaskTests(TestCase):
         self.client.post(
             "/api/login/", {"username": "test_user", "password": "testpassword"}
         )
-        auth_response = self.client.get("/api/check-auth/")
-        access_token = auth_response.data.get("access_token")
+        get_token_response = self.client.get("/api/token/")
+        access_token = get_token_response.data.get("access_token")
 
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 

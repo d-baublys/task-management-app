@@ -13,7 +13,7 @@ export const deleteApiTask = (taskId) => api.delete(`tasks/${taskId}/`);
 export const loginApi = (username, password, rememberMe) =>
     api.post("login/", { username, password, remember_me: rememberMe }, { withCredentials: true });
 export const logoutApi = () => api.post("logout/", {}, { withCredentials: true });
-export const checkApiAuth = () => api.get("check-auth/", { withCredentials: true });
+export const getTokenApi = () => api.get("token/", { withCredentials: true });
 
 export const toggleTokenHeader = (accessToken) => {
     accessToken

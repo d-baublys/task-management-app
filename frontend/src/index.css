@@ -49,3 +49,7 @@ body {
 .toast.instant-off {
     transition: opacity 0s, transform 0s;
 }
+
+.clipped {
+    clip-path: url(#clipped);
+}

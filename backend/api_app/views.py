@@ -6,14 +6,16 @@ from .serializers import TaskSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -52,6 +54,7 @@ def login_view(request):
 
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def logout_view(request):
     response = Response({"message": "Log out successful"})
     response.delete_cookie("refresh_token")
@@ -59,7 +62,8 @@ def logout_view(request):
 
 
 @api_view(["GET"])
-def check_auth_view(request):
+@permission_classes([AllowAny])
+def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")
 
     if not refresh_token:
@@ -71,5 +75,5 @@ def check_auth_view(request):
         access_token = str(refresh.access_token)
 
         return Response({"username": user.username, "access_token": access_token})
-    except (InvalidToken, User.DoesNotExist):
+    except (TokenError, User.DoesNotExist):
         return Response({"error": "Invalid token"}, status=401)
