@@ -23,7 +23,14 @@ export const ContextProvider = ({ children }) => {
     const [notification, setNotification] = useState(null);
 
     const showToast = miscHelpers(setNotification, setIsToastOpen);
-    const { login, logout } = useAuth(setIsAuthenticated, setUser, setLoading, setError, showToast);
+    const { login, logout } = useAuth(
+        isAuthenticated,
+        setIsAuthenticated,
+        setUser,
+        setLoading,
+        setError,
+        showToast
+    );
     const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
         isAuthenticated,
         setTasks,

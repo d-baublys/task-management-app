@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { checkApiAuth, loginApi, logoutApi, toggleTokenHeader } from "../services/api";
 // import { checkApiAuth, loginApi, logoutApi, checkApiAuthFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
-const useAuth = (setIsAuthenticated, setUser, setLoading, setError, showToast) => {
+const useAuth = (isAuthenticated, setIsAuthenticated, setUser, setLoading, setError, showToast) => {
     const checkAuth = async () => {
         try {
             const response = await checkApiAuth();
@@ -28,11 +28,13 @@ const useAuth = (setIsAuthenticated, setUser, setLoading, setError, showToast) =
     };
 
     const monitorAccess = async () => {
-        try {
-            await checkAuth();
-        } catch {
-            await logout();
-            showToast("failure", "You have been logged out!");
+        if (isAuthenticated) {
+            try {
+                await checkAuth();
+            } catch {
+                await logout();
+                showToast("failure", "You have been logged out!");
+            }
         }
     };
 
