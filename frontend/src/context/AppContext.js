@@ -27,6 +27,7 @@ export const ContextProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         setUser,
+        setIsDropdownActive,
         setLoading,
         setError,
         showToast

@@ -8,7 +8,7 @@ const Tile = ({ isDragging, description, dueDate }) => {
 
     return (
         <div
-            className={`tile w-full bg-theme-dark p-2 drop-shadow-md ${
+            className={`tile w-full bg-theme-dark p-2 drop-shadow-md select-none ${
                 isDragging ? "opacity-50" : "hover:opacity-80"
             } ${isDragging || isDeleteMode ? "cursor-move" : "cursor-pointer"}`}
         >

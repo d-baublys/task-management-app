@@ -4,12 +4,11 @@ import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 const Dropdown = () => {
-    const { logout, isDropdownActive, setIsDropdownActive, showToast } = useContext(AppContext);
+    const { logout, isDropdownActive, showToast } = useContext(AppContext);
     const navigate = useNavigate();
 
     const handleLogOut = async () => {
         try {
-            setIsDropdownActive(false);
             await logout();
             navigate("/login");
             showToast("success", "Log out successful!");

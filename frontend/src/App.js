@@ -6,14 +6,14 @@ import Main from "./pages/Main";
 import { useContext } from "react";
 
 function App() {
-    const { user, loading } = useContext(AppContext);
+    const { isAuthenticated, loading } = useContext(AppContext);
 
     if (loading) return;
 
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to={user ? "/main" : "/login"} replace />} />
+                <Route path="/" element={<Navigate to={isAuthenticated ? "/main" : "/login"} replace />} />
                 <Route path="/login" element={<Login />} />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/main" element={<Main />} />

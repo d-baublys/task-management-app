@@ -2,7 +2,15 @@ import { useEffect } from "react";
 import { getTokenApi, loginApi, logoutApi, toggleTokenHeader } from "../services/api";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
-const useAuth = (isAuthenticated, setIsAuthenticated, setUser, setLoading, setError, showToast) => {
+const useAuth = (
+    isAuthenticated,
+    setIsAuthenticated,
+    setUser,
+    setIsDropdownActive,
+    setLoading,
+    setError,
+    showToast
+) => {
     const getToken = async () => {
         try {
             const response = await getTokenApi();
@@ -59,6 +67,7 @@ const useAuth = (isAuthenticated, setIsAuthenticated, setUser, setLoading, setEr
             await logoutApi();
             toggleTokenHeader();
             setIsAuthenticated(false);
+            setIsDropdownActive(false);
             setUser(null);
         } catch (error) {
             throw error;
