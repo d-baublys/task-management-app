@@ -1,15 +1,16 @@
 import { useDragLayer } from "react-dnd";
 import Tile from "./base/Tile";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
 
 const DragLayer = () => {
-    const { itemType, isDragging, item, currentOffset } = useDragLayer((monitor) => ({
+    const { dragAllowed } = useContext(AppContext);
+    const { item, currentOffset } = useDragLayer((monitor) => ({
         item: monitor.getItem(),
-        itemType: monitor.getItemType(),
-        isDragging: monitor.isDragging(),
         currentOffset: monitor.getSourceClientOffset(),
     }));
 
-    if (!isDragging || !currentOffset) {
+    if (!dragAllowed || !currentOffset) {
         return null;
     }
 
@@ -18,7 +19,11 @@ const DragLayer = () => {
     return (
         <div className="fixed pointer-events-none top-0 left-0 z-[9999]">
             <div style={{ transform }}>
-                <Tile isDragging={isDragging} content={item.id} />
+                <Tile
+                    isDragging={dragAllowed}
+                    description={item.description}
+                    dueDate={item.dueDate}
+                />
             </div>
         </div>
     );

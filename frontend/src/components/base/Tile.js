@@ -8,7 +8,7 @@ const Tile = ({ isDragging, description, dueDate }) => {
 
     return (
         <div
-            className={`tile w-full bg-theme-dark p-2 drop-shadow-md select-none ${
+            className={`tile w-full bg-theme-dark p-2 drop-shadow-md select-none touch-none ${
                 isDragging ? "opacity-50" : "hover:opacity-80"
             } ${isDragging || isDeleteMode ? "cursor-move" : "cursor-pointer"}`}
         >
@@ -16,7 +16,9 @@ const Tile = ({ isDragging, description, dueDate }) => {
             <div className="mt-2 text-white">
                 <div className="flex items-center">
                     <FaCalendarAlt className="inline pr-2 text-xl md:text-[1.33rem]" />
-                    <span className="text-sm md:text-base">{format(new Date(dueDate), "LLLL do")}</span>
+                    <span className="text-sm md:text-base">
+                        {format(new Date(dueDate), "LLLL do")}
+                    </span>
                 </div>
             </div>
         </div>

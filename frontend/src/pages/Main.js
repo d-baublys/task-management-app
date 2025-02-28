@@ -19,7 +19,7 @@ function Main() {
     return (
         <DndProvider
             backend={test_mobile ? TouchBackend : HTML5Backend}
-            options={{ enableMouseEvents: true }}
+            options={{ enableMouseEvents: true, pressDelay: 100 }}
         >
             {test_mobile && <DragLayer />}
             <PageTemplate
