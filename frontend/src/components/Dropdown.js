@@ -18,6 +18,10 @@ const Dropdown = () => {
         }
     };
 
+    const menuWidth = 16 * 9;
+    const menuHeight = 16 * 6;
+    const menuRadius = 16 * 1;
+
     return (
         <>
             <svg
@@ -28,35 +32,35 @@ const Dropdown = () => {
                 <defs>
                     <clipPath id="clipped">
                         <circle
-                            cx="var(--menu-radius)"
-                            cy="calc(var(--menu-radius) * 2)"
-                            r="var(--menu-radius)"
+                            cx={menuRadius}
+                            cy={menuRadius * 2}
+                            r={menuRadius}
                         ></circle>
                         <circle
-                            cx="var(--menu-radius)"
-                            cy="calc(var(--menu-height) - var(--menu-radius))"
-                            r="var(--menu-radius)"
+                            cx={menuRadius}
+                            cy={menuHeight - menuRadius}
+                            r={menuRadius}
                         ></circle>
                         <circle
-                            cx="calc(var(--menu-width) - var(--menu-radius))"
-                            cy="calc(var(--menu-height) - var(--menu-radius))"
-                            r="var(--menu-radius)"
+                            cx={menuWidth - menuRadius}
+                            cy={menuHeight - menuRadius}
+                            r={menuRadius}
                         ></circle>
                         <rect
-                            y="calc(var(--menu-radius) * 2)"
-                            width="var(--menu-width)"
-                            height="calc(var(--menu-height) - (3 * var(--menu-radius)))"
+                            y={menuRadius * 2}
+                            width={menuWidth}
+                            height={menuHeight - (3 * menuRadius)}
                         ></rect>
                         <rect
-                            x="var(--menu-radius)"
-                            y="var(--menu-radius)"
-                            width="calc(var(--menu-width) - (2 * var(--menu-radius)))"
-                            height="calc(var(--menu-height) - var(--menu-radius))"
+                            x={menuRadius}
+                            y={menuRadius}
+                            width={menuWidth - (2 * menuRadius)}
+                            height={menuHeight - menuRadius}
                         ></rect>
                         <rect
-                            x="calc(var(--menu-width) / 3 * 2)"
-                            width="calc(var(--menu-width) / 3)"
-                            height="calc(var(--menu-height) - var(--menu-radius))"
+                            x={menuWidth / 3 * 2}
+                            width={menuWidth / 3}
+                            height={menuHeight - menuRadius}
                         ></rect>
                     </clipPath>
                 </defs>

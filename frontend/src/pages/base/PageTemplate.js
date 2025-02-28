@@ -5,6 +5,7 @@ const PageTemplate = ({ children, leftContent, rightContent, overlayContent, onM
     return (
         <div
             onMouseUp={onMouseUp}
+            onTouchEnd={onMouseUp}
             className="flex justify-between w-full min-h-full min-w-[700px] md:min-w-[800px] landscape:w-screen landscape:min-w-[600px]"
         >
             <div className="flex flex-col flex-grow items-center min-w-board-btn-spacing-sm min-h-full mx-2 md:mx-4">

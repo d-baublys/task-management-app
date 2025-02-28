@@ -3,7 +3,7 @@ import AppContext from "../../context/AppContext";
 import ModalButton from "./ModalButton";
 
 const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) => {
-    const { boardTitles, setActiveTaskId, saveTask } = useContext(AppContext);
+    const { boardTitles, setActiveTaskId, saveTask, showToast } = useContext(AppContext);
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");
@@ -21,7 +21,10 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
 
     const handleSave = async (e) => {
         e.preventDefault();
-        if (!status || !description || !dueDate) return;
+        if (!status || !description || !dueDate) {
+            showToast("failure", "Please fill in all fields");
+            return;
+        }
 
         await saveTask({ currentTask, status, description, dueDate });
         setActiveTaskId(null);

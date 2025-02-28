@@ -12,16 +12,14 @@ import DeleteButton from "../components/DeleteButton";
 import CreateButton from "../components/CreateButton";
 
 function Main() {
-    const test_mobile = false;
-
     const { taskMouseUp } = useHandleClicks();
 
     return (
         <DndProvider
-            backend={test_mobile ? TouchBackend : HTML5Backend}
-            options={{ enableMouseEvents: true, pressDelay: 100 }}
+            backend={isMobile ? TouchBackend : HTML5Backend}
+            options={isMobile && { enableMouseEvents: true }}
         >
-            {test_mobile && <DragLayer />}
+            <DragLayer />
             <PageTemplate
                 leftContent={<DeleteButton />}
                 rightContent={<CreateButton />}

@@ -23,6 +23,7 @@ const DragLayer = () => {
                     isDragging={dragAllowed}
                     description={item.description}
                     dueDate={item.dueDate}
+                    width={item.tileWidth}
                 />
             </div>
         </div>

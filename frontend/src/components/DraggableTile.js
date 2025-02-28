@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
 import Tile from "./base/Tile";
@@ -20,13 +20,15 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
     const { taskMouseDown } = useHandleClicks();
 
     const elementRef = useRef(null);
+    const widthRef = useRef(null);
+    const [tileWidth, setTileWidth] = useState(0);
 
-    const [, dragRef] = useDrag(
+    const [, dragRef, preview] = useDrag(
         () => ({
             type: "BOX",
             canDrag: () => dragAllowed,
             item: () => {
-                return { id, status, description, dueDate };
+                return { id, status, description, dueDate, tileWidth };
             },
             end: () => {
                 setActiveTaskId(null);
@@ -35,6 +37,25 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
         }),
         [dragAllowed]
     );
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = "";
+        preview(img);
+    }, [preview]);
+
+    const updateTileWidth = () => {
+        if (widthRef.current) {
+            setTileWidth(widthRef.current.getBoundingClientRect().width);
+        }
+    };
+
+    useLayoutEffect(() => {
+        updateTileWidth();
+        window.addEventListener("resize", updateTileWidth);
+
+        return () => window.removeEventListener("resize", updateTileWidth);
+    }, []);
 
     const [{ handlerId }, dropRef] = useDrop(
         {
@@ -71,11 +92,13 @@ const DraggableTile = ({ id, status, description, dueDate }) => {
             onMouseDown={() => taskMouseDown(id)}
             onTouchStart={() => taskMouseDown(id)}
         >
-            <Tile
-                isDragging={dragAllowed && activeTaskId === id}
-                description={description}
-                dueDate={dueDate}
-            />
+            <div ref={widthRef}>
+                <Tile
+                    isDragging={dragAllowed && activeTaskId === id}
+                    description={description}
+                    dueDate={dueDate}
+                />
+            </div>
         </motion.div>
     );
 };
