@@ -72,7 +72,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             className="w-full px-2 rounded-md bg-gray-300 resize-none"
                             rows={5}
                             placeholder="Enter description..."
-                            maxLength={255}
+                            maxLength={parseInt(process.env.REACT_APP_DESC_CHAR_LIMIT, 10)}
                         />
                     </fieldset>
                     <fieldset className="w-full">
@@ -84,7 +84,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             onChange={(e) => setDueDate(e.target.value)}
                         />
                     </fieldset>
-                    <div className="flex gap-8 mt-5">
+                    <div className="flex gap-4 sm:gap-8 mt-5">
                         <ModalButton type={"submit"}>{modalAction}</ModalButton>
                         <ModalButton onClick={handleCancel}>Cancel</ModalButton>
                     </div>

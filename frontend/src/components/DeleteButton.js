@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import AppContext from "../context/AppContext";
@@ -6,12 +6,6 @@ import AppContext from "../context/AppContext";
 const DeleteButton = () => {
     const { deleteTask, isDeleteMode, setIsConfirmOpen, setModalPromise, setIsDeleteMode } =
         useContext(AppContext);
-
-    const isDeleteModeRef = useRef(isDeleteMode);
-
-    useEffect(() => {
-        isDeleteModeRef.current = isDeleteMode;
-    }, [isDeleteMode]);
 
     const showModal = () => {
         return new Promise((resolve) => {
@@ -22,20 +16,25 @@ const DeleteButton = () => {
     };
 
     const handleDrop = async (item) => {
-        if (!isDeleteModeRef.current) return;
+        if (!isDeleteMode) return;
         const result = await showModal();
         if (result) {
             await deleteTask(item.id);
         }
     };
 
-    const [{ isOver }, dropRef] = useDrop(() => ({
-        accept: "BOX",
-        drop: (item) => handleDrop(item),
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
+    const [{ isOver }, dropRef] = useDrop(
+        () => ({
+            accept: "BOX",
+            canDrop: () => isDeleteMode,
+            drop: (item) => handleDrop(item),
+            collect: (monitor) => ({
+                isOver: monitor.isOver(),
+            }),
         }),
-    }));
+        [isDeleteMode]
+    );
+
     return (
         <BoardButton
             onClick={() => setIsDeleteMode((prev) => !prev)}

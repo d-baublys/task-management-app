@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Task(models.Model):
@@ -10,7 +11,7 @@ class Task(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="to_do")
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=settings.REACT_APP_DESC_CHAR_LIMIT)
     due_date = models.DateField()
     position = models.PositiveIntegerField(default=0)
 

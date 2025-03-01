@@ -31,7 +31,7 @@ const ConfirmModal = () => {
             className="flex flex-col justify-center items-center w-modal-width h-confirm-height rounded-2xl bg-gray-100 drop-shadow-modal"
         >
             <p className="text-gray-600">Are you sure you want to delete this task?</p>
-            <div className="flex justify-between w-1/2 h-1/4 gap-8 mt-8">
+            <div className="flex justify-between h-1/4 gap-4 sm:gap-8 mt-8">
                 <ModalButton onClick={handleConfirm}>Confirm</ModalButton>
                 <ModalButton onClick={handleCancel}>Cancel</ModalButton>
             </div>

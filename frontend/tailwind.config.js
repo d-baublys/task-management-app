@@ -22,14 +22,21 @@ module.exports = {
                 "modal-height": "500px",
                 "confirm-height": "250px",
             },
+            screens: {
+                "sm-500": {
+                    raw: "(min-height: 500px)",
+                }
+            },
             dropShadow: {
                 modal: "0 0 50px rgba(0,0,0,0.25)",
                 board: "0 0 5px rgba(0,0,0,0.25)",
             },
             backgroundImage: {
-                "board-gradient": "linear-gradient(to right, rgb(219, 234, 247) 0, rgb(234, 245, 255) 40% 60%, rgb(219, 234, 247) 100%)",
-                "button-gradient": "radial-gradient(rgb(122, 186, 242) 50%, rgb(102, 169, 229) 80%)"
-            }
+                "board-gradient":
+                    "linear-gradient(to right, rgb(219, 234, 247) 0, rgb(234, 245, 255) 40% 60%, rgb(219, 234, 247) 100%)",
+                "button-gradient":
+                    "radial-gradient(rgb(122, 186, 242) 50%, rgb(102, 169, 229) 80%)",
+            },
         },
     },
     plugins: [],

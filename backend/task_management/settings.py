@@ -154,3 +154,5 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(hours=1),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=6),
 }
+
+REACT_APP_DESC_CHAR_LIMIT = int(os.getenv("REACT_APP_DESC_CHAR_LIMIT"))
