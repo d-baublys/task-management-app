@@ -30,6 +30,7 @@ module.exports = {
             dropShadow: {
                 modal: "0 0 50px rgba(0,0,0,0.25)",
                 board: "0 0 5px rgba(0,0,0,0.25)",
+                dropdown: "0 5px 5px rgba(0,0,0,0.05)",
             },
             backgroundImage: {
                 "board-gradient":

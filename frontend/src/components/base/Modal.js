@@ -40,7 +40,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
     return (
         <div
             id={modalId}
-            className="flex flex-col justify-center items-center w-modal-width h-modal-height rounded-2xl bg-gray-100 text-gray-600 drop-shadow-modal"
+            className="flex flex-col justify-center my-2 items-center w-modal-width h-modal-height rounded-2xl bg-gray-100 text-gray-600 drop-shadow-modal"
         >
             <div className="w-3/4 h-4/5">
                 <form

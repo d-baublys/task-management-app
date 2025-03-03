@@ -65,7 +65,7 @@ const Dropdown = () => {
                     </clipPath>
                 </defs>
             </svg>
-            <div className="absolute top-1/2 right-0 drop-shadow-lg z-10">
+            <div className="absolute top-1/2 right-0 drop-shadow-dropdown will-change-[filter] z-10">
                 <div
                     className={`clipped flex flex-col justify-end w-36 min-h-24 bg-theme-light text-sm transition duration-200 ease-in-out origin-[right_15%] ${
                         isDropdownActive ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
