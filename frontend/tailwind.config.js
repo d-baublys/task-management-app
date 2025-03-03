@@ -14,13 +14,12 @@ module.exports = {
                 "board-btn-spacing-lg": "4rem",
                 "board-btn-spacing-sm": "3rem",
                 "board-btn-top": "33%",
-            },
-            width: {
-                "modal-width": "500px",
+                "modal-spacing": "500px",
+                "modal-spacing-sm": "400px",
             },
             height: {
-                "modal-height": "500px",
                 "confirm-height": "250px",
+                "confirm-height-sm": "200px",
             },
             screens: {
                 xs: "480px",

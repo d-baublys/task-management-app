@@ -17,15 +17,17 @@ const UserUnit = () => {
     };
 
     return (
-        <div className="relative text-gray-600">
+        <div className="relative">
             <div
                 onClick={handleClick}
-                className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl text-base transition cursor-pointer z-20"
+                className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl transition cursor-pointer z-20"
             >
                 <div className="rounded-full mr-1 p-1 bg-white -translate-x-[4px]">
                     {isAuthenticated ? <IoPerson /> : <IoPersonOutline />}
                 </div>
-                <span className="group-hover:text-white whitespace-nowrap">{isAuthenticated ? user : "Log In"}</span>
+                <span className="group-hover:text-white whitespace-nowrap">
+                    {isAuthenticated ? user : "Log In"}
+                </span>
                 {isAuthenticated && (
                     <div
                         className={`ml-1 translate-y-[1px] group-hover:text-white transition ${

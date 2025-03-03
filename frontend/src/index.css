@@ -3,6 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        @apply text-gray-600;
+    }
+
+    @media (max-width: 767px) {
+        body {
+            @apply text-sm;
+        }
+    }
+}
+
 html,
 body,
 #root {

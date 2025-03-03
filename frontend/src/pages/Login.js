@@ -35,16 +35,19 @@ const Login = () => {
     };
 
     return (
-        <PageTemplate wrapperClasses={"!min-w-[360px]"} columnClasses={"!min-w-0 sm:!min-w-board-btn-spacing-sm"}>
+        <PageTemplate
+            wrapperDimensions={"min-w-[360px]"}
+            columnDimensions={"sm:min-w-board-btn-spacing-sm"}
+        >
             <div className="flex-grow xs:mx-[3rem] md:!mx-[5rem] max-w-[37.5rem]">
                 <div
-                    className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white text-gray-600 drop-shadow-md transition-[height] origin-top ${
+                    className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white drop-shadow-md transition-[height] origin-top ${
                         error ? "h-[23rem]" : "h-[20rem]"
                     }`}
                 >
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col items-center mx-4 mt-10 gap-4 min-w-min"
+                        className="flex flex-col items-center mx-4 mt-10 gap-5 md:gap-[1.125rem] min-w-min"
                     >
                         <fieldset className="w-full">
                             <legend className="mb-1">Username</legend>
@@ -64,7 +67,7 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </fieldset>
-                        <span className="flex w-full gap-2 text-xs">
+                        <span className="flex w-full gap-2 text-xs md:text-[0.8rem]">
                             <input
                                 type="checkbox"
                                 checked={rememberMe}
@@ -72,7 +75,7 @@ const Login = () => {
                             />
                             Remember Me
                         </span>
-                        <ModalButton type={"submit"} className="w-full">
+                        <ModalButton type={"submit"} customDimensions="w-full h-16">
                             Log In
                         </ModalButton>
                     </form>
@@ -83,10 +86,10 @@ const Login = () => {
                     >
                         {error && (
                             <span
-                                className={`flex justify-center items-start text-red-500 text-xs gap-1`}
+                                className={`flex justify-center items-start text-red-500 text-xs md:text-[0.8rem] gap-1`}
                             >
                                 <IoAlertCircle className="min-w-fit min-h-fit text-base" />
-                                {error}
+                                <span>{error}</span>
                             </span>
                         )}
                     </div>

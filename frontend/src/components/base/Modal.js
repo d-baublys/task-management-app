@@ -40,9 +40,9 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
     return (
         <div
             id={modalId}
-            className="flex flex-col justify-center my-2 items-center w-modal-width h-modal-height rounded-2xl bg-gray-100 text-gray-600 drop-shadow-modal"
+            className="flex flex-col justify-center my-2 items-center w-modal-spacing-sm md:w-modal-spacing h-modal-spacing-sm md:h-modal-spacing rounded-2xl bg-gray-100 drop-shadow-modal"
         >
-            <div className="w-3/4 h-4/5">
+            <div className="w-[85%] sm:w-[80%] md:w-3/4 h-[85%] md:h-4/5">
                 <form
                     className="flex flex-col justify-between items-center h-full"
                     onSubmit={handleSave}
@@ -84,7 +84,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             onChange={(e) => setDueDate(e.target.value)}
                         />
                     </fieldset>
-                    <div className="flex gap-4 sm:gap-8 mt-5">
+                    <div className="flex justify-between w-full mt-5">
                         <ModalButton type={"submit"}>{modalAction}</ModalButton>
                         <ModalButton onClick={handleCancel}>Cancel</ModalButton>
                     </div>

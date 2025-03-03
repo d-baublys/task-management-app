@@ -1,14 +1,28 @@
 import Header from "../../components/Header";
 import ToastNotification from "../../components/ToastNotification";
 
-const PageTemplate = ({ children, leftContent, rightContent, overlayContent, onMouseUp, wrapperClasses, columnClasses }) => {
+const PageTemplate = ({
+    children,
+    leftContent,
+    rightContent,
+    overlayContent,
+    onMouseUp,
+    wrapperDimensions,
+    columnDimensions,
+}) => {
     return (
         <div
             onMouseUp={onMouseUp}
             onTouchEnd={onMouseUp}
-            className={`flex justify-between w-full min-h-full min-w-[700px] md:min-w-[800px] landscape:w-screen landscape:min-w-[600px] ${wrapperClasses}`}
+            className={`flex justify-between w-full min-h-full landscape:w-screen landscape:min-w-[600px] ${
+                wrapperDimensions ? wrapperDimensions : "min-w-[700px] md:min-w-[800px]"
+            }`}
         >
-            <div className={`flex flex-col flex-grow items-center min-w-board-btn-spacing-sm min-h-full mx-2 md:mx-4 ${columnClasses}`}>
+            <div
+                className={`flex flex-col flex-grow items-center min-h-full mx-2 md:mx-4 ${
+                    columnDimensions ? columnDimensions : "min-w-board-btn-spacing-sm"
+                }`}
+            >
                 {leftContent}
             </div>
             <div className="flex flex-col w-full lg:w-3/4 min-w-min h-auto pb-16">
@@ -17,7 +31,11 @@ const PageTemplate = ({ children, leftContent, rightContent, overlayContent, onM
                     {children}
                 </div>
             </div>
-            <div className={`flex flex-col flex-grow items-center min-w-board-btn-spacing-sm min-h-full mx-2 md:mx-4 ${columnClasses}`}>
+            <div
+                className={`flex flex-col flex-grow items-center min-h-full mx-2 md:mx-4 ${
+                    columnDimensions ? columnDimensions : "min-w-board-btn-spacing-sm"
+                }`}
+            >
                 {rightContent}
             </div>
             <ToastNotification />
