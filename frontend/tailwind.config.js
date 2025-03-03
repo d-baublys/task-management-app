@@ -23,9 +23,10 @@ module.exports = {
                 "confirm-height": "250px",
             },
             screens: {
+                xs: "480px",
                 "sm-500": {
                     raw: "(min-height: 500px)",
-                }
+                },
             },
             dropShadow: {
                 modal: "0 0 25px rgba(0,0,0,0.33)",

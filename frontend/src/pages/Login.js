@@ -35,8 +35,8 @@ const Login = () => {
     };
 
     return (
-        <PageTemplate>
-            <div className="w-1/2 max-w-[37.5rem]">
+        <PageTemplate wrapperClasses={"!min-w-[360px]"} columnClasses={"!min-w-0 sm:!min-w-board-btn-spacing-sm"}>
+            <div className="flex-grow xs:mx-[3rem] md:!mx-[5rem] max-w-[37.5rem]">
                 <div
                     className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white text-gray-600 drop-shadow-md transition-[height] origin-top ${
                         error ? "h-[23rem]" : "h-[20rem]"
