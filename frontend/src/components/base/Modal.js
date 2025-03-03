@@ -48,7 +48,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                     onSubmit={handleSave}
                 >
                     <fieldset className="w-full">
-                        <legend className="mb-1">Task Status</legend>
+                        <legend className="mb-1 font-semibold">Task Status</legend>
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
@@ -65,7 +65,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                         </select>
                     </fieldset>
                     <fieldset className="w-full">
-                        <legend className=" mb-1">Task Description</legend>
+                        <legend className="mb-1 font-semibold">Task Description</legend>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -76,7 +76,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                         />
                     </fieldset>
                     <fieldset className="w-full">
-                        <legend className=" mb-1">Due By</legend>
+                        <legend className="mb-1 font-semibold">Due By</legend>
                         <input
                             type="date"
                             value={dueDate}

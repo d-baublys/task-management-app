@@ -18,7 +18,7 @@ const Tile = ({ isDragging, description, dueDate, width }) => {
                 <div className="flex items-center">
                     <FaCalendarAlt className="inline pr-2 text-xl md:text-[1.33rem]" />
                     <span className="text-sm md:text-base">
-                        {format(new Date(dueDate), "LLLL do")}
+                        {format(new Date(dueDate), "LLL d")}
                     </span>
                 </div>
             </div>
