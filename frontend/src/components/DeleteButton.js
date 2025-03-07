@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import AppContext from "../context/AppContext";
+import { FaTrashAlt } from "react-icons/fa";
 
 const DeleteButton = () => {
     const { deleteTask, isDeleteMode, setIsConfirmOpen, setModalPromise, setIsDeleteMode } =
@@ -40,7 +41,7 @@ const DeleteButton = () => {
             onClick={() => setIsDeleteMode((prev) => !prev)}
             dropRef={dropRef}
             isOver={isOver && isDeleteMode}
-            iconName={"FaTrashAlt"}
+            IconComponent={FaTrashAlt}
             zIndex={550}
         />
     );

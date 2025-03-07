@@ -1,8 +1,4 @@
-import * as FaIcons from "react-icons/fa";
-
-const BoardButton = ({ onClick, dropRef, isOver, iconName, zIndex = 10 }) => {
-    const Icon = FaIcons[iconName];
-
+const BoardButton = ({ onClick, dropRef, isOver, IconComponent, zIndex = 10 }) => {
     return (
         <button
             onClick={onClick}
@@ -14,7 +10,7 @@ const BoardButton = ({ onClick, dropRef, isOver, iconName, zIndex = 10 }) => {
                 zIndex: zIndex,
             }}
         >
-            <Icon className="m-2 text-white text-2xl lg:text-[2rem] xl:text-[2.5rem]" />
+            <IconComponent className="m-2 text-white text-2xl lg:text-[2rem] xl:text-[2.5rem]" />
         </button>
     );
 };

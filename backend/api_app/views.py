@@ -66,7 +66,7 @@ def logout_view(request):
     return response
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")

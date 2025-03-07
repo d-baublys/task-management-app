@@ -14,6 +14,8 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
             ? (document.body.style.overflow = "hidden")
             : document.body.removeAttribute("style");
 
+        !currentTask && modalState && setDueDate(new Date().toISOString().split("T")[0]);
+
         return () => {
             document.body.removeAttribute("style");
         };

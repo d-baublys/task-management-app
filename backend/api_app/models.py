@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -17,10 +17,14 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            max_position = Task.objects.filter(user=self.user).aggregate(
-                models.Max("position")
-            )["position__max"]
-            self.position = (max_position or 0) + 1
+            with transaction.atomic():
+                last_task = (
+                    Task.objects.filter(user=self.user)
+                    .select_for_update()
+                    .order_by("position")
+                    .last()
+                )
+                self.position = last_task.position + 1 if last_task else 0
         super().save(*args, **kwargs)
 
     class Meta:
