@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from .models import Task
 from .serializers import TaskSerializer
 
+from axes.decorators import axes_dispatch
+from axes.utils import reset
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -25,16 +27,21 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
+@axes_dispatch
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
     remember_me = request.data.get("remember_me")
+    ip_address = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get(
+        "REMOTE_ADDR"
+    )
 
-    user = authenticate(username=username, password=password)
+    user = authenticate(request=request, username=username, password=password)
 
     if user:
+        reset(ip=ip_address)
         refresh = RefreshToken.for_user(user)
 
         if remember_me:
@@ -52,7 +59,7 @@ def login_view(request):
         return response
     return Response(
         {
-            "error": "Incorrect username or password. Please check your credentials and try again."
+            "detail": "Incorrect username or password. Please check your credentials and try again."
         },
         status=401,
     )
@@ -72,7 +79,7 @@ def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")
 
     if not refresh_token:
-        return Response({"error": "No refresh token"}, status=401)
+        return Response({"detail": "No refresh token"}, status=401)
 
     try:
         refresh = RefreshToken(refresh_token)
@@ -81,4 +88,4 @@ def get_token_view(request):
 
         return Response({"username": user.username, "access_token": access_token})
     except (TokenError, User.DoesNotExist):
-        return Response({"error": "Invalid token"}, status=401)
+        return Response({"detail": "Invalid token"}, status=401)

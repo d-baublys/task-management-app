@@ -8,7 +8,6 @@ const useAuth = (
     setUser,
     setIsDropdownActive,
     setLoading,
-    setError,
     showToast
 ) => {
     const getToken = async () => {
@@ -30,9 +29,7 @@ const useAuth = (
     const checkAuthOnLoad = async () => {
         try {
             await getToken();
-        } catch (error) {
-            console.log("Ignore - unauthenticated on page load...");
-        }
+        } catch (error) {}
     };
 
     const monitorAccess = async () => {
@@ -57,7 +54,6 @@ const useAuth = (
 
             return response;
         } catch (error) {
-            error.response.status === 401 && setError(error.response.data.error);
             throw error;
         }
     };

@@ -20,13 +20,20 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            await login(username, password, rememberMe);
             setError("");
+            await login(username, password, rememberMe);
             navigate("/main");
             showToast("success", "Log in successful!");
         } catch (error) {
             console.error("Error logging in: ", error);
-            error?.response?.status !== 401 && showToast("failure", "Error logging in!");
+
+            if (error.response.status === 401) {
+                setError(error.response.data.detail);
+            } else if ([403, 429].includes(error.response.status)) {
+                setError("Too many failed login attempts! Please try again later.");
+            } else {
+                showToast("failure", "Error logging in!");
+            }
         }
 
         setUsername("");
