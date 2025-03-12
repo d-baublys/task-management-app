@@ -34,9 +34,7 @@ def login_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
     remember_me = request.data.get("remember_me")
-    ip_address = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get(
-        "REMOTE_ADDR"
-    )
+    ip_address = request.META.get("REMOTE_ADDR")
 
     user = authenticate(request=request, username=username, password=password)
 

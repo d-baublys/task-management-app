@@ -1,7 +1,7 @@
 import { useState, createContext } from "react";
 import useTasks from "../hooks/useTasks";
 import useAuth from "../hooks/useAuth";
-import miscHelpers from "../helpers/miscHelpers";
+import { toastHelper } from "../helpers/miscHelpers";
 
 const AppContext = createContext();
 
@@ -22,7 +22,7 @@ export const ContextProvider = ({ children }) => {
     const [activeTaskId, setActiveTaskId] = useState(null);
     const [notification, setNotification] = useState(null);
 
-    const showToast = miscHelpers(setNotification, setIsToastOpen);
+    const showToast = toastHelper(setNotification, setIsToastOpen);
     const { login, logout } = useAuth(
         isAuthenticated,
         setIsAuthenticated,
