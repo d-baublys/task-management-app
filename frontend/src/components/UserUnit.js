@@ -25,7 +25,11 @@ const UserUnit = () => {
                 <div className="rounded-full mr-1 p-1 bg-white -translate-x-[4px]">
                     {isAuthenticated ? <IoPerson /> : <IoPersonOutline />}
                 </div>
-                <span className="group-hover:text-white whitespace-nowrap">
+                <span
+                    className={`group-hover:text-white whitespace-nowrap ${
+                        !isAuthenticated && "pr-1"
+                    }`}
+                >
                     {isAuthenticated ? user : "Log In"}
                 </span>
                 {isAuthenticated && (
