@@ -13,7 +13,10 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to={isAuthenticated ? "/main" : "/login"} replace />} />
+                <Route
+                    path="/"
+                    element={<Navigate to={isAuthenticated ? "/main" : "/login"} replace />}
+                />
                 <Route path="/login" element={<Login />} />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/main" element={<Main />} />
