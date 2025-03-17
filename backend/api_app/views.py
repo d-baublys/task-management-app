@@ -1,3 +1,4 @@
+from django.conf import settings
 from datetime import timedelta
 from rest_framework import viewsets
 from .models import Task
@@ -50,8 +51,8 @@ def login_view(request):
             key="refresh_token",
             value=str(refresh),
             httponly=True,
-            secure=False,  # Set to False for development
-            samesite="Lax",
+            secure=not settings.DEBUG,
+            samesite="None",
         )
 
         return response
