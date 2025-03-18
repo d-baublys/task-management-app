@@ -68,7 +68,7 @@ def login_view(request):
 @permission_classes([AllowAny])
 def logout_view(request):
     response = Response({"message": "Log out successful"})
-    response.delete_cookie("refresh_token")
+    response.delete_cookie("refresh_token", samesite="None")
     return response
 
 
@@ -78,7 +78,7 @@ def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")
 
     if not refresh_token:
-        return Response({"detail": "No refresh token"}, status=401)
+        return Response({"detail": "No refresh token. Check you have third-party cookies enabled in your browser."}, status=401)
 
     try:
         refresh = RefreshToken(refresh_token)
