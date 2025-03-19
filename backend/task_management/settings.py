@@ -72,7 +72,7 @@ WSGI_APPLICATION = "task_management.wsgi.application"
 
 # Database
 
-if not DEBUG:
+if "DATABASE_URL" in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=500,
