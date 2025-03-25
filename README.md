@@ -2,7 +2,11 @@
 
 A Kanban-style task management app used to learn about front-end framework principles, APIs, authentication, and drag-and-drop functionality.
 
-Live Demo: https://task-management-app-bice-psi.vercel.app
+Live Demo: https://task-management-app-bice-psi.vercel.app  
+
+Demo login:  
+**Username**: guest  
+**Password**: R1i&xY3egBu!#Iu  
 
 ## Stack
 - **Front-end:** React
