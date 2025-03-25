@@ -9,8 +9,85 @@ export const toastHelper = (setNotification, setIsToastOpen) => {
     return showToast;
 };
 
+export const handleRecaptcha = async (
+    key,
+    verifyRecaptcha,
+    setIsRecaptchaOpen,
+    setIsRecaptchaPassed,
+    setError,
+    showToast,
+    login,
+    navigate,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    rememberMe,
+    setRememberMe
+) => {
+    try {
+        await verifyRecaptcha(key);
+        setIsRecaptchaPassed(true);
+        setIsRecaptchaOpen(false);
+        await executeSubmit(
+            login,
+            navigate,
+            setError,
+            username,
+            setUsername,
+            password,
+            setPassword,
+            rememberMe,
+            setRememberMe,
+            showToast
+        );
+    } catch (error) {
+        console.error("reCAPTCHA error: ", error);
+
+        if (error.response.status === 403) {
+            setError(error.response.data.detail);
+        } else {
+            showToast("failure", "reCAPTCHA error!");
+        }
+    }
+};
+
 export const handleSubmit = async (
     e,
+    setError,
+    login,
+    navigate,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    rememberMe,
+    setRememberMe,
+    showToast,
+    setIsRecaptchaOpen,
+    isRecaptchaPassed
+) => {
+    e.preventDefault();
+
+    if (isRecaptchaPassed) {
+        await executeSubmit(
+            login,
+            navigate,
+            setError,
+            username,
+            setUsername,
+            password,
+            setPassword,
+            rememberMe,
+            setRememberMe,
+            showToast
+        );
+    } else {
+        setIsRecaptchaOpen(true);
+    }
+};
+
+export const executeSubmit = async (
     login,
     navigate,
     setError,
@@ -22,8 +99,6 @@ export const handleSubmit = async (
     setRememberMe,
     showToast
 ) => {
-    e.preventDefault();
-
     try {
         setError("");
         await login(username, password, rememberMe);

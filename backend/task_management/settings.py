@@ -174,3 +174,4 @@ if not DEBUG:
 # Miscellaneous
 
 REACT_APP_DESC_CHAR_LIMIT = int(os.getenv("REACT_APP_DESC_CHAR_LIMIT"))
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")

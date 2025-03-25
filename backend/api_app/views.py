@@ -15,6 +15,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+import requests
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -26,6 +28,26 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+@api_view(["POST"])
+def verify_recaptcha_view(request):
+    request = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        data={
+            "secret": settings.RECAPTCHA_SECRET_KEY,
+            "response": request.data.get("g-recaptcha-response"),
+            "remoteip": request.META.get("REMOTE_ADDR"),
+        },
+    ).json()
+
+    if request.get("success"):
+        return Response({"message": "reCAPTCHA verified"}, status=200)
+
+    return Response(
+        data={"error": "reCAPTCHA not verified."},
+        status=403,
+    )
 
 
 @axes_dispatch
@@ -47,13 +69,22 @@ def login_view(request):
             refresh.set_exp(lifetime=timedelta(days=7))
 
         response = Response({"message": "Log in successful", "username": username})
-        response.set_cookie(
-            key="refresh_token",
-            value=str(refresh),
-            httponly=True,
-            secure=not settings.DEBUG,
-            samesite="None",
-        )
+        if not settings.DEBUG:
+            response.set_cookie(
+                key="refresh_token",
+                value=str(refresh),
+                httponly=True,
+                secure=True,
+                samesite="None",
+            )
+        else:
+            response.set_cookie(
+                key="refresh_token",
+                value=str(refresh),
+                httponly=True,
+                secure=False,
+                samesite="Lax",
+            )
 
         return response
     return Response(
@@ -68,7 +99,11 @@ def login_view(request):
 @permission_classes([AllowAny])
 def logout_view(request):
     response = Response({"message": "Log out successful"})
-    response.delete_cookie("refresh_token", samesite="None")
+    if not settings.DEBUG:
+        response.delete_cookie("refresh_token", samesite="None")
+    else:
+        response.delete_cookie("refresh_token")
+
     return response
 
 
@@ -78,7 +113,12 @@ def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")
 
     if not refresh_token:
-        return Response({"detail": "No refresh token. Check you have third-party cookies enabled in your browser."}, status=401)
+        return Response(
+            {
+                "detail": "No refresh token. Check you have third-party cookies enabled in your browser."
+            },
+            status=401,
+        )
 
     try:
         refresh = RefreshToken(refresh_token)

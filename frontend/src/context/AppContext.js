@@ -21,9 +21,11 @@ export const ContextProvider = ({ children }) => {
     const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState(null);
     const [notification, setNotification] = useState(null);
+    const [isRecaptchaOpen, setIsRecaptchaOpen] = useState(false);
+    const [isRecaptchaPassed, setIsRecaptchaPassed] = useState(false);
 
     const showToast = toastHelper(setNotification, setIsToastOpen);
-    const { login, logout } = useAuth(
+    const { verifyRecaptcha, login, logout } = useAuth(
         isAuthenticated,
         setIsAuthenticated,
         setUser,
@@ -86,6 +88,11 @@ export const ContextProvider = ({ children }) => {
                 isToastOpen,
                 setIsToastOpen,
                 showToast,
+                isRecaptchaOpen,
+                setIsRecaptchaOpen,
+                verifyRecaptcha,
+                isRecaptchaPassed,
+                setIsRecaptchaPassed,
             }}
         >
             {children}
