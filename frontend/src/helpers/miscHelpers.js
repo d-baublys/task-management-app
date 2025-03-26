@@ -9,38 +9,15 @@ export const toastHelper = (setNotification, setIsToastOpen) => {
     return showToast;
 };
 
-export const handleRecaptcha = async (
-    key,
-    verifyRecaptcha,
-    setIsRecaptchaOpen,
-    setIsRecaptchaPassed,
-    setError,
-    showToast,
-    login,
-    navigate,
-    username,
-    setUsername,
-    password,
-    setPassword,
-    rememberMe,
-    setRememberMe
-) => {
+export const handleRecaptcha = async (key, authGroup, userGroup, uiGroup) => {
+    const { verifyRecaptcha } = authGroup;
+    const { setError, showToast, setIsRecaptchaOpen, setIsRecaptchaPassed } = uiGroup;
+
     try {
         await verifyRecaptcha(key);
         setIsRecaptchaPassed(true);
         setIsRecaptchaOpen(false);
-        await executeSubmit(
-            login,
-            navigate,
-            setError,
-            username,
-            setUsername,
-            password,
-            setPassword,
-            rememberMe,
-            setRememberMe,
-            showToast
-        );
+        await executeSubmit(authGroup, userGroup, uiGroup);
     } catch (error) {
         console.error("reCAPTCHA error: ", error);
 
@@ -52,53 +29,26 @@ export const handleRecaptcha = async (
     }
 };
 
-export const handleSubmit = async (
-    e,
-    setError,
-    login,
-    navigate,
-    username,
-    setUsername,
-    password,
-    setPassword,
-    rememberMe,
-    setRememberMe,
-    showToast,
-    setIsRecaptchaOpen,
-    isRecaptchaPassed
-) => {
+export const handleSubmit = async (e, authGroup, userGroup, uiGroup) => {
     e.preventDefault();
 
-    if (isRecaptchaPassed) {
-        await executeSubmit(
-            login,
-            navigate,
-            setError,
-            username,
-            setUsername,
-            password,
-            setPassword,
-            rememberMe,
-            setRememberMe,
-            showToast
-        );
-    } else {
-        setIsRecaptchaOpen(true);
+    const { username, password } = userGroup;
+    const { setIsRecaptchaOpen, isRecaptchaPassed } = uiGroup;
+
+    if (username && password) {
+        if (isRecaptchaPassed) {
+            await executeSubmit(authGroup, userGroup, uiGroup);
+        } else {
+            setIsRecaptchaOpen(true);
+        }
     }
 };
 
-export const executeSubmit = async (
-    login,
-    navigate,
-    setError,
-    username,
-    setUsername,
-    password,
-    setPassword,
-    rememberMe,
-    setRememberMe,
-    showToast
-) => {
+export const executeSubmit = async (authGroup, userGroup, uiGroup) => {
+    const { login, rememberMe, setRememberMe } = authGroup;
+    const { username, setUsername, password, setPassword } = userGroup;
+    const { setError, navigate, showToast } = uiGroup;
+
     try {
         setError("");
         await login(username, password, rememberMe);

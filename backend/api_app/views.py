@@ -69,22 +69,13 @@ def login_view(request):
             refresh.set_exp(lifetime=timedelta(days=7))
 
         response = Response({"message": "Log in successful", "username": username})
-        if not settings.DEBUG:
-            response.set_cookie(
-                key="refresh_token",
-                value=str(refresh),
-                httponly=True,
-                secure=True,
-                samesite="None",
-            )
-        else:
-            response.set_cookie(
-                key="refresh_token",
-                value=str(refresh),
-                httponly=True,
-                secure=False,
-                samesite="Lax",
-            )
+        response.set_cookie(
+            key="refresh_token",
+            value=str(refresh),
+            httponly=True,
+            secure=not settings.DEBUG,
+            samesite="None" if not settings.DEBUG else "Lax",
+        )
 
         return response
     return Response(
@@ -99,10 +90,9 @@ def login_view(request):
 @permission_classes([AllowAny])
 def logout_view(request):
     response = Response({"message": "Log out successful"})
-    if not settings.DEBUG:
-        response.delete_cookie("refresh_token", samesite="None")
-    else:
-        response.delete_cookie("refresh_token")
+    response.delete_cookie(
+        "refresh_token", samesite="None" if not settings.DEBUG else None
+    )
 
     return response
 

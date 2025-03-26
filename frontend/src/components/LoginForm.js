@@ -21,26 +21,21 @@ const LoginForm = ({ navigate }) => {
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
 
+    const authGroup = { login, rememberMe, setRememberMe, verifyRecaptcha };
+    const userGroup = { username, setUsername, password, setPassword };
+    const uiGroup = {
+        setError,
+        navigate,
+        showToast,
+        setIsRecaptchaOpen,
+        isRecaptchaPassed,
+        setIsRecaptchaPassed,
+    };
+
     return (
         <>
             <form
-                onSubmit={(e) =>
-                    handleSubmit(
-                        e,
-                        setError,
-                        login,
-                        navigate,
-                        username,
-                        setUsername,
-                        password,
-                        setPassword,
-                        rememberMe,
-                        setRememberMe,
-                        showToast,
-                        setIsRecaptchaOpen,
-                        isRecaptchaPassed
-                    )
-                }
+                onSubmit={(e) => handleSubmit(e, authGroup, userGroup, uiGroup)}
                 className="flex flex-col items-center mx-4 mt-10 gap-5 md:gap-[1.125rem] min-w-min"
             >
                 <fieldset className="w-full">
@@ -76,24 +71,7 @@ const LoginForm = ({ navigate }) => {
             {isRecaptchaOpen && !isRecaptchaPassed && (
                 <div className="flex justify-center w-full p-4">
                     <ReCaptcha
-                        onChange={(key) =>
-                            handleRecaptcha(
-                                key,
-                                verifyRecaptcha,
-                                setIsRecaptchaOpen,
-                                setIsRecaptchaPassed,
-                                setError,
-                                showToast,
-                                login,
-                                navigate,
-                                username,
-                                setUsername,
-                                password,
-                                setPassword,
-                                rememberMe,
-                                setRememberMe
-                            )
-                        }
+                        onChange={(key) => handleRecaptcha(key, authGroup, userGroup, uiGroup)}
                         sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
                     ></ReCaptcha>
                 </div>
