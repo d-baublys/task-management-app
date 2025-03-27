@@ -19,9 +19,12 @@ Demo login:
 - Using RESTful APIs to connect the front-end and back-end
 - How token-based authentication works and its best practices
 - Differences between session- and token-based authentication
+- Expanded knowledge on XSS and CSRF mitigation
 - Finding solutions to persist and organise user-created data
 - Using front-end routing
 - Integration and logic of drag-and-drop functionality
+- How to implement lockout for repeated log in failures
+- Integrating captcha protection with reCAPTCHA
 - Using and customising Tailwind CSS
 - Deploying front-end with Vercel
 
@@ -33,4 +36,3 @@ Demo login:
 - An understanding of cookies and authentication tokens through manual management
 - Consideration about API and authentication security
 - Testing front-end, back-end, and overall integration
-
