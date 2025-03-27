@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { getTokenApi, loginApi, logoutApi, toggleTokenHeader } from "../services/api";
+import {
+    getTokenApi,
+    verifyRecaptchaApi,
+    loginApi,
+    logoutApi,
+    toggleTokenHeader,
+} from "../services/api";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
 const useAuth = (
@@ -47,6 +53,14 @@ const useAuth = (
         }
     };
 
+    const verifyRecaptcha = async (key) => {
+        try {
+            await verifyRecaptchaApi(key);
+        } catch (error) {
+            throw error;
+        }
+    };
+
     const login = async (username, password, rememberMe) => {
         try {
             const response = await loginApi(username, password, rememberMe);
@@ -80,7 +94,7 @@ const useAuth = (
         return () => clearInterval(monitorInterval);
     }, [isAuthenticated]);
 
-    return { login, logout };
+    return { verifyRecaptcha, login, logout };
 };
 
 export default useAuth;

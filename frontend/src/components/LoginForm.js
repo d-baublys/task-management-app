@@ -1,33 +1,41 @@
 import ModalButton from "../components/base/ModalButton";
 import { IoAlertCircle } from "react-icons/io5";
-import { handleSubmit } from "../helpers/miscHelpers";
+import { handleSubmit, handleRecaptcha } from "../helpers/miscHelpers";
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
+import ReCaptcha from "react-google-recaptcha";
 
 const LoginForm = ({ navigate }) => {
-    const { login, error, setError, showToast } = useContext(AppContext);
+    const {
+        verifyRecaptcha,
+        login,
+        isRecaptchaOpen,
+        setIsRecaptchaOpen,
+        isRecaptchaPassed,
+        setIsRecaptchaPassed,
+        error,
+        setError,
+        showToast,
+    } = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
 
+    const authGroup = { login, rememberMe, setRememberMe, verifyRecaptcha };
+    const userGroup = { username, setUsername, password, setPassword };
+    const uiGroup = {
+        setError,
+        navigate,
+        showToast,
+        setIsRecaptchaOpen,
+        isRecaptchaPassed,
+        setIsRecaptchaPassed,
+    };
+
     return (
         <>
             <form
-                onSubmit={(e) =>
-                    handleSubmit(
-                        e,
-                        login,
-                        navigate,
-                        setError,
-                        username,
-                        setUsername,
-                        password,
-                        setPassword,
-                        rememberMe,
-                        setRememberMe,
-                        showToast
-                    )
-                }
+                onSubmit={(e) => handleSubmit(e, authGroup, userGroup, uiGroup)}
                 className="flex flex-col items-center mx-4 mt-10 gap-5 md:gap-[1.125rem] min-w-min"
             >
                 <fieldset className="w-full">
@@ -62,9 +70,23 @@ const LoginForm = ({ navigate }) => {
             </form>
             <div
                 className={`flex flex-col justify-center h-full mx-4 transition ${
-                    error ? "opacity-100" : "opacity-0"
+                    error || (isRecaptchaOpen && !isRecaptchaPassed) ? "opacity-100" : "opacity-0"
                 }`}
             >
+                {isRecaptchaOpen && !isRecaptchaPassed && (
+                    <div className="flex justify-center w-full">
+                        <div className="w-[264px] md:w-[304px]">
+                            <div className="w-min scale-[86.84%] md:scale-100 origin-left">
+                                <ReCaptcha
+                                    onChange={(key) =>
+                                        handleRecaptcha(key, authGroup, userGroup, uiGroup)
+                                    }
+                                    sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                                ></ReCaptcha>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {error && (
                     <span
                         className={`flex justify-center items-start text-red-500 text-xs md:text-[0.8rem] gap-1`}
