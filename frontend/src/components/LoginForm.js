@@ -68,19 +68,25 @@ const LoginForm = ({ navigate }) => {
                     Log In
                 </ModalButton>
             </form>
-            {isRecaptchaOpen && !isRecaptchaPassed && (
-                <div className="flex justify-center w-full p-4">
-                    <ReCaptcha
-                        onChange={(key) => handleRecaptcha(key, authGroup, userGroup, uiGroup)}
-                        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-                    ></ReCaptcha>
-                </div>
-            )}
             <div
                 className={`flex flex-col justify-center h-full mx-4 transition ${
-                    error ? "opacity-100" : "opacity-0"
+                    error || (isRecaptchaOpen && !isRecaptchaPassed) ? "opacity-100" : "opacity-0"
                 }`}
             >
+                {isRecaptchaOpen && !isRecaptchaPassed && (
+                    <div className="flex justify-center w-full">
+                        <div className="w-[264px] md:w-[304px]">
+                            <div className="w-min scale-[86.84%] md:scale-100 origin-left">
+                                <ReCaptcha
+                                    onChange={(key) =>
+                                        handleRecaptcha(key, authGroup, userGroup, uiGroup)
+                                    }
+                                    sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                                ></ReCaptcha>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {error && (
                     <span
                         className={`flex justify-center items-start text-red-500 text-xs md:text-[0.8rem] gap-1`}
