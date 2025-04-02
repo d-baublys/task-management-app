@@ -1,11 +1,17 @@
-import { useDragLayer } from "react-dnd";
+import { useDragLayer, XYCoord } from "react-dnd";
 import Tile from "./base/Tile";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AppContext from "../context/AppContext";
+import { TileItemType } from "../types";
+
+interface DragType {
+    item: TileItemType;
+    currentOffset: XYCoord | null;
+}
 
 const DragLayer = () => {
-    const { dragAllowed } = useContext(AppContext);
-    const { item, currentOffset } = useDragLayer((monitor) => ({
+    const { dragAllowed }: { dragAllowed: boolean } = useContext(AppContext);
+    const { item, currentOffset }: DragType = useDragLayer((monitor) => ({
         item: monitor.getItem(),
         currentOffset: monitor.getSourceClientOffset(),
     }));

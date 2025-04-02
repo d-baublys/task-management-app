@@ -1,16 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../../context/AppContext";
 import ModalButton from "./ModalButton";
-import { AxiosResponse } from "axios";
-
-interface TaskType {
-    id: number;
-    status: string;
-    description: string;
-    due_date: string;
-    position: number;
-    user: number;
-}
+import { BoardTitlesType, AddUpdateResponse, TaskType } from "../../types";
 
 interface Props {
     modalId: string;
@@ -27,24 +18,15 @@ interface SaveTaskType {
     dueDate: string;
 }
 
-interface ResponseType {
-    data: TaskType;
-    status: number;
-    statusText: string;
-    headers: object;
-    config: object;
-    request?: any;
-}
-
-interface AppContextType {
-    boardTitles: { [key: string]: string };
+interface ContextType {
+    boardTitles: BoardTitlesType;
     setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
-    saveTask: (params: SaveTaskType) => Promise<AxiosResponse<ResponseType>>;
+    saveTask: (params: SaveTaskType) => AddUpdateResponse;
     showToast: (icon: string, message: string) => void;
 }
 
 const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: Props) => {
-    const { boardTitles, setActiveTaskId, saveTask, showToast }: AppContextType =
+    const { boardTitles, setActiveTaskId, saveTask, showToast }: ContextType =
         useContext(AppContext);
 
     const [status, setStatus] = useState(currentTask?.status || "");

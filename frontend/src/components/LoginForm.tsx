@@ -1,11 +1,29 @@
-import ModalButton from "../components/base/ModalButton";
+import ModalButton from "./base/ModalButton";
 import { IoAlertCircle } from "react-icons/io5";
 import { handleSubmit, handleRecaptcha } from "../helpers/miscHelpers";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import ReCaptcha from "react-google-recaptcha";
+import { NavigateFunction } from "react-router-dom";
+import { GenericResponse } from "../types";
 
-const LoginForm = ({ navigate }) => {
+interface Props {
+    navigate: NavigateFunction;
+}
+
+interface ContextType {
+    verifyRecaptcha: (key: string) => GenericResponse;
+    login: (username: string, password: string, rememberMe: boolean) => GenericResponse;
+    isRecaptchaOpen: boolean;
+    setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isRecaptchaPassed: boolean;
+    setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
+    error: string;
+    setError: React.Dispatch<React.SetStateAction<string | "">>;
+    showToast: (icon: string, message: string) => void;
+}
+
+const LoginForm = ({ navigate }: Props) => {
     const {
         verifyRecaptcha,
         login,
@@ -16,7 +34,7 @@ const LoginForm = ({ navigate }) => {
         error,
         setError,
         showToast,
-    } = useContext(AppContext);
+    }: ContextType = useContext(AppContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
@@ -81,7 +99,7 @@ const LoginForm = ({ navigate }) => {
                                     onChange={(key) =>
                                         handleRecaptcha(key, authGroup, userGroup, uiGroup)
                                     }
-                                    sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                                    sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
                                 ></ReCaptcha>
                             </div>
                         </div>

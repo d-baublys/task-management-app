@@ -1,11 +1,21 @@
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import { IoCloseSharp, IoCheckmarkCircleSharp, IoWarningSharp } from "react-icons/io5";
 
+interface ContextType {
+    notification: { icon: "success" | "failure"; message: string } | null;
+    setNotification: React.Dispatch<
+        React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
+    >;
+    isToastOpen: boolean;
+    setIsToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const ToastNotification = () => {
-    const { notification, setNotification, isToastOpen, setIsToastOpen } = useContext(AppContext);
+    const { notification, setNotification, isToastOpen, setIsToastOpen }: ContextType =
+        useContext(AppContext);
     const iconOptions = { success: IoCheckmarkCircleSharp, failure: IoWarningSharp };
-    const Icon = iconOptions[notification?.icon];
+    const Icon = notification ? iconOptions[notification.icon] : iconOptions["failure"];
 
     useEffect(() => {
         const visibilityTimeout = setTimeout(() => setIsToastOpen(false), 3000);

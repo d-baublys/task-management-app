@@ -7,7 +7,7 @@ interface Props {
     isDragging: boolean;
     description: string;
     dueDate: string;
-    width: number;
+    width?: number;
 }
 
 const Tile = ({ isDragging, description, dueDate, width }: Props) => {

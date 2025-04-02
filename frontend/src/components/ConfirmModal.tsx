@@ -1,9 +1,15 @@
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import ModalButton from "./base/ModalButton";
 
+interface ContextType {
+    modalPromise: (value: boolean) => void;
+    isConfirmOpen: boolean;
+    setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const ConfirmModal = () => {
-    const { modalPromise, isConfirmOpen, setIsConfirmOpen } = useContext(AppContext);
+    const { modalPromise, isConfirmOpen, setIsConfirmOpen }: ContextType = useContext(AppContext);
 
     useEffect(() => {
         isConfirmOpen

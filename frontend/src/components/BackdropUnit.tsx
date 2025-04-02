@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AppContext from "../context/AppContext";
 
 import AddModal from "./AddModal";
@@ -6,8 +6,16 @@ import ConfirmModal from "./ConfirmModal";
 import EditModal from "./EditModal";
 import DarkBackdrop from "./base/DarkBackdrop";
 
+interface ContextType {
+    isAddOpen: boolean;
+    isDeleteMode: boolean;
+    isConfirmOpen: boolean;
+    isEditOpen: boolean;
+}
+
 const BackdropUnit = () => {
-    const { isAddOpen, isDeleteMode, isConfirmOpen, isEditOpen } = useContext(AppContext);
+    const { isAddOpen, isDeleteMode, isConfirmOpen, isEditOpen }: ContextType =
+        useContext(AppContext);
 
     return (
         <>
