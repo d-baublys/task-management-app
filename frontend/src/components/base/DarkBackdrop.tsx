@@ -1,6 +1,12 @@
+import React from "react";
 import useHandleClicks from "../../hooks/useHandleClicks";
 
-const DarkBackdrop = ({ children, zIndex }) => {
+interface Props {
+    children: React.ReactNode;
+    zIndex: number;
+}
+
+const DarkBackdrop = ({ children, zIndex }: Props) => {
     const { backdropClick } = useHandleClicks();
 
     return (

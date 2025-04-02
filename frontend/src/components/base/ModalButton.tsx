@@ -1,4 +1,14 @@
-const ModalButton = ({ children, type = "button", onClick, disabled, customDimensions }) => {
+import React from "react";
+
+interface Props {
+    children: React.ReactNode;
+    type?: "button" | "submit" | "reset";
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
+    customDimensions?: string;
+}
+
+const ModalButton = ({ children, type = "button", onClick, disabled, customDimensions }: Props) => {
     return (
         <button
             type={type}

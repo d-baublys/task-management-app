@@ -1,7 +1,20 @@
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
 
-let timer = null;
+interface AppContextType {
+    dragAllowed: boolean;
+    setDragAllowed: React.Dispatch<React.SetStateAction<boolean>>;
+    activeTaskId: number | null;
+    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
+    setIsEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isDeleteMode: boolean;
+    setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    modalPromise: ((value: boolean) => void) | null;
+}
+
+let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
 const useHandleClicks = () => {
     const {
@@ -15,9 +28,9 @@ const useHandleClicks = () => {
         setIsDeleteMode,
         setIsConfirmOpen,
         modalPromise,
-    } = useContext(AppContext);
+    }: AppContextType = useContext(AppContext);
 
-    const taskMouseDown = (id) => {
+    const taskMouseDown = (id: number) => {
         setActiveTaskId(id);
         isDeleteMode ? setDragAllowed(true) : (timer = setTimeout(() => setDragAllowed(true), 100));
     };
@@ -29,16 +42,16 @@ const useHandleClicks = () => {
             setActiveTaskId(null);
         }
         clearTimeout(timer);
-        timer = null;
+        timer = undefined;
         setDragAllowed(false);
     };
 
-    const containsClick = (e, elementId) => {
+    const containsClick = (e: React.MouseEvent<HTMLElement>, elementId: string) => {
         const element = document.getElementById(elementId);
-        return element ? element.contains(e.target) : false;
+        return element ? element.contains(e.currentTarget) : false;
     };
 
-    const backdropClick = (e) => {
+    const backdropClick = (e: React.MouseEvent<HTMLElement>) => {
         if (
             !containsClick(e, "add-modal") &&
             !containsClick(e, "edit-modal") &&

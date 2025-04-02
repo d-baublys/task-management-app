@@ -1,9 +1,51 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../../context/AppContext";
 import ModalButton from "./ModalButton";
+import { AxiosResponse } from "axios";
 
-const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) => {
-    const { boardTitles, setActiveTaskId, saveTask, showToast } = useContext(AppContext);
+interface TaskType {
+    id: number;
+    status: string;
+    description: string;
+    due_date: string;
+    position: number;
+    user: number;
+}
+
+interface Props {
+    modalId: string;
+    modalAction: string;
+    modalState: boolean;
+    modalSetter: React.Dispatch<React.SetStateAction<boolean>>;
+    currentTask?: TaskType;
+}
+
+interface SaveTaskType {
+    currentTask?: TaskType;
+    status: string;
+    description: string;
+    dueDate: string;
+}
+
+interface ResponseType {
+    data: TaskType;
+    status: number;
+    statusText: string;
+    headers: object;
+    config: object;
+    request?: any;
+}
+
+interface AppContextType {
+    boardTitles: { [key: string]: string };
+    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
+    saveTask: (params: SaveTaskType) => Promise<AxiosResponse<ResponseType>>;
+    showToast: (icon: string, message: string) => void;
+}
+
+const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: Props) => {
+    const { boardTitles, setActiveTaskId, saveTask, showToast }: AppContextType =
+        useContext(AppContext);
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");
@@ -21,7 +63,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
         };
     }, [modalState]);
 
-    const handleSave = async (e) => {
+    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!status || !description || !dueDate) {
             showToast("failure", "Please fill in all fields");
@@ -59,7 +101,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             <option value="" disabled hidden>
                                 Select status...
                             </option>
-                            {Object.keys(boardTitles).map((key) => (
+                            {Object.keys(boardTitles).map((key: string) => (
                                 <option key={boardTitles[key]} value={boardTitles[key]}>
                                     {key}
                                 </option>
@@ -74,7 +116,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }) =
                             className="w-full px-2 rounded-md bg-gray-300 resize-none"
                             rows={5}
                             placeholder="Enter description..."
-                            maxLength={parseInt(process.env.REACT_APP_DESC_CHAR_LIMIT, 10)}
+                            maxLength={Number(process.env.REACT_APP_DESC_CHAR_LIMIT)}
                         />
                     </fieldset>
                     <fieldset className="w-full">

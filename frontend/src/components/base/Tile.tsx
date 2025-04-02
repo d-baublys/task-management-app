@@ -1,10 +1,17 @@
 import { format } from "date-fns";
 import { FaCalendarAlt } from "react-icons/fa";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AppContext from "../../context/AppContext";
 
-const Tile = ({ isDragging, description, dueDate, width }) => {
-    const { isDeleteMode } = useContext(AppContext);
+interface Props {
+    isDragging: boolean;
+    description: string;
+    dueDate: string;
+    width: number;
+}
+
+const Tile = ({ isDragging, description, dueDate, width }: Props) => {
+    const { isDeleteMode }: { isDeleteMode: boolean } = useContext(AppContext);
 
     return (
         <div
