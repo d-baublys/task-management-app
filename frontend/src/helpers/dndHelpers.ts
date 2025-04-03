@@ -1,6 +1,17 @@
-export const debounce = (func, delay = 300) => {
-    let timer;
-    return (...args) => {
+import { DropTargetMonitor } from "react-dnd";
+import {
+    TaskType,
+    AddUpdateResponse,
+    AddUpdateMultiResponse,
+    UpdateTaskParams,
+    BoardTitlesType,
+    TileItemType,
+} from "../types";
+
+export const debounce = <T, U, V>(func: (arg0: T, arg1: (params: U) => V) => void, delay = 300) => {
+    let timer: ReturnType<typeof setTimeout> | undefined = undefined;
+
+    return (...args: Parameters<typeof func>) => {
         clearTimeout(timer);
         timer = setTimeout(async () => {
             await func(...args);
@@ -8,39 +19,57 @@ export const debounce = (func, delay = 300) => {
     };
 };
 
-const debouncedUpdateTask = debounce(async (task, updateTask) => {
-    try {
-        await updateTask({ task });
-    } catch (error) {
-        console.error("Error saving moved task: ", error);
+const debouncedUpdateTask = debounce<TaskType, UpdateTaskParams, AddUpdateResponse>(
+    async (task, updateTask) => {
+        try {
+            await updateTask({ task });
+        } catch (error) {
+            console.error("Error saving moved task: ", error);
+        }
     }
-});
+);
 
-const debouncedUpdateMultiTask = debounce(async (tasks, updateMultiTask) => {
-    try {
-        await updateMultiTask(tasks);
-    } catch (error) {
-        console.error("Error saving reordered tasks: ", error);
+const debouncedUpdateMultiTask = debounce<TaskType[], TaskType[], AddUpdateMultiResponse>(
+    async (tasks, updateMultiTask) => {
+        try {
+            await updateMultiTask(tasks);
+        } catch (error) {
+            console.error("Error saving reordered tasks: ", error);
+        }
     }
-});
+);
 
-export const processTaskMove = (
-    setTasks,
-    updateTask,
-    updateMultiTask,
-    boardTitles,
-    title,
-    item,
-    monitor,
-    excludeRef,
-    isDeleteMode
-) => {
+type ProcessTaskMoveArgs = [
+    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
+    updateTask: (params: UpdateTaskParams) => AddUpdateResponse,
+    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
+    boardTitles: BoardTitlesType,
+    title: string,
+    item: TileItemType,
+    monitor: DropTargetMonitor,
+    excludeRef: React.RefObject<HTMLDivElement | null>,
+    isDeleteMode: boolean
+];
+
+export const processTaskMove = (...args: ProcessTaskMoveArgs) => {
+    const [
+        setTasks,
+        updateTask,
+        updateMultiTask,
+        boardTitles,
+        title,
+        item,
+        monitor,
+        excludeRef,
+        isDeleteMode,
+    ] = args;
+
     const clientOffset = monitor.getClientOffset();
 
     if (!clientOffset || isDeleteMode) return;
 
     const excludeBounding = excludeRef.current?.getBoundingClientRect();
-    const inDropZone = clientOffset.y > excludeBounding.bottom;
+    const inDropZone = excludeBounding ? clientOffset.y > excludeBounding.bottom : false;
 
     setTasks((prevTasks) => {
         const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
@@ -73,15 +102,19 @@ export const processTaskMove = (
     });
 };
 
-export const processTaskSwap = (
-    setTasks,
-    updateMultiTask,
-    item,
-    monitor,
-    id,
-    ref,
-    isDeleteMode
-) => {
+type ProcessTaskSwapArgs = [
+    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
+    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
+    item: TileItemType,
+    monitor: DropTargetMonitor,
+    id: number,
+    ref: React.RefObject<HTMLDivElement | null>,
+    isDeleteMode: boolean
+];
+
+export const processTaskSwap = (...args: ProcessTaskSwapArgs) => {
+    const [setTasks, updateMultiTask, item, monitor, id, ref, isDeleteMode] = args;
+
     if (!ref.current || isDeleteMode) return;
 
     const dragId = item.id;

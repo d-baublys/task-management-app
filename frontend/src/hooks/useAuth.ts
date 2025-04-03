@@ -8,14 +8,25 @@ import {
 } from "../services/api";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
-const useAuth = (
-    isAuthenticated,
-    setIsAuthenticated,
-    setUser,
-    setIsDropdownActive,
-    setLoading,
-    showToast
-) => {
+type UseAuthParams = [
+    isAuthenticated: boolean,
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>,
+    setUser: React.Dispatch<React.SetStateAction<string | null>>,
+    setIsDropdownActive: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    showToast: (icon: "success" | "failure", message: string) => void
+];
+
+const useAuth = (...args: UseAuthParams) => {
+    const [
+        isAuthenticated,
+        setIsAuthenticated,
+        setUser,
+        setIsDropdownActive,
+        setLoading,
+        showToast,
+    ] = args;
+
     const getToken = async () => {
         try {
             const response = await getTokenApi();
@@ -53,7 +64,7 @@ const useAuth = (
         }
     };
 
-    const verifyRecaptcha = async (key) => {
+    const verifyRecaptcha = async (key: string) => {
         try {
             await verifyRecaptchaApi(key);
         } catch (error) {
@@ -61,7 +72,7 @@ const useAuth = (
         }
     };
 
-    const login = async (username, password, rememberMe) => {
+    const login = async (username: string, password: string, rememberMe: boolean) => {
         try {
             const response = await loginApi(username, password, rememberMe);
             await getToken();

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import AppContext from "../../context/AppContext";
+import React, { useEffect, useState } from "react";
 import ModalButton from "./ModalButton";
-import { BoardTitlesType, AddUpdateResponse, TaskType } from "../../types";
+import { TaskType } from "../../types";
+import useAppContext from "../../context/AppContext";
 
 interface Props {
     modalId: string;
@@ -11,23 +11,8 @@ interface Props {
     currentTask?: TaskType;
 }
 
-interface SaveTaskType {
-    currentTask?: TaskType;
-    status: string;
-    description: string;
-    dueDate: string;
-}
-
-interface ContextType {
-    boardTitles: BoardTitlesType;
-    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
-    saveTask: (params: SaveTaskType) => AddUpdateResponse;
-    showToast: (icon: string, message: string) => void;
-}
-
 const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: Props) => {
-    const { boardTitles, setActiveTaskId, saveTask, showToast }: ContextType =
-        useContext(AppContext);
+    const { boardTitles, setActiveTaskId, saveTask, showToast } = useAppContext();
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");

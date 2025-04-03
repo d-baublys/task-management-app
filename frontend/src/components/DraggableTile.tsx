@@ -1,22 +1,11 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
 import Tile from "./base/Tile";
-import AppContext from "../context/AppContext";
 import { processTaskSwap } from "../helpers/dndHelpers";
 import useHandleClicks from "../hooks/useHandleClicks";
-import { TileType, TaskType } from "../types";
-import { AxiosResponse } from "axios";
-
-interface ContextType {
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
-    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    isDeleteMode: boolean;
-    dragAllowed: boolean;
-    setDragAllowed: React.Dispatch<React.SetStateAction<boolean>>;
-    activeTaskId: number;
-    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
-}
+import { TileType, TileItemType } from "../types";
+import useAppContext from "../context/AppContext";
 
 const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
     const {
@@ -27,11 +16,11 @@ const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
         setDragAllowed,
         activeTaskId,
         setActiveTaskId,
-    }: ContextType = useContext(AppContext);
+    } = useAppContext();
 
     const { taskMouseDown } = useHandleClicks();
 
-    const elementRef = useRef(null);
+    const elementRef = useRef<HTMLDivElement>(null);
     const widthRef = useRef<HTMLDivElement>(null);
     const [tileWidth, setTileWidth] = useState(0);
 
@@ -76,7 +65,7 @@ const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
             collect: (monitor) => ({
                 handlerId: monitor.getHandlerId(),
             }),
-            hover: (item, monitor) => {
+            hover: (item: TileItemType, monitor) => {
                 processTaskSwap(
                     setTasks,
                     updateMultiTask,

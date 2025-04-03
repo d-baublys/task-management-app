@@ -1,27 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
-import AppContext from "../context/AppContext";
 import { FaTrashAlt } from "react-icons/fa";
-import { GenericResponseType, TileItemType } from "../types";
-import { AxiosResponse } from "axios";
-
-interface ContextType {
-    deleteTask: (taskId: number) => Promise<AxiosResponse<GenericResponseType>>;
-    isDeleteMode: boolean;
-    setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setModalPromise: React.Dispatch<React.SetStateAction<(value: boolean) => void>>;
-    setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { TileItemType } from "../types";
+import useAppContext from "../context/AppContext";
 
 const DeleteButton = () => {
-    const {
-        deleteTask,
-        isDeleteMode,
-        setIsConfirmOpen,
-        setModalPromise,
-        setIsDeleteMode,
-    }: ContextType = useContext(AppContext);
+    const { deleteTask, isDeleteMode, setIsConfirmOpen, setModalPromise, setIsDeleteMode } =
+        useAppContext();
 
     const showModal = () => {
         return new Promise((resolve) => {

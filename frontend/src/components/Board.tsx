@@ -1,35 +1,17 @@
 import React, { useContext, useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
-import AppContext from "../context/AppContext";
 import { processTaskMove } from "../helpers/dndHelpers";
-import { BoardTitlesType, AddUpdateResponse, TaskType } from "../types";
-import { AxiosResponse } from "axios";
+import { TaskType } from "../types";
+import useAppContext from "../context/AppContext";
 
 interface Props {
     title: string;
     boardTasks: TaskType[];
 }
 
-interface UpdateTaskParams {
-    task: TaskType;
-    status?: string;
-    description?: string;
-    dueDate?: string;
-    index?: number;
-}
-
-interface ContextType {
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
-    updateTask: (params: UpdateTaskParams) => AddUpdateResponse;
-    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    boardTitles: BoardTitlesType;
-    isDeleteMode: boolean;
-}
-
 const Board = ({ title, boardTasks }: Props) => {
-    const { setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode }: ContextType =
-        useContext(AppContext);
+    const { setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode } = useAppContext();
 
     const excludeRef = useRef(null);
 

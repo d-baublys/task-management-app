@@ -1,19 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import AppContext from "../context/AppContext";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTemplate from "./base/PageTemplate";
 import LoginForm from "../components/LoginForm";
-
-interface ContextType {
-    error: string;
-    isAuthenticated: boolean;
-    isRecaptchaOpen: boolean;
-    isRecaptchaPassed: boolean;
-}
+import useAppContext from "../context/AppContext";
 
 const Login = () => {
-    const { error, isAuthenticated, isRecaptchaOpen, isRecaptchaPassed }: ContextType =
-        useContext(AppContext);
+    const { error, isAuthenticated, isRecaptchaOpen, isRecaptchaPassed } = useAppContext();
     const navigate = useNavigate();
 
     useEffect(() => {

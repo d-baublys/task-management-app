@@ -1,19 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useMediaQuery } from "react-responsive";
-import AppContext from "../context/AppContext";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { AxiosResponse } from "axios";
-import { GenericResponseType } from "../types";
-
-interface ContextType {
-    logout: () => Promise<AxiosResponse<GenericResponseType>>;
-    isDropdownActive: boolean;
-    showToast: (icon: string, message: string) => void;
-}
+import useAppContext from "../context/AppContext";
 
 const Dropdown = () => {
-    const { logout, isDropdownActive, showToast }: ContextType = useContext(AppContext);
+    const { logout, isDropdownActive, showToast } = useAppContext();
     const navigate = useNavigate();
 
     const isDesktop = useMediaQuery({ minWidth: 768 });

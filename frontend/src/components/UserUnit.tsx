@@ -1,19 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { IoPerson, IoPersonOutline, IoCaretUp } from "react-icons/io5";
-import React, { useContext } from "react";
-import AppContext from "../context/AppContext";
+import React from "react";
 import Dropdown from "./Dropdown";
-
-interface ContextType {
-    isAuthenticated: boolean;
-    isDropdownActive: boolean;
-    setIsDropdownActive: React.Dispatch<React.SetStateAction<boolean>>;
-    user: string;
-}
+import useAppContext from "../context/AppContext";
 
 const UserUnit = () => {
-    const { isAuthenticated, isDropdownActive, setIsDropdownActive, user }: ContextType =
-        useContext(AppContext);
+    const { isAuthenticated, isDropdownActive, setIsDropdownActive, user } = useAppContext();
     const navigate = useNavigate();
 
     const handleClick = () => {

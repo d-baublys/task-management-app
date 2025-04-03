@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
+import { AddTaskParams, SaveTaskParams, TaskType, UpdateTaskParams } from "../types";
 // import { getApiTasks, createApiTask, updateApiTask, deleteApiTask, getApiTasksFail, createApiTaskFail, updateApiTaskFail, deleteApiTaskFail } from "../services/api.mock";
 
-const useTasks = (isAuthenticated, setTasks, showToast) => {
+const useTasks = (
+    isAuthenticated: boolean,
+    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
+    showToast: (icon: "success" | "failure", message: string) => void
+) => {
     useEffect(() => {
         const getTasks = async () => {
             try {
@@ -16,7 +21,7 @@ const useTasks = (isAuthenticated, setTasks, showToast) => {
         isAuthenticated && getTasks();
     }, [isAuthenticated]);
 
-    const addTask = async ({ status, description, dueDate }) => {
+    const addTask = async ({ status, description, dueDate }: AddTaskParams) => {
         try {
             const response = await createApiTask(status, description, dueDate);
             setTasks((prevTasks) => [...prevTasks, response.data]);
@@ -29,7 +34,7 @@ const useTasks = (isAuthenticated, setTasks, showToast) => {
         }
     };
 
-    const updateTask = async ({ task, status, description, dueDate, index }) => {
+    const updateTask = async ({ task, status, description, dueDate, index }: UpdateTaskParams) => {
         try {
             const response = await updateApiTask(task.id, {
                 status: status || task.status,
@@ -46,7 +51,12 @@ const useTasks = (isAuthenticated, setTasks, showToast) => {
         }
     };
 
-    const saveTask = async ({ currentTask, status, description, dueDate }) => {
+    const saveTask = async ({
+        task: currentTask,
+        status,
+        description,
+        dueDate,
+    }: SaveTaskParams) => {
         if (currentTask) {
             try {
                 const response = await updateTask({
@@ -73,7 +83,7 @@ const useTasks = (isAuthenticated, setTasks, showToast) => {
         }
     };
 
-    const updateMultiTask = async (updatedTasks) => {
+    const updateMultiTask = async (updatedTasks: TaskType[]) => {
         try {
             await Promise.all(updatedTasks.map((task, index) => updateTask({ task, index })));
         } catch (error) {
@@ -81,7 +91,7 @@ const useTasks = (isAuthenticated, setTasks, showToast) => {
         }
     };
 
-    const deleteTask = async (taskId) => {
+    const deleteTask = async (taskId: number) => {
         try {
             const response = await deleteApiTask(taskId);
             setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));

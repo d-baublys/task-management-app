@@ -1,26 +1,13 @@
 import ModalButton from "./base/ModalButton";
 import { IoAlertCircle } from "react-icons/io5";
 import { handleSubmit, handleRecaptcha } from "../helpers/miscHelpers";
-import React, { useContext, useState } from "react";
-import AppContext from "../context/AppContext";
+import React, { useState } from "react";
 import ReCaptcha from "react-google-recaptcha";
 import { NavigateFunction } from "react-router-dom";
-import { GenericResponse } from "../types";
+import useAppContext from "../context/AppContext";
 
 interface Props {
     navigate: NavigateFunction;
-}
-
-interface ContextType {
-    verifyRecaptcha: (key: string) => GenericResponse;
-    login: (username: string, password: string, rememberMe: boolean) => GenericResponse;
-    isRecaptchaOpen: boolean;
-    setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    isRecaptchaPassed: boolean;
-    setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
-    error: string;
-    setError: React.Dispatch<React.SetStateAction<string | "">>;
-    showToast: (icon: string, message: string) => void;
 }
 
 const LoginForm = ({ navigate }: Props) => {
@@ -34,7 +21,8 @@ const LoginForm = ({ navigate }: Props) => {
         error,
         setError,
         showToast,
-    }: ContextType = useContext(AppContext);
+    } = useAppContext();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);

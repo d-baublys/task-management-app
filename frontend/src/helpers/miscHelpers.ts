@@ -1,5 +1,14 @@
-export const toastHelper = (setNotification, setIsToastOpen) => {
-    const showToast = (icon, message) => {
+type ToastHelperArgs = [
+    setNotification: React.Dispatch<
+        React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
+    >,
+    setIsToastOpen: React.Dispatch<React.SetStateAction<boolean>>
+];
+
+export const toastHelper = (...args: ToastHelperArgs) => {
+    const [setNotification, setIsToastOpen] = args;
+
+    const showToast = (icon: "success" | "failure", message: string) => {
         setTimeout(() => {
             setNotification({ icon, message });
             setIsToastOpen(true);
@@ -9,7 +18,22 @@ export const toastHelper = (setNotification, setIsToastOpen) => {
     return showToast;
 };
 
-export const handleRecaptcha = async (key, authGroup, userGroup, uiGroup) => {
+type HandleRecaptchaArgs = [
+    key: string,
+    authGroup: { login; rememberMe; setRememberMe; verifyRecaptcha },
+    userGroup: { username; setUsername; password; setPassword },
+    uiGroup: {
+        setError;
+        navigate;
+        showToast;
+        setIsRecaptchaOpen;
+        isRecaptchaPassed;
+        setIsRecaptchaPassed;
+    }
+];
+
+export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
+    const [key, authGroup, userGroup, uiGroup] = args;
     const { verifyRecaptcha } = authGroup;
     const { setError, showToast, setIsRecaptchaOpen, setIsRecaptchaPassed } = uiGroup;
 

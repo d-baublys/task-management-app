@@ -1,14 +1,10 @@
 import BoardButton from "./base/BoardButton";
-import React, { useContext } from "react";
-import AppContext from "../context/AppContext";
+import React from "react";
 import { FaPlusSquare } from "react-icons/fa";
-
-interface ContextType {
-    setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import useAppContext from "../context/AppContext";
 
 const CreateButton = () => {
-    const { setIsAddOpen }: ContextType = useContext(AppContext);
+    const { setIsAddOpen } = useAppContext();
     return (
         <BoardButton onClick={() => setIsAddOpen((prev) => !prev)} IconComponent={FaPlusSquare} />
     );

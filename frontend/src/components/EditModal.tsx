@@ -1,17 +1,10 @@
-import React, { useContext } from "react";
-import AppContext from "../context/AppContext";
+import React from "react";
 import Modal from "./base/Modal";
 import { TaskType } from "../types";
-
-interface ContextType {
-    isEditOpen: boolean;
-    setIsEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    activeTaskId: number;
-    tasks: TaskType[];
-}
+import useAppContext from "../context/AppContext";
 
 const EditModal = () => {
-    const { isEditOpen, setIsEditOpen, activeTaskId, tasks }: ContextType = useContext(AppContext);
+    const { isEditOpen, setIsEditOpen, activeTaskId, tasks } = useAppContext();
 
     const [currentTask] = tasks.filter((task: TaskType) => task.id === activeTaskId);
 

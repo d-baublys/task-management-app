@@ -1,12 +1,12 @@
-import AppContext from "./context/AppContext";
+import useAppContext from "./context/AppContext";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import ProtectedRoute from "./pages/base/ProtectedRoute";
 import Main from "./pages/Main";
-import { useContext } from "react";
+import React from "react";
 
 function App() {
-    const { isAuthenticated, loading } = useContext(AppContext);
+    const { isAuthenticated, loading } = useAppContext();
 
     if (loading) return;
 

@@ -1,5 +1,17 @@
 import { AxiosResponse } from "axios";
 
+interface BaseResponseType {
+    status: number;
+    statusText: string;
+    headers: object;
+    config: object;
+    request?: any;
+}
+
+interface GenericResponseType extends BaseResponseType {
+    data: object;
+}
+
 export interface TaskType {
     id: number;
     status: string;
@@ -20,24 +32,37 @@ export interface TileItemType extends TileType {
     tileWidth: number;
 }
 
-export interface BaseResponseType {
-    status: number;
-    statusText: string;
-    headers: object;
-    config: object;
-    request?: any;
-}
-
-export interface GenericResponseType extends BaseResponseType {
-    data: object;
-}
-
 export interface AddUpdateType extends BaseResponseType {
     data: TaskType;
 }
 
 export type BoardTitlesType = { [key: string]: string };
 
-export type AddUpdateResponse = Promise<AxiosResponse<TaskType>>;
-export type AddUpdateMultiResponse = Promise<AxiosResponse<TaskType[]>>;
+export type AddUpdateResponse = Promise<AxiosResponse<AddUpdateType>>;
+export type AddUpdateMultiResponse = Promise<AxiosResponse<AddUpdateType[]>>;
 export type GenericResponse = Promise<AxiosResponse<GenericResponseType>>;
+
+export interface TaskPayloadType {
+    status: string;
+    description: string;
+    due_date: string;
+    position: number;
+}
+
+export interface AddTaskParams {
+    status: string;
+    description: string;
+    dueDate: string;
+}
+
+export interface SaveTaskParams extends AddTaskParams {
+    task: TaskType;
+}
+
+export interface UpdateTaskParams {
+    task: TaskType;
+    status?: string;
+    description?: string;
+    dueDate?: string;
+    index?: number;
+}

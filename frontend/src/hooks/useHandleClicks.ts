@@ -1,18 +1,4 @@
-import { useContext } from "react";
-import AppContext from "../context/AppContext";
-
-interface ContextType {
-    dragAllowed: boolean;
-    setDragAllowed: React.Dispatch<React.SetStateAction<boolean>>;
-    activeTaskId: number | null;
-    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
-    setIsEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    isDeleteMode: boolean;
-    setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    modalPromise: (value: boolean) => void;
-}
+import useAppContext from "../context/AppContext";
 
 let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
@@ -28,7 +14,7 @@ const useHandleClicks = () => {
         setIsDeleteMode,
         setIsConfirmOpen,
         modalPromise,
-    }: ContextType = useContext(AppContext);
+    } = useAppContext();
 
     const taskMouseDown = (id: number) => {
         setActiveTaskId(id);

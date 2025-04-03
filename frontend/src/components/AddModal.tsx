@@ -1,14 +1,9 @@
 import React, { useContext } from "react";
-import AppContext from "../context/AppContext";
 import Modal from "./base/Modal";
-
-interface ContextType {
-    isAddOpen: boolean;
-    setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import useAppContext from "../context/AppContext";
 
 const AddModal = () => {
-    const { isAddOpen, setIsAddOpen }: ContextType = useContext(AppContext);
+    const { isAddOpen, setIsAddOpen } = useAppContext();
 
     return (
         <Modal
