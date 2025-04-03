@@ -10,6 +10,7 @@ import PageTemplate from "./base/PageTemplate";
 import BackdropUnit from "../components/BackdropUnit";
 import DeleteButton from "../components/DeleteButton";
 import CreateButton from "../components/CreateButton";
+import React from "react";
 
 function Main() {
     const { taskMouseUp } = useHandleClicks();

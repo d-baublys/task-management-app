@@ -1,5 +1,16 @@
+import React from "react";
 import Header from "../../components/Header";
 import ToastNotification from "../../components/ToastNotification";
+
+interface Props {
+    children: React.ReactNode;
+    leftContent?: React.ReactElement;
+    rightContent?: React.ReactElement;
+    overlayContent?: React.ReactElement;
+    onMouseUp?: () => void;
+    wrapperDimensions?: string;
+    columnDimensions?: string;
+}
 
 const PageTemplate = ({
     children,
@@ -9,7 +20,7 @@ const PageTemplate = ({
     onMouseUp,
     wrapperDimensions,
     columnDimensions,
-}) => {
+}: Props) => {
     return (
         <div
             onMouseUp={onMouseUp}
