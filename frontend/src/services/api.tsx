@@ -8,10 +8,11 @@ const api = axios.create({
 export const getApiTasks = () => api.get("tasks/");
 export const createApiTask = (status: string, description: string, dueDate: string) =>
     api.post("tasks/", { status: status, description: description, due_date: dueDate });
-export const updateApiTask = (taskId: number, data: TaskPayloadType) => api.patch(`tasks/${taskId}/`, data);
+export const updateApiTask = (taskId: number, data: TaskPayloadType) =>
+    api.patch(`tasks/${taskId}/`, data);
 export const deleteApiTask = (taskId: number) => api.delete(`tasks/${taskId}/`);
 
-export const verifyRecaptchaApi = (key: string) =>
+export const verifyRecaptchaApi = (key: string | null) =>
     api.post("verify-recaptcha/", { "g-recaptcha-response": key }, { withCredentials: true });
 export const loginApi = (username: string, password: string, rememberMe: boolean) =>
     api.post("login/", { username, password, remember_me: rememberMe }, { withCredentials: true });

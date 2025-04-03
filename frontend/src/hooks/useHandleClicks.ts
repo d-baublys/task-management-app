@@ -32,12 +32,12 @@ const useHandleClicks = () => {
         setDragAllowed(false);
     };
 
-    const containsClick = (e: React.MouseEvent<HTMLElement>, elementId: string) => {
+    const containsClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, elementId: string) => {
         const element = document.getElementById(elementId);
-        return element ? element.contains(e.currentTarget) : false;
+        return element ? element.contains(e.target as Node) : false;
     };
 
-    const backdropClick = (e: React.MouseEvent<HTMLElement>) => {
+    const backdropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (
             !containsClick(e, "add-modal") &&
             !containsClick(e, "edit-modal") &&

@@ -1,3 +1,7 @@
+import { NavigateFunction } from "react-router-dom";
+import { GenericResponse } from "../types";
+import { AxiosError } from "axios";
+
 type ToastHelperArgs = [
     setNotification: React.Dispatch<
         React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
@@ -18,19 +22,44 @@ export const toastHelper = (...args: ToastHelperArgs) => {
     return showToast;
 };
 
+interface AuthGroupType {
+    login: (username: string, password: string, rememberMe: boolean) => GenericResponse;
+    rememberMe: boolean;
+    setRememberMe: React.Dispatch<React.SetStateAction<boolean>>;
+    verifyRecaptcha: (key: string | null) => GenericResponse;
+}
+
+interface UserGroupType {
+    username: string;
+    setUsername: React.Dispatch<React.SetStateAction<string>>;
+    password: string;
+    setPassword: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface UiGroupType {
+    setError: React.Dispatch<React.SetStateAction<string>>;
+    navigate: NavigateFunction;
+    showToast: (icon: "success" | "failure", message: string) => void;
+    setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isRecaptchaPassed: boolean;
+    setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 type HandleRecaptchaArgs = [
-    key: string,
-    authGroup: { login; rememberMe; setRememberMe; verifyRecaptcha },
-    userGroup: { username; setUsername; password; setPassword },
-    uiGroup: {
-        setError;
-        navigate;
-        showToast;
-        setIsRecaptchaOpen;
-        isRecaptchaPassed;
-        setIsRecaptchaPassed;
-    }
+    key: string | null,
+    authGroup: AuthGroupType,
+    userGroup: UserGroupType,
+    uiGroup: UiGroupType
 ];
+
+type HandleSubmitArgs = [
+    e: React.FormEvent<HTMLFormElement>,
+    authGroup: AuthGroupType,
+    userGroup: UserGroupType,
+    uiGroup: UiGroupType
+];
+
+type ExecuteSubmitArgs = [authGroup: AuthGroupType, userGroup: UserGroupType, uiGroup: UiGroupType];
 
 export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
     const [key, authGroup, userGroup, uiGroup] = args;
@@ -42,18 +71,22 @@ export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
         setIsRecaptchaPassed(true);
         setIsRecaptchaOpen(false);
         await executeSubmit(authGroup, userGroup, uiGroup);
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("reCAPTCHA error: ", error);
 
-        if (error.response.status === 403) {
-            setError(error.response.data.detail);
-        } else {
-            showToast("failure", "reCAPTCHA error!");
+        if (error instanceof AxiosError) {
+            if (error.response?.status === 403) {
+                setError(error.response.data.detail);
+            } else {
+                showToast("failure", "reCAPTCHA error!");
+            }
         }
     }
 };
 
-export const handleSubmit = async (e, authGroup, userGroup, uiGroup) => {
+export const handleSubmit = async (...args: HandleSubmitArgs) => {
+    const [e, authGroup, userGroup, uiGroup] = args;
+
     e.preventDefault();
 
     const { username, password } = userGroup;
@@ -68,7 +101,8 @@ export const handleSubmit = async (e, authGroup, userGroup, uiGroup) => {
     }
 };
 
-export const executeSubmit = async (authGroup, userGroup, uiGroup) => {
+export const executeSubmit = async (...args: ExecuteSubmitArgs) => {
+    const [authGroup, userGroup, uiGroup] = args;
     const { login, rememberMe, setRememberMe } = authGroup;
     const { username, setUsername, password, setPassword } = userGroup;
     const { setError, navigate, showToast } = uiGroup;
@@ -78,19 +112,21 @@ export const executeSubmit = async (authGroup, userGroup, uiGroup) => {
         await login(username, password, rememberMe);
         navigate("/main");
         showToast("success", "Log in successful!");
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("Error logging in: ", error);
 
-        if (error.response.status === 401) {
-            setError(error.response.data.detail);
-        } else if ([403, 429].includes(error.response.status)) {
-            setError("Too many failed login attempts! Please try again later.");
-        } else {
-            showToast("failure", "Error logging in!");
+        if (error instanceof AxiosError) {
+            if (error.response?.status === 401) {
+                setError(error.response.data.detail);
+            } else if ([403, 429].includes(error.response!.status)) {
+                setError("Too many failed login attempts! Please try again later.");
+            } else {
+                showToast("failure", "Error logging in!");
+            }
         }
-    }
 
-    setUsername("");
-    setPassword("");
-    setRememberMe(false);
+        setUsername("");
+        setPassword("");
+        setRememberMe(false);
+    }
 };

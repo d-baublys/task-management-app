@@ -85,7 +85,10 @@ const useTasks = (
 
     const updateMultiTask = async (updatedTasks: TaskType[]) => {
         try {
-            await Promise.all(updatedTasks.map((task, index) => updateTask({ task, index })));
+            const response = await Promise.all(
+                updatedTasks.map((task, index) => updateTask({ task, index }))
+            );
+            return response;
         } catch (error) {
             console.error("Error updating tasks: ", error);
         }

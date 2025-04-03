@@ -58,14 +58,18 @@ const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
         return () => window.removeEventListener("resize", updateTileWidth);
     }, []);
 
-    const [{ handlerId }, dropRef] = useDrop(
+    interface CollectedInterface {
+        handlerId: (string | symbol) | null
+    }
+
+    const [{ handlerId }, dropRef] = useDrop<TileItemType, unknown, CollectedInterface>(
         {
             accept: "BOX",
             canDrop: () => !isDeleteMode,
             collect: (monitor) => ({
                 handlerId: monitor.getHandlerId(),
             }),
-            hover: (item: TileItemType, monitor) => {
+            hover: (item, monitor) => {
                 processTaskSwap(
                     setTasks,
                     updateMultiTask,

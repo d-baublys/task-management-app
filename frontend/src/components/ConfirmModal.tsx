@@ -16,12 +16,12 @@ const ConfirmModal = () => {
     }, [isConfirmOpen]);
 
     const handleConfirm = () => {
-        modalPromise(true);
+        modalPromise?.(true);
         setIsConfirmOpen(false);
     };
 
     const handleCancel = () => {
-        modalPromise(false);
+        modalPromise?.(false);
         setIsConfirmOpen(false);
     };
 

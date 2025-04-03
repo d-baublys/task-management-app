@@ -1,8 +1,8 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { processTaskMove } from "../helpers/dndHelpers";
-import { TaskType } from "../types";
+import { TaskType, TileItemType } from "../types";
 import useAppContext from "../context/AppContext";
 
 interface Props {
@@ -19,7 +19,7 @@ const Board = ({ title, boardTasks }: Props) => {
         () => ({
             accept: "BOX",
             canDrop: () => !isDeleteMode,
-            hover: (item, monitor) => {
+            hover: (item: TileItemType, monitor) => {
                 processTaskMove(
                     setTasks,
                     updateTask,

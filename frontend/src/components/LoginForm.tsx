@@ -84,7 +84,7 @@ const LoginForm = ({ navigate }: Props) => {
                         <div className="w-[264px] md:w-[304px]">
                             <div className="w-min scale-[86.84%] md:scale-100 origin-left">
                                 <ReCaptcha
-                                    onChange={(key) =>
+                                    onChange={(key: string | null) =>
                                         handleRecaptcha(key, authGroup, userGroup, uiGroup)
                                     }
                                     sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}

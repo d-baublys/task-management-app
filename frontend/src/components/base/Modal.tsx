@@ -37,7 +37,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: P
             return;
         }
 
-        await saveTask({ currentTask, status, description, dueDate });
+        await saveTask({ task: currentTask, status, description, dueDate });
         setActiveTaskId(null);
         modalSetter(false);
     };

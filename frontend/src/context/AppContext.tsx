@@ -40,8 +40,8 @@ interface ContextType {
     setDragAllowed: React.Dispatch<React.SetStateAction<boolean>>;
     isConfirmOpen: boolean;
     setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    modalPromise: (value: boolean) => void;
-    setModalPromise: React.Dispatch<React.SetStateAction<(value: boolean) => void>>;
+    modalPromise: ((value: boolean) => void) | null;
+    setModalPromise: React.Dispatch<React.SetStateAction<((value: boolean) => void) | null>>;
     isEditOpen: boolean;
     setIsEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isDropdownActive: boolean;
@@ -57,7 +57,7 @@ interface ContextType {
     showToast: (icon: "success" | "failure", message: string) => void;
     isRecaptchaOpen: boolean;
     setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    verifyRecaptcha: (key: string) => GenericResponse;
+    verifyRecaptcha: (key: string | null) => GenericResponse;
     isRecaptchaPassed: boolean;
     setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -76,9 +76,9 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDropdownActive, setIsDropdownActive] = useState(false);
     const [isToastOpen, setIsToastOpen] = useState(false);
-    const [modalPromise, setModalPromise] = useState(null);
+    const [modalPromise, setModalPromise] = useState<((value: boolean) => void) | null>(null);
     const [dragAllowed, setDragAllowed] = useState(false);
-    const [activeTaskId, setActiveTaskId] = useState(null);
+    const [activeTaskId, setActiveTaskId] = useState<number | null>(null);
     const [notification, setNotification] = useState<{
         icon: "success" | "failure";
         message: string;

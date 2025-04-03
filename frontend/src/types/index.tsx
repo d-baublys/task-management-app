@@ -38,9 +38,9 @@ export interface AddUpdateType extends BaseResponseType {
 
 export type BoardTitlesType = { [key: string]: string };
 
-export type AddUpdateResponse = Promise<AxiosResponse<AddUpdateType>>;
-export type AddUpdateMultiResponse = Promise<AxiosResponse<AddUpdateType[]>>;
-export type GenericResponse = Promise<AxiosResponse<GenericResponseType>>;
+export type AddUpdateResponse = Promise<AxiosResponse<AddUpdateType> | undefined>;
+export type AddUpdateMultiResponse = Promise<AxiosResponse<AddUpdateType>[] | undefined>;
+export type GenericResponse = Promise<AxiosResponse<GenericResponseType> | undefined>;
 
 export interface TaskPayloadType {
     status: string;
@@ -56,7 +56,7 @@ export interface AddTaskParams {
 }
 
 export interface SaveTaskParams extends AddTaskParams {
-    task: TaskType;
+    task?: TaskType;
 }
 
 export interface UpdateTaskParams {

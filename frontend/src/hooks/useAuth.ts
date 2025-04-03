@@ -64,9 +64,10 @@ const useAuth = (...args: UseAuthParams) => {
         }
     };
 
-    const verifyRecaptcha = async (key: string) => {
+    const verifyRecaptcha = async (key: string | null) => {
         try {
-            await verifyRecaptchaApi(key);
+            const response = await verifyRecaptchaApi(key);
+            return response;
         } catch (error) {
             throw error;
         }
