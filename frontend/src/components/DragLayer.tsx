@@ -1,11 +1,11 @@
 import { useDragLayer, XYCoord } from "react-dnd";
 import Tile from "./base/Tile";
 import React from "react";
-import { TileItemType } from "../types";
+import { DndTileData } from "../types";
 import useAppContext from "../context/AppContext";
 
 interface DragType {
-    item: TileItemType;
+    item: DndTileData;
     currentOffset: XYCoord | null;
 }
 

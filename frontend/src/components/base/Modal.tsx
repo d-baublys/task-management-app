@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ModalButton from "./ModalButton";
-import { TaskType } from "../../types";
+import { StateSetter, TaskType } from "../../types";
 import useAppContext from "../../context/AppContext";
 
 interface Props {
     modalId: string;
     modalAction: string;
     modalState: boolean;
-    modalSetter: React.Dispatch<React.SetStateAction<boolean>>;
+    modalSetter: StateSetter<boolean>;
     currentTask?: TaskType;
 }
 

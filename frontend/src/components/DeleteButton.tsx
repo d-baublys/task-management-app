@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import { FaTrashAlt } from "react-icons/fa";
-import { TileItemType } from "../types";
+import { DndTileData } from "../types";
 import useAppContext from "../context/AppContext";
 
 const DeleteButton = () => {
@@ -17,7 +17,7 @@ const DeleteButton = () => {
         });
     };
 
-    const handleDrop = async (item: TileItemType) => {
+    const handleDrop = async (item: DndTileData) => {
         if (!isDeleteMode) return;
         const result = await showModal();
         if (result) {
@@ -29,7 +29,7 @@ const DeleteButton = () => {
         () => ({
             accept: "BOX",
             canDrop: () => isDeleteMode,
-            drop: (item: TileItemType) => handleDrop(item),
+            drop: (item: DndTileData) => handleDrop(item),
             collect: (monitor) => ({
                 isOver: monitor.isOver(),
             }),

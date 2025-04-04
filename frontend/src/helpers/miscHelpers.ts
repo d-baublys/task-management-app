@@ -1,12 +1,12 @@
 import { NavigateFunction } from "react-router-dom";
-import { GenericResponse } from "../types";
+import { GeneralApiResponse, StateSetter } from "../types";
 import { AxiosError } from "axios";
 
 type ToastHelperArgs = [
     setNotification: React.Dispatch<
         React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
     >,
-    setIsToastOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsToastOpen: StateSetter<boolean>
 ];
 
 export const toastHelper = (...args: ToastHelperArgs) => {
@@ -23,26 +23,26 @@ export const toastHelper = (...args: ToastHelperArgs) => {
 };
 
 interface AuthGroupType {
-    login: (username: string, password: string, rememberMe: boolean) => GenericResponse;
+    login: (username: string, password: string, rememberMe: boolean) => GeneralApiResponse;
     rememberMe: boolean;
-    setRememberMe: React.Dispatch<React.SetStateAction<boolean>>;
-    verifyRecaptcha: (key: string | null) => GenericResponse;
+    setRememberMe: StateSetter<boolean>;
+    verifyRecaptcha: (key: string | null) => GeneralApiResponse;
 }
 
 interface UserGroupType {
     username: string;
-    setUsername: React.Dispatch<React.SetStateAction<string>>;
+    setUsername: StateSetter<string>;
     password: string;
-    setPassword: React.Dispatch<React.SetStateAction<string>>;
+    setPassword: StateSetter<string>;
 }
 
 interface UiGroupType {
-    setError: React.Dispatch<React.SetStateAction<string>>;
+    setError: StateSetter<string>;
     navigate: NavigateFunction;
     showToast: (icon: "success" | "failure", message: string) => void;
-    setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsRecaptchaOpen: StateSetter<boolean>;
     isRecaptchaPassed: boolean;
-    setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsRecaptchaPassed: StateSetter<boolean>;
 }
 
 type HandleRecaptchaArgs = [
@@ -118,7 +118,7 @@ export const executeSubmit = async (...args: ExecuteSubmitArgs) => {
         if (error instanceof AxiosError) {
             if (error.response?.status === 401) {
                 setError(error.response.data.detail);
-            } else if ([403, 429].includes(error.response!.status)) {
+            } else if ([403, 429].includes(error.response?.status ?? -1)) {
                 setError("Too many failed login attempts! Please try again later.");
             } else {
                 showToast("failure", "Error logging in!");

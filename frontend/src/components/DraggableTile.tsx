@@ -4,10 +4,10 @@ import { motion } from "motion/react";
 import Tile from "./base/Tile";
 import { processTaskSwap } from "../helpers/dndHelpers";
 import useHandleClicks from "../hooks/useHandleClicks";
-import { TileType, TileItemType } from "../types";
+import { DndTileParams, DndTileData } from "../types";
 import useAppContext from "../context/AppContext";
 
-const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
+const DraggableTile = ({ id, status, description, dueDate }: DndTileParams) => {
     const {
         setTasks,
         updateMultiTask,
@@ -59,10 +59,10 @@ const DraggableTile = ({ id, status, description, dueDate }: TileType) => {
     }, []);
 
     interface CollectedInterface {
-        handlerId: (string | symbol) | null
+        handlerId: (string | symbol) | null;
     }
 
-    const [{ handlerId }, dropRef] = useDrop<TileItemType, unknown, CollectedInterface>(
+    const [{ handlerId }, dropRef] = useDrop<DndTileData, unknown, CollectedInterface>(
         {
             accept: "BOX",
             canDrop: () => !isDeleteMode,

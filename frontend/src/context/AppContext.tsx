@@ -7,59 +7,58 @@ import {
     AddUpdateMultiResponse,
     AddUpdateResponse,
     BoardTitlesType,
-    GenericResponse,
+    GeneralApiResponse,
     SaveTaskParams,
+    StateSetter,
     TaskType,
     UpdateTaskParams,
 } from "../types";
 
 interface ContextType {
     isAuthenticated: boolean;
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
-    setUser: React.Dispatch<React.SetStateAction<string | null>>;
-    login: (username: string, password: string, rememberMe: boolean) => GenericResponse;
+    setUser: StateSetter<string | null>;
+    login: (username: string, password: string, rememberMe: boolean) => GeneralApiResponse;
     logout: () => Promise<void>;
     loading: boolean;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setLoading: StateSetter<boolean>;
     error: string;
-    setError: React.Dispatch<React.SetStateAction<string | "">>;
+    setError: StateSetter<string | "">;
     tasks: TaskType[];
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
+    setTasks: StateSetter<TaskType[]>;
     addTask: (param: AddTaskParams) => AddUpdateResponse;
     updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
     saveTask: (param: SaveTaskParams) => AddUpdateResponse;
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    deleteTask: (taskId: number) => GenericResponse;
+    deleteTask: (taskId: number) => GeneralApiResponse;
     boardTitles: BoardTitlesType;
     isAddOpen: boolean;
-    setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAddOpen: StateSetter<boolean>;
     isDeleteMode: boolean;
-    setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsDeleteMode: StateSetter<boolean>;
     dragAllowed: boolean;
-    setDragAllowed: React.Dispatch<React.SetStateAction<boolean>>;
+    setDragAllowed: StateSetter<boolean>;
     isConfirmOpen: boolean;
-    setIsConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsConfirmOpen: StateSetter<boolean>;
     modalPromise: ((value: boolean) => void) | null;
-    setModalPromise: React.Dispatch<React.SetStateAction<((value: boolean) => void) | null>>;
+    setModalPromise: StateSetter<((value: boolean) => void) | null>;
     isEditOpen: boolean;
-    setIsEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsEditOpen: StateSetter<boolean>;
     isDropdownActive: boolean;
-    setIsDropdownActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsDropdownActive: StateSetter<boolean>;
     activeTaskId: number | null;
-    setActiveTaskId: React.Dispatch<React.SetStateAction<number | null>>;
+    setActiveTaskId: StateSetter<number | null>;
     notification: { icon: "success" | "failure"; message: string } | null;
-    setNotification: React.Dispatch<
-        React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
-    >;
+    setNotification: StateSetter<{ icon: "success" | "failure"; message: string } | null>;
     isToastOpen: boolean;
-    setIsToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsToastOpen: StateSetter<boolean>;
     showToast: (icon: "success" | "failure", message: string) => void;
     isRecaptchaOpen: boolean;
-    setIsRecaptchaOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    verifyRecaptcha: (key: string | null) => GenericResponse;
+    setIsRecaptchaOpen: StateSetter<boolean>;
+    verifyRecaptcha: (key: string | null) => GeneralApiResponse;
     isRecaptchaPassed: boolean;
-    setIsRecaptchaPassed: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsRecaptchaPassed: StateSetter<boolean>;
 }
 
 const AppContext = createContext<ContextType | undefined>(undefined);
@@ -104,7 +103,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const boardTitles = {
         "To Do": "to_do",
         "In Progress": "in_progress",
-        Done: "done",
+        "Done": "done",
     };
 
     return (

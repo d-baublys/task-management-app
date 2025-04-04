@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
-import { AddTaskParams, SaveTaskParams, TaskType, UpdateTaskParams } from "../types";
+import { AddTaskParams, SaveTaskParams, StateSetter, TaskType, UpdateTaskParams } from "../types";
 // import { getApiTasks, createApiTask, updateApiTask, deleteApiTask, getApiTasksFail, createApiTaskFail, updateApiTaskFail, deleteApiTaskFail } from "../services/api.mock";
 
 const useTasks = (
     isAuthenticated: boolean,
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
+    setTasks: StateSetter<TaskType[]>,
     showToast: (icon: "success" | "failure", message: string) => void
 ) => {
     useEffect(() => {

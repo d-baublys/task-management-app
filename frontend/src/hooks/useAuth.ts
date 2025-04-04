@@ -6,14 +6,15 @@ import {
     logoutApi,
     toggleTokenHeader,
 } from "../services/api";
+import { StateSetter } from "../types";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
 type UseAuthParams = [
     isAuthenticated: boolean,
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>,
-    setUser: React.Dispatch<React.SetStateAction<string | null>>,
-    setIsDropdownActive: React.Dispatch<React.SetStateAction<boolean>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsAuthenticated: StateSetter<boolean>,
+    setUser: StateSetter<string | null>,
+    setIsDropdownActive: StateSetter<boolean>,
+    setLoading: StateSetter<boolean>,
     showToast: (icon: "success" | "failure", message: string) => void
 ];
 

@@ -5,10 +5,11 @@ import {
     AddUpdateMultiResponse,
     UpdateTaskParams,
     BoardTitlesType,
-    TileItemType,
+    DndTileData,
+    StateSetter,
 } from "../types";
 
-export const debounce = <T, U, V>(func: (arg0: T, arg1: (params: U) => V) => void, delay = 300) => {
+export const debounce = <T, U, V>(func: (arg0: T, arg1: (param: U) => V) => void, delay = 300) => {
     let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
     return (...args: Parameters<typeof func>) => {
@@ -40,12 +41,12 @@ const debouncedUpdateMultiTask = debounce<TaskType[], TaskType[], AddUpdateMulti
 );
 
 type ProcessTaskMoveArgs = [
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
-    updateTask: (params: UpdateTaskParams) => AddUpdateResponse,
+    setTasks: StateSetter<TaskType[]>,
+    updateTask: (param: UpdateTaskParams) => AddUpdateResponse,
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
     boardTitles: BoardTitlesType,
     title: string,
-    item: TileItemType,
+    item: DndTileData,
     monitor: DropTargetMonitor,
     excludeRef: React.RefObject<HTMLDivElement | null>,
     isDeleteMode: boolean
@@ -103,9 +104,9 @@ export const processTaskMove = (...args: ProcessTaskMoveArgs) => {
 };
 
 type ProcessTaskSwapArgs = [
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
+    setTasks: StateSetter<TaskType[]>,
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
-    item: TileItemType,
+    item: DndTileData,
     monitor: DropTargetMonitor,
     id: number,
     ref: React.RefObject<HTMLDivElement | null>,
