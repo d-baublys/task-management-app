@@ -6,28 +6,26 @@ import {
     logoutApi,
     toggleTokenHeader,
 } from "../services/api";
-import { StateSetter } from "../types";
+import { LoginParams, StateSetter } from "../types";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
-type UseAuthParams = [
-    isAuthenticated: boolean,
-    setIsAuthenticated: StateSetter<boolean>,
-    setUser: StateSetter<string | null>,
-    setIsDropdownActive: StateSetter<boolean>,
-    setLoading: StateSetter<boolean>,
-    showToast: (icon: "success" | "failure", message: string) => void
-];
+interface UseAuthParams {
+    isAuthenticated: boolean;
+    setIsAuthenticated: StateSetter<boolean>;
+    setUser: StateSetter<string | null>;
+    setIsDropdownActive: StateSetter<boolean>;
+    setLoading: StateSetter<boolean>;
+    showToast: (icon: "success" | "failure", message: string) => void;
+}
 
-const useAuth = (...args: UseAuthParams) => {
-    const [
-        isAuthenticated,
-        setIsAuthenticated,
-        setUser,
-        setIsDropdownActive,
-        setLoading,
-        showToast,
-    ] = args;
-
+const useAuth = ({
+    isAuthenticated,
+    setIsAuthenticated,
+    setUser,
+    setIsDropdownActive,
+    setLoading,
+    showToast,
+}: UseAuthParams) => {
     const getToken = async () => {
         try {
             const response = await getTokenApi();
@@ -74,9 +72,9 @@ const useAuth = (...args: UseAuthParams) => {
         }
     };
 
-    const login = async (username: string, password: string, rememberMe: boolean) => {
+    const login = async ({ username, password, rememberMe }: LoginParams) => {
         try {
-            const response = await loginApi(username, password, rememberMe);
+            const response = await loginApi({ username, password, rememberMe });
             await getToken();
 
             return response;

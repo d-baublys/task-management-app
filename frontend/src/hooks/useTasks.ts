@@ -23,8 +23,8 @@ const useTasks = (
 
     const addTask = async ({ status, description, dueDate }: AddTaskParams) => {
         try {
-            const response = await createApiTask(status, description, dueDate);
-            setTasks((prevTasks) => [...prevTasks, response.data]);
+            const response = await createApiTask({ status, description, dueDate });
+            setTasks((prevTasks) => [...prevTasks, response!.data]);
             showToast("success", "Task added!");
 
             return response;

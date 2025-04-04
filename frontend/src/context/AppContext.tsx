@@ -8,6 +8,7 @@ import {
     AddUpdateResponse,
     BoardTitlesType,
     GeneralApiResponse,
+    LoginParams,
     SaveTaskParams,
     StateSetter,
     TaskType,
@@ -19,7 +20,7 @@ interface ContextType {
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (username: string, password: string, rememberMe: boolean) => GeneralApiResponse;
+    login: (param: LoginParams) => GeneralApiResponse;
     logout: () => Promise<void>;
     loading: boolean;
     setLoading: StateSetter<boolean>;
@@ -85,15 +86,15 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const [isRecaptchaOpen, setIsRecaptchaOpen] = useState(false);
     const [isRecaptchaPassed, setIsRecaptchaPassed] = useState(false);
 
-    const showToast = toastHelper(setNotification, setIsToastOpen);
-    const { verifyRecaptcha, login, logout } = useAuth(
+    const showToast = toastHelper({ setNotification, setIsToastOpen });
+    const { verifyRecaptcha, login, logout } = useAuth({
         isAuthenticated,
         setIsAuthenticated,
         setUser,
         setIsDropdownActive,
         setLoading,
-        showToast
-    );
+        showToast,
+    });
     const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
         isAuthenticated,
         setTasks,

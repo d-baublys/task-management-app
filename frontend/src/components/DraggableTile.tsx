@@ -70,15 +70,15 @@ const DraggableTile = ({ id, status, description, dueDate }: DndTileParams) => {
                 handlerId: monitor.getHandlerId(),
             }),
             hover: (item, monitor) => {
-                processTaskSwap(
+                processTaskSwap({
                     setTasks,
                     updateMultiTask,
                     item,
                     monitor,
                     id,
                     elementRef,
-                    isDeleteMode
-                );
+                    isDeleteMode,
+                });
             },
         },
         [isDeleteMode]

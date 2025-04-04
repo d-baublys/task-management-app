@@ -41,6 +41,12 @@ export interface UpdateTaskParams {
     index?: number;
 }
 
+export interface LoginParams {
+    username: string;
+    password: string;
+    rememberMe: boolean;
+}
+
 interface BaseResponseType {
     status: number;
     statusText: string;
@@ -49,7 +55,7 @@ interface BaseResponseType {
     request?: any;
 }
 
-export interface AddUpdateType extends BaseResponseType {
+interface AddUpdateType extends BaseResponseType {
     data: TaskType;
 }
 

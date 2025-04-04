@@ -20,7 +20,7 @@ const Board = ({ title, boardTasks }: Props) => {
             accept: "BOX",
             canDrop: () => !isDeleteMode,
             hover: (item: DndTileData, monitor) => {
-                processTaskMove(
+                processTaskMove({
                     setTasks,
                     updateTask,
                     updateMultiTask,
@@ -29,8 +29,8 @@ const Board = ({ title, boardTasks }: Props) => {
                     item,
                     monitor,
                     excludeRef,
-                    isDeleteMode
-                );
+                    isDeleteMode,
+                });
             },
             collect: (monitor) => ({
                 isOver: monitor.isOver(),

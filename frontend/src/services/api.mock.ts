@@ -1,13 +1,33 @@
+import { AddTaskParams, TaskPayloadType } from "../types";
+
 export const getApiTasks = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
                 data: [
                     {
-                        id: 0,
+                        id: 3,
                         status: "to_do",
-                        description: "A mocked task",
+                        description: "First mocked task",
                         due_date: "2025-02-01",
+                        position: 0,
+                        user: 1,
+                    },
+                    {
+                        id: 1,
+                        status: "in_progress",
+                        description: "Second mocked task",
+                        due_date: "2025-02-01",
+                        position: 1,
+                        user: 1,
+                    },
+                    {
+                        id: 5,
+                        status: "done",
+                        description: "Third mocked task",
+                        due_date: "2025-02-01",
+                        position: 2,
+                        user: 1,
                     },
                 ],
             });
@@ -15,7 +35,7 @@ export const getApiTasks = () => {
     });
 };
 
-export const createApiTask = (status, description, dueDate) => {
+export const createApiTask = ({ status, description, dueDate }: AddTaskParams) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
@@ -24,13 +44,15 @@ export const createApiTask = (status, description, dueDate) => {
                     status,
                     description,
                     due_date: dueDate,
+                    position: Math.floor(Math.random() * 100),
+                    user: 1,
                 },
             });
         }, 500);
     });
 };
 
-export const updateApiTask = (taskId, data) => {
+export const updateApiTask = (taskId: number, data: TaskPayloadType) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
@@ -43,7 +65,7 @@ export const updateApiTask = (taskId, data) => {
     });
 };
 
-export const deleteApiTask = (taskId) => {
+export const deleteApiTask = (taskId: number) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
@@ -90,7 +112,8 @@ export const getTokenApi = () => {
         setTimeout(() => {
             resolve({
                 data: {
-                    username: "mock_user",
+                    username: "mock_username",
+                    access_token: "MOCK_ACCESS_TOKEN",
                 },
             });
         }, 500);
@@ -102,7 +125,8 @@ export const loginApi = () => {
         setTimeout(() => {
             resolve({
                 data: {
-                    username: "mock_user",
+                    message: "Log in successful",
+                    username: "mock_username",
                 },
             });
         }, 500);

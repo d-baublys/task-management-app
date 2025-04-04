@@ -9,6 +9,28 @@ import {
     StateSetter,
 } from "../types";
 
+interface ProcessTaskMoveArgs {
+    setTasks: StateSetter<TaskType[]>;
+    updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
+    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
+    boardTitles: BoardTitlesType;
+    title: string;
+    item: DndTileData;
+    monitor: DropTargetMonitor;
+    excludeRef: React.RefObject<HTMLDivElement | null>;
+    isDeleteMode: boolean;
+}
+
+interface ProcessTaskSwapArgs {
+    setTasks: StateSetter<TaskType[]>;
+    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
+    item: DndTileData;
+    monitor: DropTargetMonitor;
+    id: number;
+    elementRef: React.RefObject<HTMLDivElement | null>;
+    isDeleteMode: boolean;
+}
+
 export const debounce = <T, U, V>(func: (arg0: T, arg1: (param: U) => V) => void, delay = 300) => {
     let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
@@ -40,31 +62,17 @@ const debouncedUpdateMultiTask = debounce<TaskType[], TaskType[], AddUpdateMulti
     }
 );
 
-type ProcessTaskMoveArgs = [
-    setTasks: StateSetter<TaskType[]>,
-    updateTask: (param: UpdateTaskParams) => AddUpdateResponse,
-    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
-    boardTitles: BoardTitlesType,
-    title: string,
-    item: DndTileData,
-    monitor: DropTargetMonitor,
-    excludeRef: React.RefObject<HTMLDivElement | null>,
-    isDeleteMode: boolean
-];
-
-export const processTaskMove = (...args: ProcessTaskMoveArgs) => {
-    const [
-        setTasks,
-        updateTask,
-        updateMultiTask,
-        boardTitles,
-        title,
-        item,
-        monitor,
-        excludeRef,
-        isDeleteMode,
-    ] = args;
-
+export const processTaskMove = ({
+    setTasks,
+    updateTask,
+    updateMultiTask,
+    boardTitles,
+    title,
+    item,
+    monitor,
+    excludeRef,
+    isDeleteMode,
+}: ProcessTaskMoveArgs) => {
     const clientOffset = monitor.getClientOffset();
 
     if (!clientOffset || isDeleteMode) return;
@@ -103,19 +111,15 @@ export const processTaskMove = (...args: ProcessTaskMoveArgs) => {
     });
 };
 
-type ProcessTaskSwapArgs = [
-    setTasks: StateSetter<TaskType[]>,
-    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse,
-    item: DndTileData,
-    monitor: DropTargetMonitor,
-    id: number,
-    ref: React.RefObject<HTMLDivElement | null>,
-    isDeleteMode: boolean
-];
-
-export const processTaskSwap = (...args: ProcessTaskSwapArgs) => {
-    const [setTasks, updateMultiTask, item, monitor, id, ref, isDeleteMode] = args;
-
+export const processTaskSwap = ({
+    setTasks,
+    updateMultiTask,
+    item,
+    monitor,
+    id,
+    elementRef: ref,
+    isDeleteMode,
+}: ProcessTaskSwapArgs) => {
     if (!ref.current || isDeleteMode) return;
 
     const dragId = item.id;

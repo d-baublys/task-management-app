@@ -41,7 +41,7 @@ const LoginForm = ({ navigate }: Props) => {
     return (
         <>
             <form
-                onSubmit={(e) => handleSubmit(e, authGroup, userGroup, uiGroup)}
+                onSubmit={(e) => handleSubmit({ e, authGroup, userGroup, uiGroup })}
                 className="flex flex-col items-center mx-4 mt-10 gap-5 md:gap-[1.125rem] min-w-min"
             >
                 <fieldset className="w-full">
@@ -85,7 +85,7 @@ const LoginForm = ({ navigate }: Props) => {
                             <div className="w-min scale-[86.84%] md:scale-100 origin-left">
                                 <ReCaptcha
                                     onChange={(key: string | null) =>
-                                        handleRecaptcha(key, authGroup, userGroup, uiGroup)
+                                        handleRecaptcha({ key, authGroup, userGroup, uiGroup })
                                     }
                                     sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
                                 ></ReCaptcha>

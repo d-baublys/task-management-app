@@ -1,29 +1,9 @@
 import { NavigateFunction } from "react-router-dom";
-import { GeneralApiResponse, StateSetter } from "../types";
+import { GeneralApiResponse, LoginParams, StateSetter } from "../types";
 import { AxiosError } from "axios";
 
-type ToastHelperArgs = [
-    setNotification: React.Dispatch<
-        React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
-    >,
-    setIsToastOpen: StateSetter<boolean>
-];
-
-export const toastHelper = (...args: ToastHelperArgs) => {
-    const [setNotification, setIsToastOpen] = args;
-
-    const showToast = (icon: "success" | "failure", message: string) => {
-        setTimeout(() => {
-            setNotification({ icon, message });
-            setIsToastOpen(true);
-        }, 100);
-    };
-
-    return showToast;
-};
-
 interface AuthGroupType {
-    login: (username: string, password: string, rememberMe: boolean) => GeneralApiResponse;
+    login: (param: LoginParams) => GeneralApiResponse;
     rememberMe: boolean;
     setRememberMe: StateSetter<boolean>;
     verifyRecaptcha: (key: string | null) => GeneralApiResponse;
@@ -45,24 +25,50 @@ interface UiGroupType {
     setIsRecaptchaPassed: StateSetter<boolean>;
 }
 
-type HandleRecaptchaArgs = [
-    key: string | null,
-    authGroup: AuthGroupType,
-    userGroup: UserGroupType,
-    uiGroup: UiGroupType
-];
+interface ToastHelperArgs {
+    setNotification: React.Dispatch<
+        React.SetStateAction<{ icon: "success" | "failure"; message: string } | null>
+    >;
+    setIsToastOpen: StateSetter<boolean>;
+}
 
-type HandleSubmitArgs = [
-    e: React.FormEvent<HTMLFormElement>,
-    authGroup: AuthGroupType,
-    userGroup: UserGroupType,
-    uiGroup: UiGroupType
-];
+interface HandleRecaptchaArgs {
+    key: string | null;
+    authGroup: AuthGroupType;
+    userGroup: UserGroupType;
+    uiGroup: UiGroupType;
+}
 
-type ExecuteSubmitArgs = [authGroup: AuthGroupType, userGroup: UserGroupType, uiGroup: UiGroupType];
+interface HandleSubmitArgs {
+    e: React.FormEvent<HTMLFormElement>;
+    authGroup: AuthGroupType;
+    userGroup: UserGroupType;
+    uiGroup: UiGroupType;
+}
 
-export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
-    const [key, authGroup, userGroup, uiGroup] = args;
+interface ExecuteSubmitArgs {
+    authGroup: AuthGroupType;
+    userGroup: UserGroupType;
+    uiGroup: UiGroupType;
+}
+
+export const toastHelper = ({ setNotification, setIsToastOpen }: ToastHelperArgs) => {
+    const showToast = (icon: "success" | "failure", message: string) => {
+        setTimeout(() => {
+            setNotification({ icon, message });
+            setIsToastOpen(true);
+        }, 100);
+    };
+
+    return showToast;
+};
+
+export const handleRecaptcha = async ({
+    key,
+    authGroup,
+    userGroup,
+    uiGroup,
+}: HandleRecaptchaArgs) => {
     const { verifyRecaptcha } = authGroup;
     const { setError, showToast, setIsRecaptchaOpen, setIsRecaptchaPassed } = uiGroup;
 
@@ -70,7 +76,7 @@ export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
         await verifyRecaptcha(key);
         setIsRecaptchaPassed(true);
         setIsRecaptchaOpen(false);
-        await executeSubmit(authGroup, userGroup, uiGroup);
+        await executeSubmit({ authGroup, userGroup, uiGroup });
     } catch (error: unknown) {
         console.error("reCAPTCHA error: ", error);
 
@@ -84,9 +90,7 @@ export const handleRecaptcha = async (...args: HandleRecaptchaArgs) => {
     }
 };
 
-export const handleSubmit = async (...args: HandleSubmitArgs) => {
-    const [e, authGroup, userGroup, uiGroup] = args;
-
+export const handleSubmit = async ({ e, authGroup, userGroup, uiGroup }: HandleSubmitArgs) => {
     e.preventDefault();
 
     const { username, password } = userGroup;
@@ -94,22 +98,21 @@ export const handleSubmit = async (...args: HandleSubmitArgs) => {
 
     if (username && password) {
         if (isRecaptchaPassed) {
-            await executeSubmit(authGroup, userGroup, uiGroup);
+            await executeSubmit({ authGroup, userGroup, uiGroup });
         } else {
             setIsRecaptchaOpen(true);
         }
     }
 };
 
-export const executeSubmit = async (...args: ExecuteSubmitArgs) => {
-    const [authGroup, userGroup, uiGroup] = args;
+export const executeSubmit = async ({ authGroup, userGroup, uiGroup }: ExecuteSubmitArgs) => {
     const { login, rememberMe, setRememberMe } = authGroup;
     const { username, setUsername, password, setPassword } = userGroup;
     const { setError, navigate, showToast } = uiGroup;
 
     try {
         setError("");
-        await login(username, password, rememberMe);
+        await login({ username, password, rememberMe });
         navigate("/main");
         showToast("success", "Log in successful!");
     } catch (error: unknown) {
