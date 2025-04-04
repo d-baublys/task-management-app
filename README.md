@@ -1,6 +1,6 @@
 # React Task Management App
 
-A Kanban-style task management app used to learn about front-end framework principles, APIs, authentication, and drag-and-drop functionality.
+A Kanban-style task management app used to learn front-end framework principles, API design and usage, authentication, drag-and-drop functionality, and TypeScript.
 
 Live Demo: https://task-management-app-bice-psi.vercel.app  
 
@@ -27,6 +27,7 @@ Demo login:
 - Integrating captcha protection with reCAPTCHA
 - Using and customising Tailwind CSS
 - Deploying front-end with Vercel
+- Adapting existing codebase and tests to use static typing
 
 ## Demonstrates
 - Adaptability to front-end framework practices and workflow
@@ -36,3 +37,4 @@ Demo login:
 - An understanding of cookies and authentication tokens through manual management
 - Consideration about API and authentication security
 - Testing front-end, back-end, and overall integration
+- Proficiency in TypeScript
