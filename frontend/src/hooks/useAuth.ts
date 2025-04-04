@@ -29,9 +29,9 @@ const useAuth = ({
     const getToken = async () => {
         try {
             const response = await getTokenApi();
-            toggleTokenHeader(response.data.access_token);
+            toggleTokenHeader(response!.data.access_token);
             setIsAuthenticated(true);
-            setUser(response.data.username);
+            setUser(response!.data.username);
 
             return response;
         } catch (error) {

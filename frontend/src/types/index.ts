@@ -12,7 +12,7 @@ export interface TaskPayloadType {
 
 export interface TaskType extends TaskPayloadType {
     id: number;
-    user: number;
+    user?: number;
 }
 
 export interface AddTaskParams {
@@ -47,22 +47,6 @@ export interface LoginParams {
     rememberMe: boolean;
 }
 
-interface BaseResponseType {
-    status: number;
-    statusText: string;
-    headers: object;
-    config: object;
-    request?: any;
-}
-
-interface AddUpdateType extends BaseResponseType {
-    data: TaskType;
-}
-
-interface GeneralApiResponseType extends BaseResponseType {
-    data: object;
-}
-
-export type AddUpdateResponse = Promise<AxiosResponse<AddUpdateType> | undefined>;
-export type AddUpdateMultiResponse = Promise<AxiosResponse<AddUpdateType>[] | undefined>;
-export type GeneralApiResponse = Promise<AxiosResponse<GeneralApiResponseType> | undefined>;
+export type AddUpdateResponse = Promise<AxiosResponse<TaskType> | undefined>;
+export type AddUpdateMultiResponse = Promise<(AxiosResponse<TaskType> | undefined)[] | undefined>;
+export type GeneralApiResponse<T> = Promise<AxiosResponse<T> | undefined>;

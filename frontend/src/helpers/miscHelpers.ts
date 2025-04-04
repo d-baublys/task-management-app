@@ -3,10 +3,10 @@ import { GeneralApiResponse, LoginParams, StateSetter } from "../types";
 import { AxiosError } from "axios";
 
 interface AuthGroupType {
-    login: (param: LoginParams) => GeneralApiResponse;
+    login: (param: LoginParams) => GeneralApiResponse<{ message: string; username: string }>;
     rememberMe: boolean;
     setRememberMe: StateSetter<boolean>;
-    verifyRecaptcha: (key: string | null) => GeneralApiResponse;
+    verifyRecaptcha: (key: string | null) => GeneralApiResponse<{ [key: string]: string }>;
 }
 
 interface UserGroupType {

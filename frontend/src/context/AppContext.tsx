@@ -20,7 +20,7 @@ interface ContextType {
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (param: LoginParams) => GeneralApiResponse;
+    login: (param: LoginParams) => GeneralApiResponse<{message: string, username: string}>;
     logout: () => Promise<void>;
     loading: boolean;
     setLoading: StateSetter<boolean>;
@@ -32,7 +32,7 @@ interface ContextType {
     updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
     saveTask: (param: SaveTaskParams) => AddUpdateResponse;
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    deleteTask: (taskId: number) => GeneralApiResponse;
+    deleteTask: (taskId: number) => GeneralApiResponse<{ id: number }>;
     boardTitles: BoardTitlesType;
     isAddOpen: boolean;
     setIsAddOpen: StateSetter<boolean>;
@@ -57,7 +57,7 @@ interface ContextType {
     showToast: (icon: "success" | "failure", message: string) => void;
     isRecaptchaOpen: boolean;
     setIsRecaptchaOpen: StateSetter<boolean>;
-    verifyRecaptcha: (key: string | null) => GeneralApiResponse;
+    verifyRecaptcha: (key: string | null) => GeneralApiResponse<{ [key: string]: string }>;
     isRecaptchaPassed: boolean;
     setIsRecaptchaPassed: StateSetter<boolean>;
 }
