@@ -11,11 +11,11 @@ Demo login:
 ## Stack
 - **Front-end:** React
 - **Back-end:** Django REST
-- **Database:** SQLite (development), Postgres (production)
+- **Database:** SQLite (development), PostgreSQL (production)
 - **Hosting:** Vercel (front-end), Railway (back-end)
 
 ## Lessons
-- An introduction to front-end frameworks, including bootstrapping tools
+- An introduction to front-end frameworks
 - Using RESTful APIs to connect the front-end and back-end
 - How token-based authentication works and its best practices
 - Differences between session- and token-based authentication

@@ -31,7 +31,10 @@ interface ProcessTaskSwapArgs {
     isDeleteMode: boolean;
 }
 
-export const debounce = <T, U, V>(func: (arg0: T, arg1: (param: U) => V) => void, delay = 300) => {
+export const debounce = <T, U, V>(
+    func: (arg0: T, arg1: (param: U) => V) => Promise<void>,
+    delay = 300
+) => {
     let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
     return (...args: Parameters<typeof func>) => {

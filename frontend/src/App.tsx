@@ -8,7 +8,7 @@ import React from "react";
 function App() {
     const { isAuthenticated, loading } = useAppContext();
 
-    if (loading) return;
+    if (loading) return null;
 
     return (
         <Router>
