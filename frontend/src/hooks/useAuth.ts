@@ -5,8 +5,9 @@ import {
     loginApi,
     logoutApi,
     toggleTokenHeader,
+    signupApi,
 } from "../services/api";
-import { LoginParams, StateSetter } from "../types";
+import { LoginParams, SignUpParams, StateSetter } from "../types";
 // import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
 
 interface UseAuthParams {
@@ -95,6 +96,15 @@ const useAuth = ({
         }
     };
 
+    const signUp = async ({ username, password, passwordConfirm }: SignUpParams) => {
+        try {
+            const response = await signupApi({ username, password, passwordConfirm });
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    };
+
     useEffect(() => {
         checkAuthOnLoad();
     }, []);
@@ -105,7 +115,7 @@ const useAuth = ({
         return () => clearInterval(monitorInterval);
     }, [isAuthenticated]);
 
-    return { verifyRecaptcha, login, logout };
+    return { verifyRecaptcha, login, logout, signUp };
 };
 
 export default useAuth;

@@ -10,12 +10,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Environment variables
 
-env_path = BASE_DIR / ".env"
-load_dotenv(env_path)
+env_base = BASE_DIR / ".env"
+env_local = BASE_DIR / ".env.local"
+env_production_local = BASE_DIR / ".env.production.local"
+load_dotenv(env_base, override=True)
+load_dotenv(env_local)
+
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() != "false"
+
+if not DEBUG:
+    load_dotenv(env_production_local)
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-
-DEBUG = os.getenv("DJANGO_DEBUG", "False") != "False"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 

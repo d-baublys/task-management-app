@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AddTaskParams, LoginParams, TaskPayloadType } from "../types";
+import { AddTaskParams, LoginParams, TaskPayloadType, SignUpParams } from "../types";
 
 const api = axios.create({
     baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/`,
@@ -18,6 +18,8 @@ export const loginApi = ({ username, password, rememberMe }: LoginParams) =>
     api.post("login/", { username, password, remember_me: rememberMe }, { withCredentials: true });
 export const logoutApi = () => api.post("logout/", {}, { withCredentials: true });
 export const getTokenApi = () => api.post("token/", {}, { withCredentials: true });
+export const signupApi = ({ username, password, passwordConfirm }: SignUpParams) =>
+    api.post("create-account/", { username, password, password_confirm: passwordConfirm });
 
 export const toggleTokenHeader = (accessToken?: string) => {
     accessToken

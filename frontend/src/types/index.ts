@@ -47,6 +47,14 @@ export interface LoginParams {
     rememberMe: boolean;
 }
 
+export interface SignUpParams {
+    username: string;
+    password: string;
+    passwordConfirm: string;
+}
+
+export type FormVariants = "logIn" | "signUp";
+
 export type AddUpdateResponse = Promise<AxiosResponse<TaskType> | undefined>;
 export type AddUpdateMultiResponse = Promise<(AxiosResponse<TaskType> | undefined)[] | undefined>;
 export type GeneralApiResponse<T> = Promise<AxiosResponse<T> | undefined>;

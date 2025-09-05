@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("login/", views.login_view),
     path("logout/", views.logout_view),
+    path("create-account/", views.signup_view),
     path("token/", views.get_token_view),
     path("verify-recaptcha/", views.verify_recaptcha_view),
 ]

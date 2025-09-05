@@ -14,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 import requests
 
@@ -95,6 +96,28 @@ def logout_view(request):
     )
 
     return response
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def signup_view(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+    password_confirm = request.data.get("password_confirm")
+
+    form = UserCreationForm(
+        data={
+            "username": username,
+            "password1": password,
+            "password2": password_confirm,
+        }
+    )
+
+    if form.is_valid():
+        form.save()
+        return Response({"username": form.data["username"]})
+    else:
+        return Response({"detail": form.errors}, status=401)
 
 
 @api_view(["POST"])

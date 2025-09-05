@@ -10,6 +10,7 @@ import {
     GeneralApiResponse,
     LoginParams,
     SaveTaskParams,
+    SignUpParams,
     StateSetter,
     TaskType,
     UpdateTaskParams,
@@ -20,8 +21,9 @@ interface ContextType {
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (param: LoginParams) => GeneralApiResponse<{message: string, username: string}>;
+    login: (param: LoginParams) => GeneralApiResponse<{ message: string; username: string }>;
     logout: () => Promise<void>;
+    signUp: (params: SignUpParams) => GeneralApiResponse<{ username: string; password: string }>;
     loading: boolean;
     setLoading: StateSetter<boolean>;
     error: string;
@@ -87,7 +89,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const [isRecaptchaPassed, setIsRecaptchaPassed] = useState(false);
 
     const showToast = toastHelper({ setNotification, setIsToastOpen });
-    const { verifyRecaptcha, login, logout } = useAuth({
+    const { verifyRecaptcha, login, logout, signUp } = useAuth({
         isAuthenticated,
         setIsAuthenticated,
         setUser,
@@ -104,7 +106,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const boardTitles = {
         "To Do": "to_do",
         "In Progress": "in_progress",
-        "Done": "done",
+        Done: "done",
     };
 
     return (
@@ -116,6 +118,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
                 setUser,
                 login,
                 logout,
+                signUp,
                 loading,
                 setLoading,
                 error,
