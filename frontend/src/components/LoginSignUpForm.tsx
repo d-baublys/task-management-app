@@ -6,6 +6,7 @@ import ReCaptcha from "react-google-recaptcha";
 import { Link, NavigateFunction, useLocation } from "react-router-dom";
 import useAppContext from "../context/AppContext";
 import { FormVariants } from "../types";
+import FormInput from "./FormInput";
 
 interface Props {
     variant: FormVariants;
@@ -28,8 +29,11 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
 
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState(false);
+
     const pathname = useLocation();
 
     const authGroup = { login, rememberMe, setRememberMe, verifyRecaptcha };
@@ -73,37 +77,29 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 className="flex flex-col items-center mx-4 mt-10 gap-5 md:gap-[1.125rem] min-w-min"
                 onSubmit={handleSubmit}
             >
-                <fieldset className="w-full">
-                    <legend className="mb-1">Username</legend>
-                    <input
-                        className="bg-gray-300 w-full h-8 px-2"
-                        type="text"
-                        value={username}
-                        required
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </fieldset>
-                <fieldset className="w-full">
-                    <legend className="mb-1">Password</legend>
-                    <input
-                        className="bg-gray-300 w-full h-8 px-2"
-                        type="password"
-                        value={password}
-                        required
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </fieldset>
+                <FormInput
+                    type="text"
+                    legendText="Username"
+                    value={username}
+                    valueSetter={setUsername}
+                />
+                <FormInput
+                    type="password"
+                    legendText="Password"
+                    value={password}
+                    valueSetter={setPassword}
+                    passwordVisiblityBoolean={showPassword}
+                    passwordVisibilitySetter={setShowPassword}
+                />
                 {variant === "signUp" && (
-                    <fieldset className="w-full mb-2">
-                        <legend className="mb-1">Confirm Password</legend>
-                        <input
-                            className="bg-gray-300 w-full h-8 px-2"
-                            type="password"
-                            value={passwordConfirm}
-                            required
-                            onChange={(e) => setPasswordConfirm(e.target.value)}
-                        />
-                    </fieldset>
+                    <FormInput
+                        type="password"
+                        legendText="Confirm Password"
+                        value={passwordConfirm}
+                        valueSetter={setPasswordConfirm}
+                        passwordVisiblityBoolean={showPasswordConfirm}
+                        passwordVisibilitySetter={setShowPasswordConfirm}
+                    />
                 )}
                 {variant === "logIn" && (
                     <div className="flex w-full gap-2 text-xs md:text-[0.8rem]">
