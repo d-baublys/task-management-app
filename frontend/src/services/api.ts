@@ -14,12 +14,12 @@ export const deleteApiTask = (taskId: number) => api.delete(`tasks/${taskId}/`);
 
 export const verifyRecaptchaApi = (key: string | null) =>
     api.post("verify-recaptcha/", { "g-recaptcha-response": key }, { withCredentials: true });
-export const loginApi = ({ username, password, rememberMe }: LoginParams) =>
-    api.post("login/", { username, password, remember_me: rememberMe }, { withCredentials: true });
+export const loginApi = ({ email, password, rememberMe }: LoginParams) =>
+    api.post("login/", { email, password, remember_me: rememberMe }, { withCredentials: true });
 export const logoutApi = () => api.post("logout/", {}, { withCredentials: true });
 export const getTokenApi = () => api.post("token/", {}, { withCredentials: true });
-export const signupApi = ({ username, password, passwordConfirm }: SignUpParams) =>
-    api.post("create-account/", { username, password, password_confirm: passwordConfirm });
+export const signupApi = ({ email, password, passwordConfirm }: SignUpParams) =>
+    api.post("create-account/", { email, password, password_confirm: passwordConfirm });
 
 export const toggleTokenHeader = (accessToken?: string) => {
     accessToken

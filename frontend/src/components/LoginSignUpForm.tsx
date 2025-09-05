@@ -27,7 +27,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
         showToast,
     } = useAppContext();
 
-    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [passwordConfirm, setPasswordConfirm] = useState<string>("");
@@ -37,8 +37,8 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
     const pathname = useLocation();
 
     const authGroup = { login, rememberMe, setRememberMe, verifyRecaptcha };
-    const userGroup = { username, setUsername, password, setPassword };
-    const signUpGroup = { signUp, username, password, passwordConfirm };
+    const userGroup = { email, setEmail, password, setPassword };
+    const signUpGroup = { signUp, email, password, passwordConfirm };
     const uiGroup = {
         setError,
         navigate,
@@ -49,7 +49,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
     };
 
     useEffect(() => {
-        setUsername("");
+        setEmail("");
         setPassword("");
         setError("");
     }, [pathname]);
@@ -78,10 +78,10 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 onSubmit={handleSubmit}
             >
                 <FormInput
-                    type="text"
-                    legendText="Username"
-                    value={username}
-                    valueSetter={setUsername}
+                    type="email"
+                    legendText="Email Address"
+                    value={email}
+                    valueSetter={setEmail}
                 />
                 <FormInput
                     type="password"

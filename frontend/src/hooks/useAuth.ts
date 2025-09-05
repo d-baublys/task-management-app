@@ -32,7 +32,7 @@ const useAuth = ({
             const response = await getTokenApi();
             toggleTokenHeader(response!.data.access_token);
             setIsAuthenticated(true);
-            setUser(response!.data.username);
+            setUser(response!.data.email);
 
             return response;
         } catch (error) {
@@ -73,9 +73,9 @@ const useAuth = ({
         }
     };
 
-    const login = async ({ username, password, rememberMe }: LoginParams) => {
+    const login = async ({ email, password, rememberMe }: LoginParams) => {
         try {
-            const response = await loginApi({ username, password, rememberMe });
+            const response = await loginApi({ email, password, rememberMe });
             await getToken();
 
             return response;
@@ -96,9 +96,9 @@ const useAuth = ({
         }
     };
 
-    const signUp = async ({ username, password, passwordConfirm }: SignUpParams) => {
+    const signUp = async ({ email, password, passwordConfirm }: SignUpParams) => {
         try {
-            const response = await signupApi({ username, password, passwordConfirm });
+            const response = await signupApi({ email, password, passwordConfirm });
             return response;
         } catch (error) {
             throw error;

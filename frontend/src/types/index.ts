@@ -42,13 +42,13 @@ export interface UpdateTaskParams {
 }
 
 export interface LoginParams {
-    username: string;
+    email: string;
     password: string;
     rememberMe: boolean;
 }
 
 export interface SignUpParams {
-    username: string;
+    email: string;
     password: string;
     passwordConfirm: string;
 }

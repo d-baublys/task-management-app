@@ -3,15 +3,15 @@ import { GeneralApiResponse, LoginParams, SignUpParams, StateSetter } from "../t
 import { AxiosError } from "axios";
 
 interface AuthGroupType {
-    login: (param: LoginParams) => GeneralApiResponse<{ message: string; username: string }>;
+    login: (param: LoginParams) => GeneralApiResponse<{ message: string; email: string }>;
     rememberMe: boolean;
     setRememberMe: StateSetter<boolean>;
     verifyRecaptcha: (key: string | null) => GeneralApiResponse<{ [key: string]: string }>;
 }
 
 interface UserGroupType {
-    username: string;
-    setUsername: StateSetter<string>;
+    email: string;
+    setEmail: StateSetter<string>;
     password: string;
     setPassword: StateSetter<string>;
 }
@@ -26,8 +26,8 @@ interface UiGroupType {
 }
 
 interface SignUpGroupType {
-    signUp: (params: SignUpParams) => GeneralApiResponse<{ username: string; password: string }>;
-    username: string;
+    signUp: (params: SignUpParams) => GeneralApiResponse<{ email: string }>;
+    email: string;
     password: string;
     passwordConfirm: string;
 }
@@ -96,10 +96,10 @@ export const handleRecaptcha = async ({
 };
 
 export const handleLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogInArgs) => {
-    const { username, password } = userGroup;
+    const { email, password } = userGroup;
     const { setIsRecaptchaOpen, isRecaptchaPassed } = uiGroup;
 
-    if (username && password) {
+    if (email && password) {
         if (isRecaptchaPassed) {
             await executeLogIn({ authGroup, userGroup, uiGroup });
         } else {
@@ -110,12 +110,12 @@ export const handleLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogIn
 
 export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogInArgs) => {
     const { login, rememberMe, setRememberMe } = authGroup;
-    const { username, setUsername, password, setPassword } = userGroup;
+    const { email, setEmail, password, setPassword } = userGroup;
     const { setError, navigate, showToast } = uiGroup;
 
     try {
         setError("");
-        await login({ username, password, rememberMe });
+        await login({ email, password, rememberMe });
         navigate("/main");
         showToast("success", "Log in successful!");
     } catch (error: unknown) {
@@ -131,29 +131,28 @@ export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogI
             }
         }
 
-        setUsername("");
+        setEmail("");
         setPassword("");
         setRememberMe(false);
     }
 };
 
 export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
-    const { signUp, username, password, passwordConfirm } = signUpGroup;
+    const { signUp, email, password, passwordConfirm } = signUpGroup;
     const { setError, navigate, showToast } = uiGroup;
 
-    if (username && password && passwordConfirm) {
-        try {
-            await signUp({ username, password, passwordConfirm });
-            navigate("/login");
-            showToast("success", "Account created successfully!");
-        } catch (error: unknown) {
-            console.error(error);
+    try {
+        await signUp({ email, password, passwordConfirm });
+        navigate("/login");
+        showToast("success", "Account created successfully!");
+    } catch (error: unknown) {
+        console.error(error);
 
-            if (error instanceof AxiosError) {
-                setError((Object.values(error.response?.data.detail)[0] as Array<string>)[0]);
-            } else {
-                showToast("failure", "Error creating account. Please try again later.");
-            }
+        if (error instanceof AxiosError) {
+            console.log(error.response?.data.detail);
+            setError((Object.values(error.response?.data.detail)[0] as Array<string>)[0]);
+        } else {
+            showToast("failure", "Error creating account. Please try again later.");
         }
     }
 };

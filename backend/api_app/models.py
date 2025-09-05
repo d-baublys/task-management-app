@@ -1,6 +1,24 @@
 from django.db import models, transaction
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.conf import settings
+from django.utils import timezone
+from .managers import CustomUserManager
+from django.utils.translation import gettext_lazy as _
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(_("email address"), unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
 
 
 class Task(models.Model):
@@ -9,7 +27,7 @@ class Task(models.Model):
         ("in_progress", "In Progress"),
         ("done", "Done"),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="to_do")
     description = models.CharField(max_length=settings.REACT_APP_DESC_CHAR_LIMIT)
     due_date = models.DateField()

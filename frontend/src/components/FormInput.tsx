@@ -8,7 +8,7 @@ interface FormInputBaseProps {
 }
 
 interface FormInputTextProps extends FormInputBaseProps {
-    type: "text";
+    type: "email";
     passwordVisiblityBoolean?: never;
     passwordVisibilitySetter?: never;
 }
@@ -20,7 +20,7 @@ interface FormInputPasswordProps extends FormInputBaseProps {
 }
 
 export default function FormInput({
-    type = "text",
+    type,
     legendText,
     value,
     valueSetter,
@@ -33,7 +33,7 @@ export default function FormInput({
             <label className="flex w-full bg-gray-300 focus-within:outline outline-blue-600 outline-2">
                 <input
                     className="w-[93%] px-2 h-8  bg-inherit outline-none"
-                    type={type === "text" || passwordVisiblityBoolean ? "text" : "password"}
+                    type={type === "email" ? type : passwordVisiblityBoolean ? "text" : "password"}
                     value={value}
                     required
                     onChange={(e) => valueSetter(e.target.value)}

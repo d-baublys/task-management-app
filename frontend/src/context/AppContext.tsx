@@ -21,9 +21,9 @@ interface ContextType {
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (param: LoginParams) => GeneralApiResponse<{ message: string; username: string }>;
+    login: (param: LoginParams) => GeneralApiResponse<{ message: string; email: string }>;
     logout: () => Promise<void>;
-    signUp: (params: SignUpParams) => GeneralApiResponse<{ username: string; password: string }>;
+    signUp: (params: SignUpParams) => GeneralApiResponse<{ email: string }>;
     loading: boolean;
     setLoading: StateSetter<boolean>;
     error: string;
