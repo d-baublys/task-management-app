@@ -6,9 +6,8 @@ import {
     logoutApi,
     toggleTokenHeader,
     signupApi,
-} from "../services/api";
-import { LoginParams, SignUpParams, StateSetter } from "../types";
-// import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
+} from "../lib/api-services";
+import { LoginParams, SignUpParams, StateSetter } from "../lib/definitions";
 
 interface UseAuthParams {
     isAuthenticated: boolean;

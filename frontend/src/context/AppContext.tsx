@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext } from "react";
 import useTasks from "../hooks/useTasks";
 import useAuth from "../hooks/useAuth";
-import { toastHelper } from "../helpers/miscHelpers";
+import { toastHelper } from "../lib/misc-helpers";
 import {
     AddTaskParams,
     AddUpdateMultiResponse,
@@ -14,7 +14,7 @@ import {
     StateSetter,
     TaskType,
     UpdateTaskParams,
-} from "../types";
+} from "../lib/definitions";
 
 interface ContextType {
     isAuthenticated: boolean;

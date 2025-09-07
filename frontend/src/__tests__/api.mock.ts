@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+
 import {
     AddTaskParams,
     TaskPayloadType,
@@ -6,32 +6,9 @@ import {
     AddUpdateResponse,
     GeneralApiResponse,
     LoginParams,
-} from "../types";
+} from "../lib/definitions";
 
-const createAxiosResponse = <T>(data: T, status = 200): AxiosResponse<T> => {
-    return {
-        data,
-        status,
-        statusText: "OK",
-        headers: {},
-        config: {} as any,
-        request: {},
-    };
-};
 
-const createAxiosError = <T = { detail: string }>(
-    data: T,
-    status: number,
-    message: string = ""
-): AxiosError<T> => {
-    return new AxiosError(message, undefined, undefined, undefined, {
-        status,
-        data,
-        headers: {},
-        config: {} as any,
-        statusText: "",
-    });
-};
 
 export const getApiTasks = (): Promise<AxiosResponse<TaskType[]>> => {
     return new Promise((resolve) => {

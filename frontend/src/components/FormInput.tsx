@@ -1,7 +1,7 @@
 import React, { SetStateAction } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
-interface FormInputBaseProps {
+interface FormInputBaseProps extends React.InputHTMLAttributes<HTMLInputElement> {
     legendText: string;
     value: string;
     valueSetter: React.Dispatch<SetStateAction<string>>;
@@ -26,6 +26,7 @@ export default function FormInput({
     valueSetter,
     passwordVisiblityBoolean,
     passwordVisibilitySetter,
+    ...props
 }: FormInputTextProps | FormInputPasswordProps) {
     return (
         <fieldset className="relative w-full">
@@ -37,6 +38,7 @@ export default function FormInput({
                     value={value}
                     required
                     onChange={(e) => valueSetter(e.target.value)}
+                    {...props}
                 />
             </label>
             {type === "password" && (

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AddTaskParams, LoginParams, TaskPayloadType, SignUpParams } from "../types";
+import { AddTaskParams, LoginParams, TaskPayloadType, SignUpParams } from "./definitions";
 
 const api = axios.create({
     baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/`,

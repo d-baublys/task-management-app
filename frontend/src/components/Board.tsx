@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
-import { processTaskMove } from "../helpers/dndHelpers";
-import { TaskType, DndTileData } from "../types";
+import { processTaskMove } from "../lib/dnd-helpers";
+import { TaskType, DndTileData } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 interface Props {

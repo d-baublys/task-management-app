@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import { FaTrashAlt } from "react-icons/fa";
-import { DndTileData } from "../types";
+import { DndTileData } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 const DeleteButton = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import PageTemplate from "./PageTemplate";
 import LoginSignUpForm from "../../components/LoginSignUpForm";
-import { FormVariants } from "../../types";
+import { FormVariants } from "../../lib/definitions";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 export default function LogInSignUpPage({

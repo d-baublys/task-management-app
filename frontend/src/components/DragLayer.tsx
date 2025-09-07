@@ -1,7 +1,7 @@
 import { useDragLayer, XYCoord } from "react-dnd";
 import Tile from "./base/Tile";
 import React from "react";
-import { DndTileData } from "../types";
+import { DndTileData } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 interface DragType {

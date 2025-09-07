@@ -1,11 +1,11 @@
 import ModalButton from "./base/ModalButton";
 import { IoAlertCircle } from "react-icons/io5";
-import { handleLogIn, handleRecaptcha, handleSignUp } from "../helpers/miscHelpers";
+import { handleLogIn, handleRecaptcha, handleSignUp } from "../lib/misc-helpers";
 import React, { useEffect, useState } from "react";
 import ReCaptcha from "react-google-recaptcha";
 import { Link, NavigateFunction, useLocation } from "react-router-dom";
 import useAppContext from "../context/AppContext";
-import { FormVariants } from "../types";
+import { FormVariants } from "../lib/definitions";
 import FormInput from "./FormInput";
 
 interface Props {
@@ -78,12 +78,14 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 onSubmit={handleSubmit}
             >
                 <FormInput
+                    name="email"
                     type="email"
                     legendText="Email Address"
                     value={email}
                     valueSetter={setEmail}
                 />
                 <FormInput
+                    name="password"
                     type="password"
                     legendText="Password"
                     value={password}
@@ -93,6 +95,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 />
                 {variant === "signUp" && (
                     <FormInput
+                        name="password-confirm"
                         type="password"
                         legendText="Confirm Password"
                         value={passwordConfirm}

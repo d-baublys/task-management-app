@@ -1,5 +1,5 @@
 import { NavigateFunction } from "react-router-dom";
-import { GeneralApiResponse, LoginParams, SignUpParams, StateSetter } from "../types";
+import { GeneralApiResponse, LoginParams, SignUpParams, StateSetter } from "./definitions";
 import { AxiosError } from "axios";
 
 interface AuthGroupType {
@@ -149,7 +149,6 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
         console.error(error);
 
         if (error instanceof AxiosError) {
-            console.log(error.response?.data.detail);
             setError((Object.values(error.response?.data.detail)[0] as Array<string>)[0]);
         } else {
             showToast("failure", "Error creating account. Please try again later.");
