@@ -8,7 +8,6 @@ import { createMockAxiosError } from "../lib/test-factories";
 import useAuth from "../hooks/useAuth";
 
 jest.mock("../lib/api-services", () => ({
-    ...jest.requireActual("../lib/api-services"),
     loginApi: jest.fn(),
     logoutApi: jest.fn(),
     getTokenApi: jest.fn(),
@@ -20,11 +19,6 @@ jest.mock("react-router", () => ({
     useNavigate: () => jest.fn(),
     useLocation: () => "/login",
     Link: jest.fn(),
-}));
-
-jest.mock("../lib/misc-helpers", () => ({
-    ...jest.requireActual("../lib/misc-helpers"),
-    handleRecaptcha: jest.fn(),
 }));
 
 jest.mock("axios", () => ({
