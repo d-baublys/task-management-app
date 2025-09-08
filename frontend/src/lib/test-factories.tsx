@@ -1,4 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
+import { FakeAxiosError } from "./definitions";
 
 export const createAxiosResponse = <T,>(data: T, status = 200): AxiosResponse<T> => {
     return {
@@ -11,16 +12,6 @@ export const createAxiosResponse = <T,>(data: T, status = 200): AxiosResponse<T>
     };
 };
 
-export const createAxiosError = <T = { detail: string },>(
-    data: T,
-    status: number,
-    message: string = ""
-): AxiosError<T> => {
-    return new AxiosError(message, undefined, undefined, undefined, {
-        status,
-        data,
-        headers: {},
-        config: {} as any,
-        statusText: "",
-    });
+export const createMockAxiosError = ({ detail, status }: { detail: string; status: number }) => {
+    return new FakeAxiosError({ data: { detail }, status });
 };

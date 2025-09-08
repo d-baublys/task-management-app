@@ -66,7 +66,13 @@ interface ContextType {
 
 const AppContext = createContext<ContextType | undefined>(undefined);
 
-export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const ContextProvider = ({
+    children,
+    overrides,
+}: {
+    children: React.ReactNode;
+    overrides: Partial<ContextType>;
+}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -157,6 +163,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
                 verifyRecaptcha,
                 isRecaptchaPassed,
                 setIsRecaptchaPassed,
+                ...overrides,
             }}
         >
             {children}

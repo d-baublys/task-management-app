@@ -2,18 +2,17 @@ import React from "react";
 import PageTemplate from "./PageTemplate";
 import LoginSignUpForm from "../../components/LoginSignUpForm";
 import { FormVariants } from "../../lib/definitions";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router";
 
 export default function LogInSignUpPage({
     variant,
+    navigate,
     overrides,
 }: {
     variant: FormVariants;
     navigate: NavigateFunction;
     overrides?: string;
 }) {
-    const navigate = useNavigate();
-
     return (
         <PageTemplate
             wrapperDimensions={"min-w-[360px]"}

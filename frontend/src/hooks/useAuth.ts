@@ -114,7 +114,7 @@ const useAuth = ({
         return () => clearInterval(monitorInterval);
     }, [isAuthenticated]);
 
-    return { verifyRecaptcha, login, logout, signUp };
+    return { verifyRecaptcha, login, logout, signUp, monitorAccess };
 };
 
 export default useAuth;

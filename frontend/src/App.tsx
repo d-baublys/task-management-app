@@ -1,5 +1,5 @@
 import useAppContext from "./context/AppContext";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router";
 import ProtectedRoute from "./pages/base/ProtectedRoute";
 import Main from "./pages/Main";
 import React from "react";

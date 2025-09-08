@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { IoPerson, IoPersonOutline, IoCaretUp } from "react-icons/io5";
 import React from "react";
 import Dropdown from "./Dropdown";
@@ -18,7 +18,8 @@ const UserUnit = () => {
 
     return (
         <div className="relative">
-            <div
+            <button
+                data-testid="nav-action-button"
                 onClick={handleClick}
                 className="relative flex items-center px-2 py-1 bg-gray-300 group hover:bg-gray-400 hover:drop-shadow-md rounded-3xl transition cursor-pointer z-20"
             >
@@ -41,7 +42,7 @@ const UserUnit = () => {
                         <IoCaretUp />
                     </div>
                 )}
-            </div>
+            </button>
             <Dropdown />
         </div>
     );

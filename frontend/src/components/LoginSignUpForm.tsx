@@ -3,7 +3,7 @@ import { IoAlertCircle } from "react-icons/io5";
 import { handleLogIn, handleRecaptcha, handleSignUp } from "../lib/misc-helpers";
 import React, { useEffect, useState } from "react";
 import ReCaptcha from "react-google-recaptcha";
-import { Link, NavigateFunction, useLocation } from "react-router-dom";
+import { Link, NavigateFunction, useLocation } from "react-router";
 import useAppContext from "../context/AppContext";
 import { FormVariants } from "../lib/definitions";
 import FormInput from "./FormInput";
@@ -78,14 +78,14 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 onSubmit={handleSubmit}
             >
                 <FormInput
-                    name="email"
+                    aria-label="Email"
                     type="email"
                     legendText="Email Address"
                     value={email}
                     valueSetter={setEmail}
                 />
                 <FormInput
-                    name="password"
+                    aria-label="Password"
                     type="password"
                     legendText="Password"
                     value={password}
@@ -95,7 +95,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                 />
                 {variant === "signUp" && (
                     <FormInput
-                        name="password-confirm"
+                        aria-label="Confirm password"
                         type="password"
                         legendText="Confirm Password"
                         value={passwordConfirm}
@@ -114,7 +114,11 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                         <span>Remember Me</span>
                     </div>
                 )}
-                <ModalButton type="submit" customDimensions="w-full h-16">
+                <ModalButton
+                    data-testid="form-submit-button"
+                    type="submit"
+                    customDimensions="w-full h-16"
+                >
                     {variant === "logIn" ? "Log In" : "Create Account"}
                 </ModalButton>
                 {variant === "logIn" && (

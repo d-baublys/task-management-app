@@ -1,5 +1,11 @@
-import { NavigateFunction } from "react-router-dom";
-import { GeneralApiResponse, LoginParams, SignUpParams, StateSetter } from "./definitions";
+import { NavigateFunction } from "react-router";
+import {
+    FakeAxiosError,
+    GeneralApiResponse,
+    LoginParams,
+    SignUpParams,
+    StateSetter,
+} from "./definitions";
 import { AxiosError } from "axios";
 
 interface AuthGroupType {
@@ -55,6 +61,12 @@ interface HandleLogInArgs {
 interface SignUpArgs {
     signUpGroup: SignUpGroupType;
     uiGroup: UiGroupType;
+}
+
+interface SignOutGroup {
+    logout: () => Promise<void>;
+    navigate: NavigateFunction;
+    showToast: (icon: "success" | "failure", message: string) => void;
 }
 
 export const toastHelper = ({ setNotification, setIsToastOpen }: ToastHelperArgs) => {
@@ -121,7 +133,7 @@ export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogI
     } catch (error: unknown) {
         console.error("Error logging in: ", error);
 
-        if (error instanceof AxiosError) {
+        if (error instanceof AxiosError || error instanceof FakeAxiosError) {
             if (error.response?.status === 401) {
                 setError(error.response.data.detail);
             } else if ([403, 429].includes(error.response?.status ?? -1)) {
@@ -134,6 +146,19 @@ export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogI
         setEmail("");
         setPassword("");
         setRememberMe(false);
+    }
+};
+
+export const handleLogOut = async (signOutGroup: SignOutGroup) => {
+    const { logout, navigate, showToast } = signOutGroup;
+
+    try {
+        await logout();
+        navigate("/login");
+        showToast("success", "Log out successful!");
+    } catch (error) {
+        console.error("Error logging out: ", error);
+        showToast("failure", "Error logging out!");
     }
 };
 
