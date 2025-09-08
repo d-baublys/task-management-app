@@ -94,15 +94,17 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                     passwordVisibilitySetter={setShowPassword}
                 />
                 {variant === "signUp" && (
-                    <FormInput
-                        aria-label="Confirm password"
-                        type="password"
-                        legendText="Confirm Password"
-                        value={passwordConfirm}
-                        valueSetter={setPasswordConfirm}
-                        passwordVisiblityBoolean={showPasswordConfirm}
-                        passwordVisibilitySetter={setShowPasswordConfirm}
-                    />
+                    <div className="w-full mb-2">
+                        <FormInput
+                            aria-label="Confirm password"
+                            type="password"
+                            legendText="Confirm Password"
+                            value={passwordConfirm}
+                            valueSetter={setPasswordConfirm}
+                            passwordVisiblityBoolean={showPasswordConfirm}
+                            passwordVisibilitySetter={setShowPasswordConfirm}
+                        />
+                    </div>
                 )}
                 {variant === "logIn" && (
                     <div className="flex w-full gap-2 text-xs md:text-[0.8rem]">

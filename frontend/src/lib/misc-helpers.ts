@@ -174,7 +174,15 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
         console.error(error);
 
         if (error instanceof AxiosError) {
-            setError((Object.values(error.response?.data.detail)[0] as Array<string>)[0]);
+            const errorMessage = (
+                Object.values(error.response?.data.detail)[0] as Array<string>
+            )[0];
+
+            setError(
+                errorMessage.includes("already exists")
+                    ? "An account with this email address already exists."
+                    : errorMessage
+            );
         } else {
             showToast("failure", "Error creating account. Please try again later.");
         }

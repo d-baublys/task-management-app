@@ -22,7 +22,7 @@ export default function LogInPage() {
                     ? "h-[28rem]"
                     : error
                     ? "h-[26rem]"
-                    : "h-[21.5rem]"
+                    : "h-[22.5rem] sm:h-[21.5rem]"
             }`}
         />
     );

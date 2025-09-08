@@ -11,7 +11,7 @@ export default function SignUpPage() {
         <LogInSignUpPage
             variant="signUp"
             navigate={navigate}
-            overrides={`${error ? "h-[26rem]" : "h-[22.75em]"}`}
+            overrides={`${error ? "h-[26rem]" : "h-[22.75rem]"}`}
         />
     );
 }
