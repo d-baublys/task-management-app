@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from api_app.models import CustomUser
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import AccessToken
 from datetime import timedelta
@@ -11,54 +11,43 @@ class AuthenticationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(seconds=1)
-        cls.user = User.objects.create_user(
-            username="test_user", password="testpassword"
+        cls.user = CustomUser.objects.create_user(
+            email="test@example.com", password="testpassword"
         )
 
     def setUp(self):
         self.client = APIClient()
+        self.log_in_response = self.client.post(
+            "/api/login/", {"email": "test@example.com", "password": "testpassword"}
+        )
 
     def test_user_login(self):
         """
-        Verify valid credentials are authenticated and a refresh token is sent in a cookie.
+        Authenticates valid credentials and sends refresh token in a cookie.
         """
-        response = self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.cookies.get("refresh_token").value)
+        self.assertEqual(self.log_in_response.status_code, 200)
+        self.assertTrue(self.log_in_response.cookies.get("refresh_token").value)
 
     def test_user_logout(self):
         """
-        Verify cookie containing the refresh token is deleted on log out.
+        Deletes cookie containing the refresh token on log out.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
         response = self.client.post("/api/logout/")
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.cookies.get("refresh_token").value)
 
     def test_access_token(self):
         """
-        Verify access token is issued after providing a valid refresh token.
+        Issues access token after providing a valid refresh token.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
-
         get_token_response = self.client.post("/api/token/")
         self.assertEqual(get_token_response.status_code, 200)
         self.assertTrue(get_token_response.data.get("access_token"))
 
     def test_access_token_expiry(self):
         """
-        Verify access token expiry revokes authentication.
+        Revokes authentication on access token expiry.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
-
         expired_access_token = AccessToken.for_user(self.user)
         expired_access_token.set_exp(lifetime=timedelta(seconds=1))
 
@@ -73,31 +62,37 @@ class AuthenticationTests(TestCase):
         self.assertEqual(expired_response.status_code, 401)
 
 
-class TaskTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = User.objects.create_user(
-            username="test_user", password="testpassword"
-        )
-
+class TaskTestsUnauthenticated(TestCase):
     def setUp(self):
         self.client = APIClient()
 
     def test_task_crud_failure(self):
         """
-        Verify task CRUD operations are not permitted without authentication.
+        Forbids task CRUD operations without authentication.
         """
         response = self.client.get("/api/tasks/")
 
         self.assertEqual(response.status_code, 401)
 
+
+class TaskTestsAuthenticated(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = CustomUser.objects.create_user(
+            email="test@example.com", password="testpassword"
+        )
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.post(
+            "/api/login/", {"email": "test@example.com", "password": "testpassword"}
+        )
+
     def test_create_task_success(self):
         """
-        Verify successful task creation when authenticated.
+        Creates tasks successfully when authenticated.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
+
         get_token_response = self.client.post("/api/token/")
         access_token = get_token_response.data.get("access_token")
 
@@ -112,11 +107,8 @@ class TaskTests(TestCase):
 
     def test_get_tasks_success(self):
         """
-        Verify successful task fetching when authenticated.
+        Fetches tasks successfully when authenticated.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
         get_token_response = self.client.post("/api/token/")
         access_token = get_token_response.data.get("access_token")
 
@@ -133,11 +125,8 @@ class TaskTests(TestCase):
 
     def test_update_task_success(self):
         """
-        Verify successful task update when authenticated.
+        Updates tasks successfully when authenticated.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
         get_token_response = self.client.post("/api/token/")
         access_token = get_token_response.data.get("access_token")
 
@@ -163,11 +152,8 @@ class TaskTests(TestCase):
 
     def test_delete_task_success(self):
         """
-        Verify successful task deletion when authenticated.
+        Deletes tasks successfully when authenticated.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
         get_token_response = self.client.post("/api/token/")
         access_token = get_token_response.data.get("access_token")
 
@@ -186,11 +172,8 @@ class TaskTests(TestCase):
 
     def test_task_ordering(self):
         """
-        Verify tasks are correctly ordered based on the "position" attribute.
+        Orders tasks correctly based on the "position" attribute.
         """
-        self.client.post(
-            "/api/login/", {"username": "test_user", "password": "testpassword"}
-        )
         get_token_response = self.client.post("/api/token/")
         access_token = get_token_response.data.get("access_token")
 

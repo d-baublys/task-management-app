@@ -1,25 +1,15 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { IoLogOut } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import useAppContext from "../context/AppContext";
+import { handleLogOut } from "../lib/misc-helpers";
 
 const Dropdown = () => {
     const { logout, isDropdownActive, showToast } = useAppContext();
     const navigate = useNavigate();
 
     const isDesktop = useMediaQuery({ minWidth: 768 });
-
-    const handleLogOut = async () => {
-        try {
-            await logout();
-            navigate("/login");
-            showToast("success", "Log out successful!");
-        } catch (error) {
-            console.error("Error logging out: ", error);
-            showToast("failure", "Error logging out!");
-        }
-    };
 
     const menuWidth = 16 * 9;
     const menuHeight = 16 * 6;
@@ -69,7 +59,7 @@ const Dropdown = () => {
                     {isDropdownActive && (
                         <ul className="block w-full p-2">
                             <li
-                                onClick={handleLogOut}
+                                onClick={() => handleLogOut({ logout, navigate, showToast })}
                                 className="cursor-pointer border-t-[1px] border-gray-600"
                             >
                                 <div className="flex items-center mt-1 hover:bg-theme-lighter">

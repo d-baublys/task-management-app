@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     type?: "button" | "submit" | "reset";
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -8,7 +8,14 @@ interface Props {
     customDimensions?: string;
 }
 
-const ModalButton = ({ children, type = "button", onClick, disabled, customDimensions }: Props) => {
+const ModalButton = ({
+    children,
+    type = "button",
+    onClick,
+    disabled,
+    customDimensions,
+    ...props
+}: Props) => {
     return (
         <button
             type={type}
@@ -17,6 +24,7 @@ const ModalButton = ({ children, type = "button", onClick, disabled, customDimen
             className={`rounded-md bg-gray-500 hover:opacity-80 active:opacity-80 font-medium text-base md:text-lg text-gray-100 ${
                 customDimensions ? customDimensions : "w-36 md:w-40 h-12 md:h-16"
             }`}
+            {...props}
         >
             {children}
         </button>

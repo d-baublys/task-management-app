@@ -2,9 +2,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { motion } from "motion/react";
 import Tile from "./base/Tile";
-import { processTaskSwap } from "../helpers/dndHelpers";
+import { processTaskSwap } from "../lib/dnd-helpers";
 import useHandleClicks from "../hooks/useHandleClicks";
-import { DndTileParams, DndTileData } from "../types";
+import { DndTileParams, DndTileData } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 const DraggableTile = ({ id, status, description, dueDate }: DndTileParams) => {

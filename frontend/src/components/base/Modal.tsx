@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModalButton from "./ModalButton";
-import { StateSetter, TaskType } from "../../types";
+import { StateSetter, TaskType } from "../../lib/definitions";
 import useAppContext from "../../context/AppContext";
 
 interface Props {

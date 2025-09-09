@@ -42,10 +42,33 @@ export interface UpdateTaskParams {
 }
 
 export interface LoginParams {
-    username: string;
+    email: string;
     password: string;
     rememberMe: boolean;
 }
+
+export interface SignUpParams {
+    email: string;
+    password: string;
+    passwordConfirm: string;
+}
+
+interface FakeAxiosResponse {
+    data: { detail: string };
+    status: number;
+}
+
+export class FakeAxiosError extends Error {
+    response: FakeAxiosResponse;
+
+    constructor(response: FakeAxiosResponse, message?: string) {
+        super(message);
+        this.name = "FakeAxiosError";
+        this.response = response;
+    }
+}
+
+export type FormVariants = "logIn" | "signUp";
 
 export type AddUpdateResponse = Promise<AxiosResponse<TaskType> | undefined>;
 export type AddUpdateMultiResponse = Promise<(AxiosResponse<TaskType> | undefined)[] | undefined>;

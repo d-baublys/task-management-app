@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext } from "react";
 import useTasks from "../hooks/useTasks";
 import useAuth from "../hooks/useAuth";
-import { toastHelper } from "../helpers/miscHelpers";
+import { toastHelper } from "../lib/misc-helpers";
 import {
     AddTaskParams,
     AddUpdateMultiResponse,
@@ -10,18 +10,20 @@ import {
     GeneralApiResponse,
     LoginParams,
     SaveTaskParams,
+    SignUpParams,
     StateSetter,
     TaskType,
     UpdateTaskParams,
-} from "../types";
+} from "../lib/definitions";
 
 interface ContextType {
     isAuthenticated: boolean;
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (param: LoginParams) => GeneralApiResponse<{message: string, username: string}>;
+    login: (param: LoginParams) => GeneralApiResponse<{ message: string; email: string }>;
     logout: () => Promise<void>;
+    signUp: (params: SignUpParams) => GeneralApiResponse<{ email: string }>;
     loading: boolean;
     setLoading: StateSetter<boolean>;
     error: string;
@@ -64,7 +66,13 @@ interface ContextType {
 
 const AppContext = createContext<ContextType | undefined>(undefined);
 
-export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const ContextProvider = ({
+    children,
+    overrides,
+}: {
+    children: React.ReactNode;
+    overrides: Partial<ContextType>;
+}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -87,7 +95,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const [isRecaptchaPassed, setIsRecaptchaPassed] = useState(false);
 
     const showToast = toastHelper({ setNotification, setIsToastOpen });
-    const { verifyRecaptcha, login, logout } = useAuth({
+    const { verifyRecaptcha, login, logout, signUp } = useAuth({
         isAuthenticated,
         setIsAuthenticated,
         setUser,
@@ -104,7 +112,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
     const boardTitles = {
         "To Do": "to_do",
         "In Progress": "in_progress",
-        "Done": "done",
+        Done: "done",
     };
 
     return (
@@ -116,6 +124,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
                 setUser,
                 login,
                 logout,
+                signUp,
                 loading,
                 setLoading,
                 error,
@@ -154,6 +163,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
                 verifyRecaptcha,
                 isRecaptchaPassed,
                 setIsRecaptchaPassed,
+                ...overrides,
             }}
         >
             {children}

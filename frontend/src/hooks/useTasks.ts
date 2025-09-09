@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../services/api";
-import { AddTaskParams, SaveTaskParams, StateSetter, TaskType, UpdateTaskParams } from "../types";
-// import { getApiTasks, createApiTask, updateApiTask, deleteApiTask, getApiTasksFail, createApiTaskFail, updateApiTaskFail, deleteApiTaskFail } from "../services/api.mock";
+import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../lib/api-services";
+import { AddTaskParams, SaveTaskParams, StateSetter, TaskType, UpdateTaskParams } from "../lib/definitions";
 
 const useTasks = (
     isAuthenticated: boolean,

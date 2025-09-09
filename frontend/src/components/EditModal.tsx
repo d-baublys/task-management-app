@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "./base/Modal";
-import { TaskType } from "../types";
+import { TaskType } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 const EditModal = () => {

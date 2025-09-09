@@ -5,9 +5,9 @@ import {
     loginApi,
     logoutApi,
     toggleTokenHeader,
-} from "../services/api";
-import { LoginParams, StateSetter } from "../types";
-// import { getTokenApi, loginApi, logoutApi, getTokenApiFail, loginApiAuthFail, loginApiServerFail, logoutApiFail } from "../services/api.mock";
+    signupApi,
+} from "../lib/api-services";
+import { LoginParams, SignUpParams, StateSetter } from "../lib/definitions";
 
 interface UseAuthParams {
     isAuthenticated: boolean;
@@ -31,7 +31,7 @@ const useAuth = ({
             const response = await getTokenApi();
             toggleTokenHeader(response!.data.access_token);
             setIsAuthenticated(true);
-            setUser(response!.data.username);
+            setUser(response!.data.email);
 
             return response;
         } catch (error) {
@@ -72,9 +72,9 @@ const useAuth = ({
         }
     };
 
-    const login = async ({ username, password, rememberMe }: LoginParams) => {
+    const login = async ({ email, password, rememberMe }: LoginParams) => {
         try {
-            const response = await loginApi({ username, password, rememberMe });
+            const response = await loginApi({ email, password, rememberMe });
             await getToken();
 
             return response;
@@ -95,6 +95,15 @@ const useAuth = ({
         }
     };
 
+    const signUp = async ({ email, password, passwordConfirm }: SignUpParams) => {
+        try {
+            const response = await signupApi({ email, password, passwordConfirm });
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    };
+
     useEffect(() => {
         checkAuthOnLoad();
     }, []);
@@ -105,7 +114,7 @@ const useAuth = ({
         return () => clearInterval(monitorInterval);
     }, [isAuthenticated]);
 
-    return { verifyRecaptcha, login, logout };
+    return { verifyRecaptcha, login, logout, signUp, monitorAccess };
 };
 
 export default useAuth;

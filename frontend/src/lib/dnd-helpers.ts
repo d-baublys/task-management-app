@@ -7,7 +7,7 @@ import {
     BoardTitlesType,
     DndTileData,
     StateSetter,
-} from "../types";
+} from "./definitions";
 
 interface ProcessTaskMoveArgs {
     setTasks: StateSetter<TaskType[]>;

@@ -19,6 +19,7 @@ const ToastNotification = () => {
 
     return (
         <div
+            data-testid="toast-notification"
             className={`toast fixed top-5 md:top-10 right-0 sm:right-5 md:right-10 w-[22rem] h-24 bg-gray-300 overflow-hidden z-[5000] before:absolute before:inset-0 before:blur-sm before:bg-white before:z-[-1] ${
                 notification && isToastOpen
                     ? "gradual-on opacity-100 scale-100"

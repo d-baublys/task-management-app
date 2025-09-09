@@ -1,7 +1,9 @@
 from django.conf import settings
 from datetime import timedelta
 from rest_framework import viewsets
-from .models import Task
+
+from .forms import CustomUserCreationForm
+from .models import CustomUser, Task
 from .serializers import TaskSerializer
 
 from axes.decorators import axes_dispatch
@@ -13,7 +15,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 
 import requests
 
@@ -54,12 +55,12 @@ def verify_recaptcha_view(request):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login_view(request):
-    username = request.data.get("username")
+    email = request.data.get("email")
     password = request.data.get("password")
     remember_me = request.data.get("remember_me")
     ip_address = request.META.get("REMOTE_ADDR")
 
-    user = authenticate(request=request, username=username, password=password)
+    user = authenticate(request=request, email=email, password=password)
 
     if user:
         reset(ip=ip_address)
@@ -68,7 +69,7 @@ def login_view(request):
         if remember_me:
             refresh.set_exp(lifetime=timedelta(days=7))
 
-        response = Response({"message": "Log in successful", "username": username})
+        response = Response({"message": "Log in successful", "email": email})
         response.set_cookie(
             key="refresh_token",
             value=str(refresh),
@@ -80,7 +81,7 @@ def login_view(request):
         return response
     return Response(
         {
-            "detail": "Incorrect username or password. Please check your credentials and try again."
+            "detail": "Incorrect email address or password. Please check your credentials and try again."
         },
         status=401,
     )
@@ -99,6 +100,28 @@ def logout_view(request):
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
+def signup_view(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+    password_confirm = request.data.get("password_confirm")
+
+    form = CustomUserCreationForm(
+        data={
+            "email": email,
+            "password1": password,
+            "password2": password_confirm,
+        }
+    )
+
+    if form.is_valid():
+        form.save()
+        return Response({"email": email})
+    else:
+        return Response({"detail": form.errors}, status=401)
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
 def get_token_view(request):
     refresh_token = request.COOKIES.get("refresh_token")
 
@@ -112,9 +135,9 @@ def get_token_view(request):
 
     try:
         refresh = RefreshToken(refresh_token)
-        user = User.objects.get(id=refresh["user_id"])
+        user = CustomUser.objects.get(id=refresh["user_id"])
         access_token = str(refresh.access_token)
 
-        return Response({"username": user.username, "access_token": access_token})
-    except (TokenError, User.DoesNotExist):
+        return Response({"email": user.email, "access_token": access_token})
+    except (TokenError, CustomUser.DoesNotExist):
         return Response({"detail": "Invalid token"}, status=401)
