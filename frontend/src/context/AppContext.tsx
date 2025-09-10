@@ -30,6 +30,7 @@ interface ContextType {
     setError: StateSetter<string | "">;
     tasks: TaskType[];
     setTasks: StateSetter<TaskType[]>;
+    getTasks: () => Promise<void>;
     addTask: (param: AddTaskParams) => AddUpdateResponse;
     updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
     saveTask: (param: SaveTaskParams) => AddUpdateResponse;
@@ -71,7 +72,7 @@ export const ContextProvider = ({
     overrides,
 }: {
     children: React.ReactNode;
-    overrides: Partial<ContextType>;
+    overrides?: Partial<ContextType>;
 }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<string | null>(null);
@@ -103,8 +104,7 @@ export const ContextProvider = ({
         setLoading,
         showToast,
     });
-    const { addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
-        isAuthenticated,
+    const { getTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
         setTasks,
         showToast
     );
@@ -131,6 +131,7 @@ export const ContextProvider = ({
                 setError,
                 tasks,
                 setTasks,
+                getTasks,
                 addTask,
                 updateTask,
                 saveTask,

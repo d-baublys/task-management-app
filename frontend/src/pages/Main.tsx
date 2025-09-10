@@ -10,9 +10,16 @@ import PageTemplate from "./base/PageTemplate";
 import BackdropUnit from "../components/BackdropUnit";
 import DeleteButton from "../components/DeleteButton";
 import CreateButton from "../components/CreateButton";
-import React from "react";
+import React, { useEffect } from "react";
+import useAppContext from "../context/AppContext";
 
 function Main() {
+    const { isAuthenticated, getTasks } = useAppContext();
+
+    useEffect(() => {
+        isAuthenticated && getTasks();
+    }, [isAuthenticated]);
+
     const { taskMouseUp } = useHandleClicks();
 
     return (

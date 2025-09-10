@@ -1,24 +1,25 @@
-import { useEffect } from "react";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../lib/api-services";
-import { AddTaskParams, SaveTaskParams, StateSetter, TaskType, UpdateTaskParams } from "../lib/definitions";
+import {
+    AddTaskParams,
+    SaveTaskParams,
+    StateSetter,
+    TaskType,
+    UpdateTaskParams,
+} from "../lib/definitions";
 
 const useTasks = (
-    isAuthenticated: boolean,
     setTasks: StateSetter<TaskType[]>,
     showToast: (icon: "success" | "failure", message: string) => void
 ) => {
-    useEffect(() => {
-        const getTasks = async () => {
-            try {
-                const response = await getApiTasks();
-                setTasks(response.data);
-            } catch (error) {
-                console.error("Error fetching task data: ", error);
-                showToast("failure", "Error fetching task data!");
-            }
-        };
-        isAuthenticated && getTasks();
-    }, [isAuthenticated]);
+    const getTasks = async () => {
+        try {
+            const response = await getApiTasks();
+            setTasks(response.data);
+        } catch (error) {
+            console.error("Error fetching task data: ", error);
+            showToast("failure", "Error fetching task data!");
+        }
+    };
 
     const addTask = async ({ status, description, dueDate }: AddTaskParams) => {
         try {
@@ -106,7 +107,7 @@ const useTasks = (
         }
     };
 
-    return { addTask, updateTask, saveTask, updateMultiTask, deleteTask };
+    return { getTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask };
 };
 
 export default useTasks;
