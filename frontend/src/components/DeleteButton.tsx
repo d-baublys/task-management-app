@@ -44,6 +44,8 @@ const DeleteButton = () => {
             isOver={isOver && isDeleteMode}
             IconComponent={FaTrashAlt}
             zIndex={550}
+            aria-label="Delete task"
+            title="Delete task"
         />
     );
 };

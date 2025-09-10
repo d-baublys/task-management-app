@@ -1,26 +1,15 @@
 /* eslint-disable import/first */
 
-import React, { ReactNode } from "react";
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Main from "../pages/Main";
-import { createApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
+import { createApiTask, deleteApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
 import { createAxiosResponse, createFakeTasks, createMockAxiosError } from "../lib/test-factories";
 import { ContextProvider, ContextType } from "../context/AppContext";
 import { AddTaskParams, TaskType } from "../lib/definitions";
 
-jest.mock("react-dnd", () => ({
-    DndProvider: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-    useDrag: () => [{}, jest.fn(), jest.fn()],
-    useDrop: () => [{}, jest.fn()],
-}));
-jest.mock("react-dnd-html5-backend", () => ({
-    HTML5Backend: jest.fn(),
-}));
-jest.mock("react-dnd-touch-backend", () => ({
-    TouchBackend: jest.fn(),
-}));
 jest.mock("react-device-detect", () => ({
-    isMobile: jest.fn(),
+    isMobile: false,
 }));
 
 jest.mock("../lib/api-services", () => ({
@@ -42,11 +31,7 @@ jest.mock("axios", () => ({
 
 jest.mock("react-router", () => ({
     useNavigate: () => jest.fn(),
-    useLocation: () => "/login",
-    Link: jest.fn(),
 }));
-
-jest.mock("../components/DragLayer");
 
 const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}) =>
     render(
@@ -54,6 +39,7 @@ const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}
             overrides={{
                 isAuthenticated: true,
                 user: "test@example.com",
+                dragAllowed: true,
                 ...overrides,
             }}
         >
@@ -222,6 +208,70 @@ describe("MainPage", () => {
 
         await waitFor(() => {
             expect(screen.getByText("Error adding task!")).toBeInTheDocument();
+        });
+    });
+
+    it("calls API on successful task deletion", async () => {
+        const tasks: TaskType[] = createFakeTasks();
+
+        (getApiTasks as jest.Mock).mockResolvedValue(createAxiosResponse(tasks, 200));
+
+        renderMainPage();
+
+        await waitFor(() => {
+            expect(screen.getByText("First mocked task")).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByLabelText("Delete task"));
+        fireEvent.dragStart(screen.getByText("First mocked task"));
+        fireEvent.dragEnter(screen.getByLabelText("Delete task"));
+        fireEvent.dragOver(screen.getByLabelText("Delete task"));
+        fireEvent.drop(screen.getByLabelText("Delete task"));
+
+        await waitFor(() => {
+            expect(
+                screen.getByText("Are you sure you want to delete this task?")
+            ).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+
+        await waitFor(() => {
+            expect(deleteApiTask).toHaveBeenCalledWith(3);
+        });
+    });
+
+    it("shows message on task deletion server failure", async () => {
+        const tasks: TaskType[] = createFakeTasks();
+
+        (deleteApiTask as jest.Mock).mockRejectedValue(
+            createMockAxiosError({ detail: "Error deleting task!", status: 500 })
+        );
+
+        (getApiTasks as jest.Mock).mockResolvedValue(createAxiosResponse(tasks, 200));
+
+        renderMainPage();
+
+        await waitFor(() => {
+            expect(screen.getByText("First mocked task")).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByLabelText("Delete task"));
+        fireEvent.dragStart(screen.getByText("First mocked task"));
+        fireEvent.dragEnter(screen.getByLabelText("Delete task"));
+        fireEvent.dragOver(screen.getByLabelText("Delete task"));
+        fireEvent.drop(screen.getByLabelText("Delete task"));
+
+        await waitFor(() => {
+            expect(
+                screen.getByText("Are you sure you want to delete this task?")
+            ).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+
+        await waitFor(() => {
+            expect(screen.getByText("Error deleting task!")).toBeInTheDocument();
         });
     });
 });

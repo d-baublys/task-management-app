@@ -25,7 +25,7 @@ function Main() {
     return (
         <DndProvider
             backend={isMobile ? TouchBackend : HTML5Backend}
-            options={isMobile && { enableMouseEvents: true }}
+            options={isMobile ? { enableMouseEvents: true } : undefined}
         >
             <DragLayer />
             <PageTemplate

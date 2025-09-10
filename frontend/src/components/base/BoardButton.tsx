@@ -2,15 +2,15 @@ import React from "react";
 import { ConnectDropTarget } from "react-dnd";
 import { IconType } from "react-icons";
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    IconComponent: IconType;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     dropRef?: ConnectDropTarget;
     isOver?: boolean;
-    IconComponent: IconType;
     zIndex?: number;
 }
 
-const BoardButton = ({ onClick, dropRef, isOver, IconComponent, zIndex = 10 }: Props) => {
+const BoardButton = ({ onClick, dropRef, isOver, IconComponent, zIndex = 10, ...props }: Props) => {
     return (
         <button
             onClick={onClick}
@@ -23,6 +23,7 @@ const BoardButton = ({ onClick, dropRef, isOver, IconComponent, zIndex = 10 }: P
             style={{
                 zIndex: zIndex,
             }}
+            {...props}
         >
             <IconComponent className="m-2 text-white text-2xl lg:text-[2rem] xl:text-[2.5rem]" />
         </button>
