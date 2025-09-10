@@ -97,7 +97,7 @@ export const handleRecaptcha = async ({
     } catch (error: unknown) {
         console.error("reCAPTCHA error: ", error);
 
-        if (error instanceof AxiosError) {
+        if (error instanceof AxiosError || error instanceof FakeAxiosError) {
             if (error.response?.status === 403) {
                 setError(error.response.data.detail);
             } else {
@@ -173,7 +173,7 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
     } catch (error: unknown) {
         console.error(error);
 
-        if (error instanceof AxiosError) {
+        if (error instanceof AxiosError || error instanceof FakeAxiosError) {
             const errorMessage = (
                 Object.values(error.response?.data.detail)[0] as Array<string>
             )[0];

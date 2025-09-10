@@ -45,10 +45,7 @@ def verify_recaptcha_view(request):
     if request.get("success"):
         return Response({"message": "reCAPTCHA verified"}, status=200)
 
-    return Response(
-        data={"error": "reCAPTCHA not verified."},
-        status=403,
-    )
+    return Response({"detail": "reCAPTCHA not verified."}, status=403)
 
 
 @axes_dispatch

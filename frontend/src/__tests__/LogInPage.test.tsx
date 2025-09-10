@@ -13,6 +13,7 @@ jest.mock("../lib/api-services", () => ({
     getTokenApi: jest.fn(),
     toggleTokenHeader: jest.fn(),
     getApiTasks: jest.fn(),
+    verifyRecaptchaApi: jest.fn(),
 }));
 
 jest.mock("react-router", () => ({
@@ -31,11 +32,35 @@ jest.mock("axios", () => ({
     AxiosError: jest.fn(),
 }));
 
-import { loginApi, getTokenApi, logoutApi, getApiTasks } from "../lib/api-services";
+jest.mock("react-google-recaptcha", () => {
+    return function ReCaptcha(props: any) {
+        return (
+            <button onClick={() => props.onChange("mocked-token")} data-testid="mocked-recaptcha">
+                Mocked ReCAPTCHA
+            </button>
+        );
+    };
+});
+
+import {
+    loginApi,
+    getTokenApi,
+    logoutApi,
+    getApiTasks,
+    verifyRecaptchaApi,
+} from "../lib/api-services";
 
 const renderUnauthenticatedPage = () => {
     render(
         <ContextProvider overrides={{ isRecaptchaPassed: true }}>
+            <LogInPage />
+        </ContextProvider>
+    );
+};
+
+const renderUnauthenticatedPageNoCaptcha = () => {
+    render(
+        <ContextProvider>
             <LogInPage />
         </ContextProvider>
     );
@@ -248,6 +273,87 @@ describe("LogInPage", () => {
         expect(screen.getByTestId("toast-notification")).toBeInTheDocument();
         await waitFor(() => {
             expect(screen.getByText("Error logging out!")).toBeInTheDocument();
+        });
+    });
+
+    it("calls the expected API on reCAPTCHA click", async () => {
+        (loginApi as jest.Mock).mockResolvedValue({
+            message: "Log in successful",
+            email: "test@example.com",
+        });
+
+        (getTokenApi as jest.Mock).mockResolvedValue({ data: { access_token: "fake_token" } });
+
+        renderUnauthenticatedPageNoCaptcha();
+
+        const emailInput = screen.getByLabelText("Email");
+        const passwordInput = screen.getByLabelText("Password");
+
+        fireEvent.input(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.input(passwordInput, { target: { value: "password123" } });
+        fireEvent.click(screen.getByTestId("form-submit-button"));
+
+        await waitFor(() => {
+            expect(screen.getByTestId("mocked-recaptcha")).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByTestId("mocked-recaptcha"));
+
+        expect(verifyRecaptchaApi).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(loginApi).toHaveBeenCalled();
+        });
+    });
+
+    it("shows message on reCAPTCHA verification failure", async () => {
+        (verifyRecaptchaApi as jest.Mock).mockRejectedValue(
+            createMockAxiosError({ detail: "reCAPTCHA not verified.", status: 403 })
+        );
+
+        renderUnauthenticatedPageNoCaptcha();
+
+        const emailInput = screen.getByLabelText("Email");
+        const passwordInput = screen.getByLabelText("Password");
+
+        fireEvent.input(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.input(passwordInput, { target: { value: "password123" } });
+        fireEvent.click(screen.getByTestId("form-submit-button"));
+
+        await waitFor(() => {
+            expect(screen.getByTestId("mocked-recaptcha")).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByTestId("mocked-recaptcha"));
+
+        expect(verifyRecaptchaApi).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(screen.getByText("reCAPTCHA not verified.")).toBeInTheDocument();
+        });
+    });
+
+    it("shows message on reCAPTCHA server failure", async () => {
+        (verifyRecaptchaApi as jest.Mock).mockRejectedValue(
+            createMockAxiosError({ detail: "Server error.", status: 500 })
+        );
+
+        renderUnauthenticatedPageNoCaptcha();
+
+        const emailInput = screen.getByLabelText("Email");
+        const passwordInput = screen.getByLabelText("Password");
+
+        fireEvent.input(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.input(passwordInput, { target: { value: "password123" } });
+        fireEvent.click(screen.getByTestId("form-submit-button"));
+
+        await waitFor(() => {
+            expect(screen.getByTestId("mocked-recaptcha")).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByTestId("mocked-recaptcha"));
+
+        expect(verifyRecaptchaApi).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(screen.getByText("reCAPTCHA error!")).toBeInTheDocument();
         });
     });
 });
