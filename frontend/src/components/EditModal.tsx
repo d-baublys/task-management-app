@@ -8,6 +8,8 @@ const EditModal = () => {
 
     const [currentTask] = tasks.filter((task: TaskType) => task.id === activeTaskId);
 
+    if (!currentTask) return;
+
     return (
         <Modal
             modalId={"edit-modal"}

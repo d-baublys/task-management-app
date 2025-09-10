@@ -16,7 +16,7 @@ import {
     UpdateTaskParams,
 } from "../lib/definitions";
 
-interface ContextType {
+export interface ContextType {
     isAuthenticated: boolean;
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;

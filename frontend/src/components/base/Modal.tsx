@@ -61,6 +61,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: P
                     <fieldset className="w-full">
                         <legend className="mb-1 font-semibold">Task Status</legend>
                         <select
+                            aria-label="Task status"
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             className="w-full h-8 px-2 rounded-md bg-gray-300"
@@ -78,6 +79,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: P
                     <fieldset className="w-full">
                         <legend className="mb-1 font-semibold">Task Description</legend>
                         <textarea
+                            aria-label="Task description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className="w-full px-2 rounded-md bg-gray-300 resize-none"
@@ -89,6 +91,7 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: P
                     <fieldset className="w-full">
                         <legend className="mb-1 font-semibold">Due By</legend>
                         <input
+                            aria-label="Task due date"
                             type="date"
                             value={dueDate}
                             className="w-full h-8 px-2 rounded-md bg-gray-300"

@@ -1,11 +1,12 @@
 /* eslint-disable import/first */
 
 import React, { ReactNode } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Main from "../pages/Main";
-import { getApiTasks } from "../lib/api-services";
+import { createApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
 import { createAxiosResponse, createFakeTasks, createMockAxiosError } from "../lib/test-factories";
-import { ContextProvider } from "../context/AppContext";
+import { ContextProvider, ContextType } from "../context/AppContext";
+import { AddTaskParams, TaskType } from "../lib/definitions";
 
 jest.mock("react-dnd", () => ({
     DndProvider: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -23,7 +24,10 @@ jest.mock("react-device-detect", () => ({
 }));
 
 jest.mock("../lib/api-services", () => ({
+    createApiTask: jest.fn(),
     getApiTasks: jest.fn(),
+    updateApiTask: jest.fn(),
+    deleteApiTask: jest.fn(),
 }));
 
 jest.mock("axios", () => ({
@@ -44,13 +48,34 @@ jest.mock("react-router", () => ({
 
 jest.mock("../components/DragLayer");
 
-const renderMainPage = () => {
+const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}) =>
     render(
-        <ContextProvider overrides={{ isAuthenticated: true, user: "test@example.com" }}>
+        <ContextProvider
+            overrides={{
+                isAuthenticated: true,
+                user: "test@example.com",
+                ...overrides,
+            }}
+        >
             <Main />
         </ContextProvider>
     );
-};
+
+const renderWithEditModal = () =>
+    renderMainPage({
+        overrides: {
+            dragAllowed: false,
+            activeTaskId: 3,
+            isEditOpen: true,
+        },
+    });
+
+const renderWithAddModal = () =>
+    renderMainPage({
+        overrides: {
+            isAddOpen: true,
+        },
+    });
 
 describe("MainPage", () => {
     it("displays tasks on successful fetch", async () => {
@@ -73,6 +98,130 @@ describe("MainPage", () => {
 
         await waitFor(() => {
             expect(screen.getByText("Error fetching task data!")).toBeInTheDocument();
+        });
+    });
+
+    it("calls API correctly on successful task update", async () => {
+        const initialTasks: TaskType[] = createFakeTasks();
+        const updatedTask: TaskType = {
+            ...initialTasks[0],
+            description: "Updated first mocked task",
+        };
+
+        (getApiTasks as jest.Mock).mockResolvedValue(createAxiosResponse(initialTasks, 200));
+        (updateApiTask as jest.Mock).mockResolvedValue(createAxiosResponse(updatedTask, 200));
+        renderWithEditModal();
+
+        await waitFor(() => {
+            expect(screen.getByRole("textbox", { name: "Task description" })).toBeInTheDocument();
+        });
+
+        fireEvent.input(screen.getByRole("textbox", { name: "Task description" }), {
+            target: { value: "Updated first mocked task" },
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+        expect(updateApiTask).toHaveBeenCalledWith(3, {
+            status: "to_do",
+            description: "Updated first mocked task",
+            due_date: "2025-02-03",
+            position: 0,
+        });
+    });
+
+    it("shows message on task update server error", async () => {
+        const initialTasks: TaskType[] = createFakeTasks();
+
+        (getApiTasks as jest.Mock).mockResolvedValue(createAxiosResponse(initialTasks, 200));
+        (updateApiTask as jest.Mock).mockRejectedValue(
+            createMockAxiosError({ detail: "Error updating task!", status: 500 })
+        );
+        renderWithEditModal();
+
+        await waitFor(() => {
+            expect(screen.getByRole("textbox", { name: "Task description" })).toBeInTheDocument();
+        });
+
+        fireEvent.input(screen.getByRole("textbox", { name: "Task description" }), {
+            target: { value: "Updated first mocked task" },
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+        expect(updateApiTask).toHaveBeenCalledWith(3, {
+            status: "to_do",
+            description: "Updated first mocked task",
+            due_date: "2025-02-03",
+            position: 0,
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText("Error updating task!")).toBeInTheDocument();
+        });
+    });
+
+    it("calls API on successful task creation", async () => {
+        const task: TaskType = createFakeTasks()[0];
+        const { id, user, position, ...rest } = task;
+        const taskPayload: AddTaskParams = { ...rest, dueDate: rest.due_date };
+
+        (createApiTask as jest.Mock).mockResolvedValue(createAxiosResponse(taskPayload, 201));
+        renderWithAddModal();
+
+        fireEvent.change(screen.getByRole("combobox", { name: "Task status" }), {
+            target: { value: "to_do" },
+        });
+
+        fireEvent.input(screen.getByRole("textbox", { name: "Task description" }), {
+            target: { value: "First mocked task" },
+        });
+
+        fireEvent.change(screen.getByLabelText("Task due date"), {
+            target: { value: "2025-02-03" },
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+        expect(createApiTask).toHaveBeenCalledWith({
+            status: "to_do",
+            description: "First mocked task",
+            dueDate: "2025-02-03",
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText("Task added!")).toBeInTheDocument();
+        });
+    });
+
+    it("shows message on task creation server failure", async () => {
+        (createApiTask as jest.Mock).mockRejectedValue(
+            createMockAxiosError({ detail: "Error adding task!", status: 500 })
+        );
+        renderWithAddModal();
+
+        fireEvent.change(screen.getByRole("combobox", { name: "Task status" }), {
+            target: { value: "to_do" },
+        });
+
+        fireEvent.input(screen.getByRole("textbox", { name: "Task description" }), {
+            target: { value: "First mocked task" },
+        });
+
+        fireEvent.change(screen.getByLabelText("Task due date"), {
+            target: { value: "2025-02-03" },
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+        expect(createApiTask).toHaveBeenCalledWith({
+            status: "to_do",
+            description: "First mocked task",
+            dueDate: "2025-02-03",
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText("Error adding task!")).toBeInTheDocument();
         });
     });
 });
