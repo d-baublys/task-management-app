@@ -2,7 +2,7 @@
 
 import { fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import LogInPage from "../pages/LogInPage";
-import React, { act } from "react";
+import React, { act, ReactNode } from "react";
 import { ContextProvider } from "../context/AppContext";
 import { createMockAxiosError } from "../lib/test-factories";
 import useAuth from "../hooks/useAuth";
@@ -19,17 +19,7 @@ jest.mock("../lib/api-services", () => ({
 jest.mock("react-router", () => ({
     useNavigate: () => jest.fn(),
     useLocation: () => "/login",
-    Link: jest.fn(),
-}));
-
-jest.mock("axios", () => ({
-    create: jest.fn(() => ({
-        get: jest.fn(),
-        post: jest.fn(),
-        patch: jest.fn(),
-        delete: jest.fn(),
-    })),
-    AxiosError: jest.fn(),
+    Link: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
 jest.mock("react-google-recaptcha", () => {

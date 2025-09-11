@@ -6,26 +6,16 @@ import React from "react";
 import { ContextProvider } from "../context/AppContext";
 import { createMockAxiosError } from "../lib/test-factories";
 
+const mockNavigate = jest.fn();
+
 jest.mock("../lib/api-services", () => ({
     signupApi: jest.fn(),
     getTokenApi: jest.fn(),
 }));
 
-const mockNavigate = jest.fn();
-
 jest.mock("react-router", () => ({
     useNavigate: () => mockNavigate,
     useLocation: () => "/create-account",
-}));
-
-jest.mock("axios", () => ({
-    create: jest.fn(() => ({
-        get: jest.fn(),
-        post: jest.fn(),
-        patch: jest.fn(),
-        delete: jest.fn(),
-    })),
-    AxiosError: jest.fn(),
 }));
 
 import { signupApi } from "../lib/api-services";

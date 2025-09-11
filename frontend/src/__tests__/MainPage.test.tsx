@@ -3,7 +3,6 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Main from "../pages/Main";
-import { createApiTask, deleteApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
 import { createAxiosResponse, createFakeTasks, createMockAxiosError } from "../lib/test-factories";
 import { ContextProvider, ContextType } from "../context/AppContext";
 import { AddTaskParams, TaskType } from "../lib/definitions";
@@ -19,19 +18,11 @@ jest.mock("../lib/api-services", () => ({
     deleteApiTask: jest.fn(),
 }));
 
-jest.mock("axios", () => ({
-    create: jest.fn(() => ({
-        get: jest.fn(),
-        post: jest.fn(),
-        patch: jest.fn(),
-        delete: jest.fn(),
-    })),
-    AxiosError: jest.fn(),
-}));
-
 jest.mock("react-router", () => ({
     useNavigate: () => jest.fn(),
 }));
+
+import { createApiTask, deleteApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
 
 const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}) =>
     render(
