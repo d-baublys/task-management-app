@@ -16,7 +16,7 @@ export function createMockAxiosError({
     detail,
     status,
 }: {
-    detail: string;
+    detail: string | Record<string, string[]>;
     status: number;
 }): FakeAxiosError {
     return new FakeAxiosError({ data: { detail }, status });

@@ -54,7 +54,7 @@ export interface SignUpParams {
 }
 
 interface FakeAxiosResponse {
-    data: { detail: string };
+    data: { detail: string | Record<string, string[]> };
     status: number;
 }
 
