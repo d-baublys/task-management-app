@@ -112,7 +112,7 @@ export const handleLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogIn
     const { setIsRecaptchaOpen, isRecaptchaPassed } = uiGroup;
 
     if (email && password) {
-        if (isRecaptchaPassed) {
+        if (isRecaptchaPassed || process.env.REACT_APP_ENV === "test") {
             await executeLogIn({ authGroup, userGroup, uiGroup });
         } else {
             setIsRecaptchaOpen(true);

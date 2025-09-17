@@ -13,13 +13,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env_base = BASE_DIR / ".env"
 env_local = BASE_DIR / ".env.local"
 env_production_local = BASE_DIR / ".env.production.local"
+env_test_local = BASE_DIR / ".env.test.local"
+
 load_dotenv(env_base, override=True)
 load_dotenv(env_local)
 
-DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() != "false"
+DJANGO_ENV = os.getenv("DJANGO_ENV", "development")
 
-if not DEBUG:
+if DJANGO_ENV == "production":
     load_dotenv(env_production_local)
+elif DJANGO_ENV == "test":
+    load_dotenv(env_test_local)
+
+DEBUG = DJANGO_ENV != "production"
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
@@ -78,7 +84,7 @@ WSGI_APPLICATION = "task_management.wsgi.application"
 
 # Database
 
-if "DATABASE_URL" in os.environ:
+if "DATABASE_URL" in os.environ and DJANGO_ENV in ("production", "test"):
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=500,
@@ -169,7 +175,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
 
-if not DEBUG:
+if DJANGO_ENV == "production":
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
