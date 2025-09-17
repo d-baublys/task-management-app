@@ -9,5 +9,6 @@ export default defineConfig({
         setupNodeEvents(on, config) {},
         baseUrl: process.env.CYPRESS_FRONTEND_URL,
         chromeWebSecurity: false,
+        experimentalRunAllSpecs: true,
     },
 });

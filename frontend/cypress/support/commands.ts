@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import { userEmail, userPassword } from "./credentials";
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -42,10 +45,19 @@ declare global {
     namespace Cypress {
         interface Chainable {
             visitHome(): Chainable<void>;
+            logInAsUser(): Chainable<void>;
         }
     }
 }
 
 Cypress.Commands.add("visitHome", () => {
     cy.visit("/");
+});
+
+Cypress.Commands.add("logInAsUser", () => {
+    cy.visitHome();
+
+    cy.get("input[aria-label='Email']").type(userEmail);
+    cy.get("input[aria-label='Password']").type(userPassword);
+    cy.get("button[type='submit']").click();
 });
