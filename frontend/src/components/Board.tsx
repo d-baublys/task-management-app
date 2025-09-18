@@ -41,7 +41,7 @@ const Board = ({ title, boardTasks }: Props) => {
 
     return (
         <div
-            className={`relative before:content-[""] before:absolute before:inset-0 w-full rounded-xl before:rounded-xl min-h-full py-2 before:bg-board-gradient before:drop-shadow-board before:pointer-events-none before:z-[-1] ${
+            className={`status-board relative before:content-[""] before:absolute before:inset-0 w-full rounded-xl before:rounded-xl min-h-full py-2 before:bg-board-gradient before:drop-shadow-board before:pointer-events-none before:z-[-1] ${
                 isOver && !isDeleteMode ? "before:opacity-80" : "before:opacity-50"
             }`}
             ref={(el) => {

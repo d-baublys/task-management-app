@@ -46,6 +46,8 @@ declare global {
         interface Chainable {
             visitHome(): Chainable<void>;
             logInAsUser(): Chainable<void>;
+            awaitDragAllowedTrigger(): Chainable<void>;
+            awaitDebouncedDbUpdate(): Chainable<void>;
         }
     }
 }
@@ -60,4 +62,12 @@ Cypress.Commands.add("logInAsUser", () => {
     cy.get("input[aria-label='Email']").type(userEmail);
     cy.get("input[aria-label='Password']").type(userPassword);
     cy.get("button[type='submit']").click();
+});
+
+Cypress.Commands.add("awaitDragAllowedTrigger", () => {
+    cy.wait(200); // account for 'drag allowed' timeout
+});
+
+Cypress.Commands.add("awaitDebouncedDbUpdate", () => {
+    cy.wait(400); // account for debounced db update on drop
 });
