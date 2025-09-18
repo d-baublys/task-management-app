@@ -25,6 +25,10 @@ Live Demo: https://task-management-app-bice-psi.vercel.app
 - Deploying frontend with Vercel
 - Adapting existing codebase and tests to use static typing
 
+- Integrating Cypress testing in the context of a Python backend
+- Working with drag-and-drop mechanics in both Jest unit tests and Cypress e2e tests
+- Testing with and around reCAPTCHA
+
 ## Demonstrates
 - Adaptability to frontend framework practices and workflow
 - Accommodating both desktop and mobile devices and various screen sizes
@@ -34,3 +38,5 @@ Live Demo: https://task-management-app-bice-psi.vercel.app
 - Consideration about API and authentication security
 - Testing frontend, backend, and overall integration
 - Proficiency in TypeScript
+
+- Ability to revisit an older project to test and refactor with the latest knowledge and skills
