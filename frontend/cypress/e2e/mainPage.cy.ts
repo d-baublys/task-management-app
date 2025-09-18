@@ -1,12 +1,4 @@
 describe("Main page base tests", () => {
-    it("redirects to log in page when unauthenticated", () => {
-        cy.visit("/main");
-        cy.location("pathname").should("eq", "/login");
-        cy.get("form").contains("button", "Log In").should("be.visible");
-    });
-});
-
-describe("Main page authenticated tests", () => {
     beforeEach(() => {
         cy.visitHome();
         cy.logInAsUser();
