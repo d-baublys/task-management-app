@@ -30,7 +30,7 @@
         "db-reset": "cross-env DJANGO_ENV=test python ../backend/manage.py db_reset",
         "django-dev": "python ../backend/manage.py runserver",
         "django-cypress": "cross-env DJANGO_ENV=test python ../backend/manage.py runserver",
-        "react-cypress": "dotenv -e .env.test.local -- react-scripts start"
+        "react-cypress": "dotenv -e .env.test.cypress -- react-scripts start"
     },
     "eslintConfig": {
         "extends": [

@@ -1,7 +1,6 @@
 import { AxiosResponse } from "axios";
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T>>;
-export type BoardTitlesType = { [key: string]: string };
 
 export interface TaskPayloadType {
     status: string;
@@ -69,6 +68,15 @@ export class FakeAxiosError extends Error {
 }
 
 export type FormVariants = "logIn" | "signUp";
+
+export const boardsData = {
+    "To Do": "to_do",
+    "In Progress": "in_progress",
+    Done: "done",
+} as const;
+
+export type BoardLabels = keyof typeof boardsData;
+export type BoardCodes = (typeof boardsData)[BoardLabels];
 
 export type AddUpdateResponse = Promise<AxiosResponse<TaskType> | undefined>;
 export type AddUpdateMultiResponse = Promise<(AxiosResponse<TaskType> | undefined)[] | undefined>;

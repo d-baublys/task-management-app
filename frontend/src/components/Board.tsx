@@ -2,16 +2,17 @@ import React, { useRef } from "react";
 import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { processTaskMove } from "../lib/dnd-helpers";
-import { TaskType, DndTileData } from "../lib/definitions";
+import { TaskType, DndTileData, BoardLabels, BoardCodes } from "../lib/definitions";
 import useAppContext from "../context/AppContext";
 
 interface Props {
-    title: string;
+    boardLabel: BoardLabels;
+    boardCode: BoardCodes;
     boardTasks: TaskType[];
 }
 
-const Board = ({ title, boardTasks }: Props) => {
-    const { setTasks, updateTask, updateMultiTask, boardTitles, isDeleteMode } = useAppContext();
+const Board = ({ boardLabel, boardCode, boardTasks }: Props) => {
+    const { setTasks, updateTask, updateMultiTask, isDeleteMode } = useAppContext();
 
     const excludeRef = useRef(null);
 
@@ -24,8 +25,7 @@ const Board = ({ title, boardTasks }: Props) => {
                     setTasks,
                     updateTask,
                     updateMultiTask,
-                    boardTitles,
-                    title,
+                    boardCode,
                     item,
                     monitor,
                     excludeRef,
@@ -48,7 +48,7 @@ const Board = ({ title, boardTasks }: Props) => {
                 dropRef(el);
             }}
         >
-            <h2 className="py-2 text-center text-lg md:text-xl font-semibold">{title}</h2>
+            <h2 className="py-2 text-center text-lg md:text-xl font-semibold">{boardLabel}</h2>
             <div ref={excludeRef} className="flex flex-col w-full">
                 {boardTasks.map((tile: TaskType) => (
                     <DraggableTile

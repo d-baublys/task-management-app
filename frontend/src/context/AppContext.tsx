@@ -6,7 +6,6 @@ import {
     AddTaskParams,
     AddUpdateMultiResponse,
     AddUpdateResponse,
-    BoardTitlesType,
     GeneralApiResponse,
     LoginParams,
     SaveTaskParams,
@@ -36,7 +35,6 @@ export interface ContextType {
     saveTask: (param: SaveTaskParams) => AddUpdateResponse;
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
     deleteTask: (taskId: number) => GeneralApiResponse<{ id: number }>;
-    boardTitles: BoardTitlesType;
     isAddOpen: boolean;
     setIsAddOpen: StateSetter<boolean>;
     isDeleteMode: boolean;
@@ -109,12 +107,6 @@ export const ContextProvider = ({
         showToast
     );
 
-    const boardTitles = {
-        "To Do": "to_do",
-        "In Progress": "in_progress",
-        Done: "done",
-    };
-
     return (
         <AppContext.Provider
             value={{
@@ -137,7 +129,6 @@ export const ContextProvider = ({
                 saveTask,
                 updateMultiTask,
                 deleteTask,
-                boardTitles,
                 isAddOpen,
                 setIsAddOpen,
                 isDeleteMode,

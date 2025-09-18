@@ -13,85 +13,127 @@ describe("Main page authenticated tests", () => {
     });
 
     it("shows the expected user tasks", () => {
-        cy.get(".tile").should("have.length", 1);
-        cy.contains("This is a test task").should("be.visible");
+        cy.get(".tile").should("have.length", 3);
+        cy.contains("First task").should("be.visible");
+        cy.contains("Second task").should("be.visible");
+        cy.contains("Third task").should("be.visible");
     });
 
     it("places existing tasks in the correct status board", () => {
-        cy.contains(".status-board", "In Progress").within(() => {
-            cy.contains(".tile", "This is a test task").and("contain.text", "Aug 1");
-        });
+        cy.assertSeededTilesInBoard();
+    });
+
+    it("orders tasks correctly based on their 'position' attribute", () => {
+        cy.compareTileOrder(["First task", "Second task", "Third task"]);
     });
 
     it("adds & persists new tasks correctly", () => {
-        cy.get("button[aria-label='Create task']").click();
-        cy.get("select[aria-label='Task status']").select("Done");
-        cy.get("textarea[aria-label='Task description']").type("This is an added task");
-        cy.get("input[aria-label='Task due date']").type("2025-08-02");
-        cy.contains("button", "Add").click();
+        cy.addNewTask();
 
         cy.contains("Task added!").should("be.visible");
-        cy.contains(".status-board", "Done").within(() => {
-            cy.contains(".tile", "This is an added task").and("contain.text", "Aug 2");
-        });
+        cy.assertTaskInBoard("Done", "New task", "Aug 4");
 
         cy.reload();
-        cy.contains(".status-board", "Done").within(() => {
-            cy.contains(".tile", "This is an added task").and("contain.text", "Aug 2");
-        });
+        cy.assertTaskInBoard("Done", "New task", "Aug 4");
     });
 
     it("updates & persists task status when edited in the 'edit' modal", () => {
-        cy.contains(".tile", "This is an added task").trigger("mousedown").trigger("mouseup");
+        cy.contains(".tile", "New task").trigger("mousedown").trigger("mouseup");
         cy.get("select[aria-label='Task status']").should("contain.text", "Done");
         cy.get("select[aria-label='Task status']").select("In Progress");
         cy.contains("button", "Save").click();
 
         cy.contains("Task saved!").should("be.visible");
-        cy.contains(".status-board", "In Progress").within(() => {
-            cy.contains(".tile", "This is an added task").and("contain.text", "Aug 2");
-        });
+        cy.assertTaskInBoard("In Progress", "New task", "Aug 4");
         cy.reload();
-        cy.contains(".status-board", "In Progress").within(() => {
-            cy.contains(".tile", "This is an added task").and("contain.text", "Aug 2");
-        });
-    });
-
-    it("updates & persists task status when it is dragged and dropped on another board", () => {
-        cy.contains("This is a test task").trigger("mousedown");
-        cy.awaitDragAllowedTrigger();
-        cy.contains("This is a test task").trigger("dragstart");
-        cy.contains(".status-board", "To Do")
-            .trigger("dragenter")
-            .trigger("dragover")
-            .trigger("drop");
-        cy.awaitDebouncedDbUpdate();
-
-        cy.contains(".status-board", "To Do").within(() => {
-            cy.contains(".tile", "This is a test task").and("contain.text", "Aug 1");
-        });
-        cy.contains(".tile", "This is a test task").trigger("mousedown").trigger("mouseup");
-        cy.get("select[aria-label='Task status']").should("contain.text", "To Do");
-        cy.reload();
-        cy.contains(".status-board", "To Do").within(() => {
-            cy.contains(".tile", "This is a test task").and("contain.text", "Aug 1");
-        });
+        cy.assertTaskInBoard("In Progress", "New task", "Aug 4");
     });
 
     it("deletes task when it is dragged and dropped on the 'delete' button in delete mode & persists deletion", () => {
         cy.get("button[aria-label='Delete task']").click();
-        cy.contains(".tile", "This is an added task").trigger("mousedown");
-        cy.awaitDragAllowedTrigger();
-        cy.contains(".tile", "This is an added task").trigger("dragstart");
-        cy.get("button[aria-label='Delete task']")
-            .trigger("dragenter")
-            .trigger("dragover")
-            .trigger("drop");
-
+        cy.triggerDrag({ dragTargetHtmlSelector: ".tile", dragTargetTextSelector: "New task" });
+        cy.performDrop({ dropTargetHtmlSelector: "button[aria-label='Delete task']" });
         cy.contains("button", "Confirm").click();
-        cy.contains(".tile", "This is an added task").should("not.exist");
+        cy.contains(".tile", "New task").should("not.exist");
 
         cy.reload();
-        cy.contains(".tile", "This is an added task").should("not.exist");
+        cy.contains(".tile", "New task").should("not.exist");
+    });
+
+    it("updates & persists task status when it is dragged and dropped on another board", () => {
+        cy.triggerDrag({ dragTargetTextSelector: "First task" });
+        cy.performDrop({
+            dropTargetHtmlSelector: ".status-board",
+            dropTargetTextSelector: "To Do",
+        });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.assertTaskInBoard("To Do", "First task", "Aug 1");
+        cy.contains(".tile", "First task").trigger("mousedown").trigger("mouseup");
+        cy.get("select[aria-label='Task status']").should("contain.text", "To Do");
+        cy.reload();
+        cy.assertTaskInBoard("To Do", "First task", "Aug 1");
+    });
+});
+
+describe("Main page tile drag-and-drop interaction tests", () => {
+    beforeEach(() => {
+        cy.exec("npm run db-reset");
+        cy.visitHome();
+        cy.logInAsUser();
+    });
+
+    it("doesn't rearrange tiles when a tile is dropped on the lower half of a tile above it", () => {
+        cy.triggerDrag({ dragTargetTextSelector: "Second task" });
+        cy.performDrop({ dropTargetTextSelector: "Aug 1" });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.compareTileOrder(["First task", "Second task", "Third task"]);
+    });
+
+    it("rearranges tiles when a tile is dropped on the upper half of a tile above it & persists changes", () => {
+        cy.triggerDrag({ dragTargetTextSelector: "Third task" });
+        cy.performDrop({ dropTargetTextSelector: "Second task" });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.compareTileOrder(["First task", "Third task", "Second task"]);
+        cy.reload();
+        cy.compareTileOrder(["First task", "Third task", "Second task"]);
+    });
+
+    it("rearranges tiles when a tile is dragged and dropped across multiple tiles & persists changes", () => {
+        cy.triggerDrag({ dragTargetTextSelector: "Third task" });
+        cy.performDrop({ dropTargetTextSelector: "First task" });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.compareTileOrder(["Third task", "First task", "Second task"]);
+        cy.reload();
+        cy.compareTileOrder(["Third task", "First task", "Second task"]);
+    });
+
+    it("appends tile when moved to another board & is dropped below all other tiles", () => {
+        cy.viewport(1920, 1080);
+        cy.addNewTask();
+        cy.triggerDrag({ dragTargetTextSelector: "New task" });
+        cy.performDrop({
+            dropTargetHtmlSelector: ".status-board",
+            dropTargetTextSelector: "In Progress",
+        });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.assertSeededTilesInBoard();
+        cy.assertTaskInBoard("In Progress", "New task", "Aug 4");
+        cy.compareTileOrder(["First task", "Second task", "Third task", "New task"]);
+    });
+
+    it("rearranges tiles when a tile is moved to another board & is dropped between other tiles", () => {
+        cy.addNewTask();
+        cy.triggerDrag({ dragTargetTextSelector: "New task" });
+        cy.performDrop({ dropTargetTextSelector: "Second task" });
+        cy.awaitDebouncedDbUpdate();
+
+        cy.assertSeededTilesInBoard();
+        cy.assertTaskInBoard("In Progress", "New task", "Aug 4");
+        cy.compareTileOrder(["First task", "New task", "Second task", "Third task"]);
     });
 });

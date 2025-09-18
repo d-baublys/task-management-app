@@ -25,10 +25,24 @@ class Command(BaseCommand):
             {
                 "user": created_users[0],
                 "status": "in_progress",
-                "description": "This is a test task",
+                "description": "First task",
                 "due_date": date(2025, 8, 1),
                 "position": 0,
-            }
+            },
+            {
+                "user": created_users[0],
+                "status": "in_progress",
+                "description": "Second task",
+                "due_date": date(2025, 8, 2),
+                "position": 1,
+            },
+            {
+                "user": created_users[0],
+                "status": "in_progress",
+                "description": "Third task",
+                "due_date": date(2025, 8, 3),
+                "position": 2,
+            },
         ]
 
         for task in tasks:

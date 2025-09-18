@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModalButton from "./ModalButton";
-import { StateSetter, TaskType } from "../../lib/definitions";
+import { boardsData, StateSetter, TaskType } from "../../lib/definitions";
 import useAppContext from "../../context/AppContext";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: Props) => {
-    const { boardTitles, setActiveTaskId, saveTask, showToast } = useAppContext();
+    const { setActiveTaskId, saveTask, showToast } = useAppContext();
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");
@@ -69,9 +69,9 @@ const Modal = ({ modalId, modalAction, modalState, modalSetter, currentTask }: P
                             <option value="" disabled hidden>
                                 Select status...
                             </option>
-                            {Object.keys(boardTitles).map((key: string) => (
-                                <option key={boardTitles[key]} value={boardTitles[key]}>
-                                    {key}
+                            {Object.entries(boardsData).map(([label, boardCode]) => (
+                                <option key={boardCode} value={boardCode}>
+                                    {label}
                                 </option>
                             ))}
                         </select>

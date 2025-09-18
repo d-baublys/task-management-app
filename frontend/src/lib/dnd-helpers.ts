@@ -4,17 +4,16 @@ import {
     AddUpdateResponse,
     AddUpdateMultiResponse,
     UpdateTaskParams,
-    BoardTitlesType,
     DndTileData,
     StateSetter,
+    BoardCodes,
 } from "./definitions";
 
 interface ProcessTaskMoveArgs {
     setTasks: StateSetter<TaskType[]>;
     updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
     updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    boardTitles: BoardTitlesType;
-    title: string;
+    boardCode: BoardCodes;
     item: DndTileData;
     monitor: DropTargetMonitor;
     excludeRef: React.RefObject<HTMLDivElement | null>;
@@ -69,8 +68,7 @@ export const processTaskMove = ({
     setTasks,
     updateTask,
     updateMultiTask,
-    boardTitles,
-    title,
+    boardCode,
     item,
     monitor,
     excludeRef,
@@ -87,11 +85,11 @@ export const processTaskMove = ({
         const dragIndex = prevTasks.findIndex((task) => task.id === item.id);
         const reorderedTasks = [...prevTasks];
 
-        if (item.status !== boardTitles[title]) {
-            item.status = boardTitles[title];
+        if (item.status !== boardCode) {
+            item.status = boardCode;
 
             const movedTask = reorderedTasks[dragIndex];
-            movedTask.status = boardTitles[title];
+            movedTask.status = boardCode;
 
             debouncedUpdateTask(movedTask, updateTask);
 
