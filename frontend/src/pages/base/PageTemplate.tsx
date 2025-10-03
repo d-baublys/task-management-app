@@ -6,7 +6,6 @@ interface Props {
     children: React.ReactNode;
     leftContent?: React.ReactElement;
     rightContent?: React.ReactElement;
-    overlayContent?: React.ReactElement;
     onMouseUp?: () => void;
     wrapperDimensions?: string;
     columnDimensions?: string;
@@ -16,7 +15,6 @@ const PageTemplate = ({
     children,
     leftContent,
     rightContent,
-    overlayContent,
     onMouseUp,
     wrapperDimensions,
     columnDimensions,
@@ -50,7 +48,6 @@ const PageTemplate = ({
                 {rightContent}
             </div>
             <ToastNotification />
-            {overlayContent}
         </div>
     );
 };

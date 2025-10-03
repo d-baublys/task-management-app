@@ -20,33 +20,32 @@ export interface ContextType {
     setIsAuthenticated: StateSetter<boolean>;
     user: string | null;
     setUser: StateSetter<string | null>;
-    login: (param: LoginParams) => GeneralApiResponse<{ message: string; email: string }>;
-    logout: () => Promise<void>;
-    signUp: (params: SignUpParams) => GeneralApiResponse<{ email: string }>;
+    auth: {
+        login: (param: LoginParams) => GeneralApiResponse<{ message: string; email: string }>;
+        logout: () => Promise<void>;
+        signUp: (params: SignUpParams) => GeneralApiResponse<{ email: string }>;
+        verifyRecaptcha: (key: string | null) => GeneralApiResponse<{ [key: string]: string }>;
+    };
     loading: boolean;
     setLoading: StateSetter<boolean>;
     error: string;
     setError: StateSetter<string | "">;
     tasks: TaskType[];
     setTasks: StateSetter<TaskType[]>;
-    getTasks: () => Promise<void>;
-    addTask: (param: AddTaskParams) => AddUpdateResponse;
-    updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
-    saveTask: (param: SaveTaskParams) => AddUpdateResponse;
-    updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
-    deleteTask: (taskId: number) => GeneralApiResponse<{ id: number }>;
-    isAddOpen: boolean;
-    setIsAddOpen: StateSetter<boolean>;
-    isDeleteMode: boolean;
-    setIsDeleteMode: StateSetter<boolean>;
+    tasksHookObj: {
+        getTasks: () => Promise<void>;
+        addTask: (param: AddTaskParams) => AddUpdateResponse;
+        updateTask: (param: UpdateTaskParams) => AddUpdateResponse;
+        saveTask: (param: SaveTaskParams) => AddUpdateResponse;
+        updateMultiTask: (updatedTasks: TaskType[]) => AddUpdateMultiResponse;
+        deleteTask: (taskId: number) => GeneralApiResponse<{ id: number }>;
+    };
     dragAllowed: boolean;
     setDragAllowed: StateSetter<boolean>;
-    isConfirmOpen: boolean;
-    setIsConfirmOpen: StateSetter<boolean>;
+    isDeleteMode: boolean;
+    setIsDeleteMode: StateSetter<boolean>;
     modalPromise: ((value: boolean) => void) | null;
     setModalPromise: StateSetter<((value: boolean) => void) | null>;
-    isEditOpen: boolean;
-    setIsEditOpen: StateSetter<boolean>;
     isDropdownActive: boolean;
     setIsDropdownActive: StateSetter<boolean>;
     activeTaskId: number | null;
@@ -58,7 +57,6 @@ export interface ContextType {
     showToast: (icon: "success" | "failure", message: string) => void;
     isRecaptchaOpen: boolean;
     setIsRecaptchaOpen: StateSetter<boolean>;
-    verifyRecaptcha: (key: string | null) => GeneralApiResponse<{ [key: string]: string }>;
     isRecaptchaPassed: boolean;
     setIsRecaptchaPassed: StateSetter<boolean>;
 }
@@ -77,12 +75,9 @@ export const ContextProvider = ({
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [tasks, setTasks] = useState<TaskType[]>([]);
-    const [isAddOpen, setIsAddOpen] = useState(false);
-    const [isDeleteMode, setIsDeleteMode] = useState(false);
-    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDropdownActive, setIsDropdownActive] = useState(false);
     const [isToastOpen, setIsToastOpen] = useState(false);
+    const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [modalPromise, setModalPromise] = useState<((value: boolean) => void) | null>(null);
     const [dragAllowed, setDragAllowed] = useState(false);
     const [activeTaskId, setActiveTaskId] = useState<number | null>(null);
@@ -94,7 +89,7 @@ export const ContextProvider = ({
     const [isRecaptchaPassed, setIsRecaptchaPassed] = useState(false);
 
     const showToast = toastHelper({ setNotification, setIsToastOpen });
-    const { verifyRecaptcha, login, logout, signUp } = useAuth({
+    const auth = useAuth({
         isAuthenticated,
         setIsAuthenticated,
         setUser,
@@ -102,10 +97,7 @@ export const ContextProvider = ({
         setLoading,
         showToast,
     });
-    const { getTasks, addTask, updateTask, saveTask, updateMultiTask, deleteTask } = useTasks(
-        setTasks,
-        showToast
-    );
+    const tasksHookObj = useTasks(setTasks, showToast);
 
     return (
         <AppContext.Provider
@@ -114,33 +106,20 @@ export const ContextProvider = ({
                 setIsAuthenticated,
                 user,
                 setUser,
-                login,
-                logout,
-                signUp,
+                auth,
                 loading,
                 setLoading,
                 error,
                 setError,
                 tasks,
                 setTasks,
-                getTasks,
-                addTask,
-                updateTask,
-                saveTask,
-                updateMultiTask,
-                deleteTask,
-                isAddOpen,
-                setIsAddOpen,
-                isDeleteMode,
-                setIsDeleteMode,
+                tasksHookObj,
                 dragAllowed,
                 setDragAllowed,
-                isConfirmOpen,
-                setIsConfirmOpen,
                 modalPromise,
                 setModalPromise,
-                isEditOpen,
-                setIsEditOpen,
+                isDeleteMode,
+                setIsDeleteMode,
                 isDropdownActive,
                 setIsDropdownActive,
                 activeTaskId,
@@ -152,7 +131,6 @@ export const ContextProvider = ({
                 showToast,
                 isRecaptchaOpen,
                 setIsRecaptchaOpen,
-                verifyRecaptcha,
                 isRecaptchaPassed,
                 setIsRecaptchaPassed,
                 ...overrides,

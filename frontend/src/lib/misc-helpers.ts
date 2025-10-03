@@ -188,3 +188,8 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
         }
     }
 };
+
+export const containsClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, elementId: string) => {
+    const element = document.getElementById(elementId);
+    return element ? element.contains(e.target as Node) : false;
+};

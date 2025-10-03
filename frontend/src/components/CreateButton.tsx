@@ -1,13 +1,12 @@
 import BoardButton from "./base/BoardButton";
 import React from "react";
 import { FaPlusSquare } from "react-icons/fa";
-import useAppContext from "../context/AppContext";
+import { StateSetter } from "../lib/definitions";
 
-const CreateButton = () => {
-    const { setIsAddOpen } = useAppContext();
+const CreateButton = ({ addModeSetter }: { addModeSetter: StateSetter<boolean> }) => {
     return (
         <BoardButton
-            onClick={() => setIsAddOpen((prev) => !prev)}
+            onClick={() => addModeSetter((prev) => !prev)}
             IconComponent={FaPlusSquare}
             aria-label="Create task"
             title="Create task"

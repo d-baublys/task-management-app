@@ -12,7 +12,8 @@ interface Props {
 }
 
 const Board = ({ boardLabel, boardCode, boardTasks }: Props) => {
-    const { setTasks, updateTask, updateMultiTask, isDeleteMode } = useAppContext();
+    const { setTasks, isDeleteMode, tasksHookObj } = useAppContext();
+    const { updateTask, updateMultiTask } = tasksHookObj;
 
     const excludeRef = useRef(null);
 

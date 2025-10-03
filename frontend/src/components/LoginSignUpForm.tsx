@@ -15,9 +15,6 @@ interface Props {
 
 export default function LoginSignUpForm({ variant, navigate }: Props) {
     const {
-        verifyRecaptcha,
-        login,
-        signUp,
         isRecaptchaOpen,
         setIsRecaptchaOpen,
         isRecaptchaPassed,
@@ -25,7 +22,9 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
         error,
         setError,
         showToast,
+        auth,
     } = useAppContext();
+    const { verifyRecaptcha, login, signUp } = auth;
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");

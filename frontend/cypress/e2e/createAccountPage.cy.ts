@@ -1,4 +1,4 @@
-import { userEmail } from "../support/credentials";
+import { primaryEmail } from "../support/credentials";
 
 describe("Create account page base tests", () => {
     beforeEach(() => {
@@ -21,14 +21,14 @@ describe("Create account page base tests", () => {
         cy.get("button[type='submit']").click();
         cy.get("input[aria-label='Email']").then(($inputs) => {
             const passwordInput = $inputs[0] as HTMLInputElement;
-            cy.wrap(passwordInput.validationMessage).should("eq", "Please enter an email address.");
+            cy.wrap(passwordInput.validationMessage).should("match", /Please.*email address/);
         });
         cy.location("pathname").should("eq", "/create-account");
         cy.contains("button", "Create Account").should("be.visible");
     });
 
     it("shows error message when provided email is already used", () => {
-        cy.get("input[aria-label='Email']").type(userEmail);
+        cy.get("input[aria-label='Email']").type(primaryEmail);
         cy.get("input[aria-label='Password']").type("password1");
         cy.get("input[aria-label='Confirm password']").type("password1");
         cy.get("button[type='submit']").click();
@@ -53,7 +53,7 @@ describe("Create account page seeded tests", () => {
     });
 
     after(() => {
-        cy.exec("npm run db-reset");
+        cy.resetDb();
     });
 
     it("shows toast notification and redirects to login page on successful account creation", () => {

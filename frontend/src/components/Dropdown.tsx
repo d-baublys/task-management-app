@@ -6,7 +6,8 @@ import useAppContext from "../context/AppContext";
 import { handleLogOut } from "../lib/misc-helpers";
 
 const Dropdown = () => {
-    const { logout, isDropdownActive, showToast } = useAppContext();
+    const { isDropdownActive, showToast, auth } = useAppContext();
+    const { logout } = auth;
     const navigate = useNavigate();
 
     const isDesktop = useMediaQuery({ minWidth: 768 });

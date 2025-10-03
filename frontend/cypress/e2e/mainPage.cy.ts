@@ -1,7 +1,7 @@
 describe("Main page base tests", () => {
     beforeEach(() => {
         cy.visitHome();
-        cy.logInAsUser();
+        cy.logInAsPrimaryUser();
     });
 
     it("shows the expected user tasks", () => {
@@ -70,9 +70,9 @@ describe("Main page base tests", () => {
 
 describe("Main page tile drag-and-drop interaction tests", () => {
     beforeEach(() => {
-        cy.exec("npm run db-reset");
+        cy.resetDb();
         cy.visitHome();
-        cy.logInAsUser();
+        cy.logInAsPrimaryUser();
     });
 
     it("doesn't rearrange tiles when a tile is dropped on the lower half of a tile above it", () => {

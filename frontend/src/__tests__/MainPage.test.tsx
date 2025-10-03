@@ -38,21 +38,29 @@ const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}
         </ContextProvider>
     );
 
-const renderWithEditModal = () =>
+const renderWithEditModalOpen = async () => {
     renderMainPage({
         overrides: {
             dragAllowed: false,
             activeTaskId: 3,
-            isEditOpen: true,
         },
     });
 
-const renderWithAddModal = () =>
-    renderMainPage({
-        overrides: {
-            isAddOpen: true,
-        },
+    await waitFor(() => {
+        expect(screen.getByText("First mocked task")).toBeInTheDocument();
     });
+
+    fireEvent.mouseDown(screen.getByText("First mocked task"));
+    fireEvent.mouseUp(screen.getByText("First mocked task"));
+    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+};
+
+const renderWithAddModalOpen = () => {
+    renderMainPage();
+
+    fireEvent.click(screen.getByLabelText("Create task"));
+    expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
+};
 
 describe("MainPage", () => {
     it("displays tasks on successful fetch", async () => {
@@ -87,7 +95,7 @@ describe("MainPage", () => {
 
         (getApiTasks as jest.Mock).mockResolvedValue(createAxiosResponse(initialTasks, 200));
         (updateApiTask as jest.Mock).mockResolvedValue(createAxiosResponse(updatedTask, 200));
-        renderWithEditModal();
+        await renderWithEditModalOpen();
 
         await waitFor(() => {
             expect(screen.getByRole("textbox", { name: "Task description" })).toBeInTheDocument();
@@ -114,7 +122,7 @@ describe("MainPage", () => {
         (updateApiTask as jest.Mock).mockRejectedValue(
             createMockAxiosError({ detail: "Error updating task!", status: 500 })
         );
-        renderWithEditModal();
+        await renderWithEditModalOpen();
 
         await waitFor(() => {
             expect(screen.getByRole("textbox", { name: "Task description" })).toBeInTheDocument();
@@ -144,7 +152,7 @@ describe("MainPage", () => {
         const taskPayload: AddTaskParams = { ...rest, dueDate: rest.due_date };
 
         (createApiTask as jest.Mock).mockResolvedValue(createAxiosResponse(taskPayload, 201));
-        renderWithAddModal();
+        renderWithAddModalOpen();
 
         fireEvent.change(screen.getByRole("combobox", { name: "Task status" }), {
             target: { value: "to_do" },
@@ -175,7 +183,7 @@ describe("MainPage", () => {
         (createApiTask as jest.Mock).mockRejectedValue(
             createMockAxiosError({ detail: "Error adding task!", status: 500 })
         );
-        renderWithAddModal();
+        renderWithAddModalOpen();
 
         fireEvent.change(screen.getByRole("combobox", { name: "Task status" }), {
             target: { value: "to_do" },

@@ -1,20 +1,11 @@
 import useAppContext from "../context/AppContext";
+import { StateSetter } from "../lib/definitions";
 
 let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
-const useHandleClicks = () => {
-    const {
-        dragAllowed,
-        setDragAllowed,
-        activeTaskId,
-        setActiveTaskId,
-        setIsEditOpen,
-        setIsAddOpen,
-        isDeleteMode,
-        setIsDeleteMode,
-        setIsConfirmOpen,
-        modalPromise,
-    } = useAppContext();
+const useHandleClicks = (editStateSetter?: StateSetter<boolean>) => {
+    const { dragAllowed, setDragAllowed, activeTaskId, setActiveTaskId, isDeleteMode } =
+        useAppContext();
 
     const taskMouseDown = (id: number) => {
         setActiveTaskId(id);
@@ -22,8 +13,12 @@ const useHandleClicks = () => {
     };
 
     const taskMouseUp = () => {
+        if (!editStateSetter) {
+            throw new Error("useHandleClicks error: Missing edit state setter");
+        }
+
         if (!dragAllowed && activeTaskId !== null && timer) {
-            setIsEditOpen(true);
+            editStateSetter(true);
         } else if (dragAllowed) {
             setActiveTaskId(null);
         }
@@ -31,27 +26,7 @@ const useHandleClicks = () => {
         timer = undefined;
         setDragAllowed(false);
     };
-
-    const containsClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, elementId: string) => {
-        const element = document.getElementById(elementId);
-        return element ? element.contains(e.target as Node) : false;
-    };
-
-    const backdropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (
-            !containsClick(e, "add-modal") &&
-            !containsClick(e, "edit-modal") &&
-            !containsClick(e, "confirm-modal")
-        ) {
-            modalPromise && modalPromise(false);
-            setActiveTaskId(null);
-            setIsAddOpen(false);
-            setIsEditOpen(false);
-            setIsConfirmOpen(false);
-            setIsDeleteMode(false);
-        }
-    };
-    return { taskMouseDown, taskMouseUp, containsClick, backdropClick };
+    return { taskMouseDown, taskMouseUp };
 };
 
 export default useHandleClicks;

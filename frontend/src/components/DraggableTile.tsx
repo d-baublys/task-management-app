@@ -10,13 +10,15 @@ import useAppContext from "../context/AppContext";
 const DraggableTile = ({ id, status, description, dueDate }: DndTileParams) => {
     const {
         setTasks,
-        updateMultiTask,
         isDeleteMode,
         dragAllowed,
         setDragAllowed,
         activeTaskId,
         setActiveTaskId,
+        tasksHookObj,
     } = useAppContext();
+
+    const { updateMultiTask } = tasksHookObj;
 
     const { taskMouseDown } = useHandleClicks();
 
