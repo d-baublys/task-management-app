@@ -4,26 +4,34 @@ import { handleLogIn, handleRecaptcha, handleSignUp } from "../lib/misc-helpers"
 import React, { useEffect, useState } from "react";
 import ReCaptcha from "react-google-recaptcha";
 import { Link, NavigateFunction, useLocation } from "react-router";
-import useAppContext from "../context/AppContext";
-import { FormVariants } from "../lib/definitions";
+import { FormVariants, StateSetter } from "../lib/definitions";
 import FormInput from "./FormInput";
+import useUiContext from "../context/UiContext";
+import useAuthContext from "../context/AuthContext";
 
 interface Props {
     variant: FormVariants;
     navigate: NavigateFunction;
+    isRecaptchaOpen: boolean;
+    setIsRecaptchaOpen: StateSetter<boolean>;
+    isRecaptchaPassed: boolean;
+    setIsRecaptchaPassed: StateSetter<boolean>;
+    errorMessage: string;
+    errorSetter: StateSetter<string>;
 }
 
-export default function LoginSignUpForm({ variant, navigate }: Props) {
-    const {
-        isRecaptchaOpen,
-        setIsRecaptchaOpen,
-        isRecaptchaPassed,
-        setIsRecaptchaPassed,
-        error,
-        setError,
-        showToast,
-        auth,
-    } = useAppContext();
+export default function LoginSignUpForm({
+    variant,
+    navigate,
+    isRecaptchaOpen,
+    setIsRecaptchaOpen,
+    isRecaptchaPassed,
+    setIsRecaptchaPassed,
+    errorMessage,
+    errorSetter,
+}: Props) {
+    const { showToast } = useUiContext();
+    const { auth } = useAuthContext();
     const { verifyRecaptcha, login, signUp } = auth;
 
     const [email, setEmail] = useState<string>("");
@@ -39,7 +47,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
     const userGroup = { email, setEmail, password, setPassword };
     const signUpGroup = { signUp, email, password, passwordConfirm };
     const uiGroup = {
-        setError,
+        errorSetter,
         navigate,
         showToast,
         setIsRecaptchaOpen,
@@ -50,7 +58,7 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
     useEffect(() => {
         setEmail("");
         setPassword("");
-        setError("");
+        errorSetter("");
     }, [pathname]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,7 +141,9 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
             </form>
             <div
                 className={`flex flex-col justify-center h-full mx-4 transition ${
-                    error || (isRecaptchaOpen && !isRecaptchaPassed) ? "opacity-100" : "opacity-0"
+                    errorMessage || (isRecaptchaOpen && !isRecaptchaPassed)
+                        ? "opacity-100"
+                        : "opacity-0"
                 }`}
             >
                 {variant === "logIn" && isRecaptchaOpen && !isRecaptchaPassed && (
@@ -150,12 +160,12 @@ export default function LoginSignUpForm({ variant, navigate }: Props) {
                         </div>
                     </div>
                 )}
-                {error && (
+                {errorMessage && (
                     <span
                         className={`flex justify-center items-start text-red-500 text-xs md:text-[0.8rem] gap-1`}
                     >
                         <IoAlertCircle className="min-w-fit min-h-fit text-base" />
-                        <span>{error}</span>
+                        <span>{errorMessage}</span>
                     </span>
                 )}
             </div>

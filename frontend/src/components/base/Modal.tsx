@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ModalButton from "./ModalButton";
 import { boardsData, StateSetter, TaskType } from "../../lib/definitions";
-import useAppContext from "../../context/AppContext";
 import DarkBackdrop from "./DarkBackdrop";
+import useUiContext from "../../context/UiContext";
+import useTasksContext from "../../context/TasksContext";
 
 export interface BaseModalProps {
     modalState: boolean;
@@ -15,8 +16,9 @@ interface Props extends BaseModalProps {
 }
 
 const Modal = ({ variant, modalState, modalSetter, currentTask }: Props) => {
-    const { setActiveTaskId, showToast, activeTaskId, tasksHookObj } = useAppContext();
-    const { saveTask } = tasksHookObj;
+    const { activeTaskId, setActiveTaskId, showToast } = useUiContext();
+    const { taskActions } = useTasksContext();
+    const { saveTask } = taskActions;
 
     const [status, setStatus] = useState(currentTask?.status || "");
     const [description, setDescription] = useState(currentTask?.description || "");

@@ -3,7 +3,8 @@ import { useDrop } from "react-dnd";
 import DraggableTile from "./DraggableTile";
 import { processTaskMove } from "../lib/dnd-helpers";
 import { TaskType, DndTileData, BoardLabels, BoardCodes } from "../lib/definitions";
-import useAppContext from "../context/AppContext";
+import useTasksContext from "../context/TasksContext";
+import useUiContext from "../context/UiContext";
 
 interface Props {
     boardLabel: BoardLabels;
@@ -12,8 +13,9 @@ interface Props {
 }
 
 const Board = ({ boardLabel, boardCode, boardTasks }: Props) => {
-    const { setTasks, isDeleteMode, tasksHookObj } = useAppContext();
-    const { updateTask, updateMultiTask } = tasksHookObj;
+    const { setTasks, taskActions } = useTasksContext();
+    const { isDeleteMode } = useUiContext();
+    const { updateTask, updateMultiTask } = taskActions;
 
     const excludeRef = useRef(null);
 

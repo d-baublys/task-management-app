@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { IoCloseSharp, IoCheckmarkCircleSharp, IoWarningSharp } from "react-icons/io5";
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
 
 const ToastNotification = () => {
-    const { notification, setNotification, isToastOpen, setIsToastOpen } = useAppContext();
+    const { notification, setNotification, isToastOpen, setIsToastOpen } = useUiContext();
     const iconOptions = { success: IoCheckmarkCircleSharp, failure: IoWarningSharp };
     const Icon = notification ? iconOptions[notification.icon] : iconOptions["failure"];
 

@@ -2,7 +2,7 @@ import { useDragLayer, XYCoord } from "react-dnd";
 import Tile from "./base/Tile";
 import React from "react";
 import { DndTileData } from "../lib/definitions";
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
 
 interface DragType {
     item: DndTileData;
@@ -10,7 +10,7 @@ interface DragType {
 }
 
 const DragLayer = () => {
-    const { dragAllowed } = useAppContext();
+    const { dragAllowed } = useUiContext();
     const { item, currentOffset }: DragType = useDragLayer((monitor) => ({
         item: monitor.getItem(),
         currentOffset: monitor.getSourceClientOffset(),

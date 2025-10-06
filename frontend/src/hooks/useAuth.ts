@@ -8,24 +8,17 @@ import {
     signupApi,
 } from "../lib/api-services";
 import { LoginParams, SignUpParams, StateSetter } from "../lib/definitions";
+import useUiContext from "../context/UiContext";
 
 interface UseAuthParams {
     isAuthenticated: boolean;
     setIsAuthenticated: StateSetter<boolean>;
     setUser: StateSetter<string | null>;
-    setIsDropdownActive: StateSetter<boolean>;
-    setLoading: StateSetter<boolean>;
-    showToast: (icon: "success" | "failure", message: string) => void;
 }
 
-const useAuth = ({
-    isAuthenticated,
-    setIsAuthenticated,
-    setUser,
-    setIsDropdownActive,
-    setLoading,
-    showToast,
-}: UseAuthParams) => {
+const useAuth = ({ isAuthenticated, setIsAuthenticated, setUser }: UseAuthParams) => {
+    const { showToast, setLoading } = useUiContext();
+
     const getToken = async () => {
         try {
             const response = await getTokenApi();
@@ -88,7 +81,6 @@ const useAuth = ({
             await logoutApi();
             toggleTokenHeader();
             setIsAuthenticated(false);
-            setIsDropdownActive(false);
             setUser(null);
         } catch (error) {
             throw error;

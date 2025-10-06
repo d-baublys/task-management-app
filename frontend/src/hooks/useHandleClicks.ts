@@ -1,11 +1,11 @@
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
 import { StateSetter } from "../lib/definitions";
 
 let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
 const useHandleClicks = (editStateSetter?: StateSetter<boolean>) => {
     const { dragAllowed, setDragAllowed, activeTaskId, setActiveTaskId, isDeleteMode } =
-        useAppContext();
+        useUiContext();
 
     const taskMouseDown = (id: number) => {
         setActiveTaskId(id);

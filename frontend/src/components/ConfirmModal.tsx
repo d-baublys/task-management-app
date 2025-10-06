@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import ModalButton from "./base/ModalButton";
 import DarkBackdrop from "./base/DarkBackdrop";
 import { BaseModalProps } from "./base/Modal";
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
 
 const ConfirmModal = ({ modalState, modalSetter }: BaseModalProps) => {
-    const { modalPromise } = useAppContext();
+    const { modalPromise } = useUiContext();
 
     useEffect(() => {
         modalState

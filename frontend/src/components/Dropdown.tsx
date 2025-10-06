@@ -2,11 +2,20 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import useAppContext from "../context/AppContext";
 import { handleLogOut } from "../lib/misc-helpers";
+import { StateSetter } from "../lib/definitions";
+import useAuthContext from "../context/AuthContext";
+import useUiContext from "../context/UiContext";
 
-const Dropdown = () => {
-    const { isDropdownActive, showToast, auth } = useAppContext();
+const Dropdown = ({
+    dropdownState,
+    dropdownSetter,
+}: {
+    dropdownState: boolean;
+    dropdownSetter: StateSetter<boolean>;
+}) => {
+    const { auth } = useAuthContext();
+    const { showToast } = useUiContext();
     const { logout } = auth;
     const navigate = useNavigate();
 
@@ -54,13 +63,16 @@ const Dropdown = () => {
             <div className="absolute top-1/2 right-0 drop-shadow-dropdown will-change-[filter] z-10">
                 <div
                     className={`clipped flex flex-col justify-end w-36 min-h-24 bg-theme-light text-sm transition duration-200 ease-in-out origin-[right_15%] ${
-                        isDropdownActive ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+                        dropdownState ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
                     }`}
                 >
-                    {isDropdownActive && (
+                    {dropdownState && (
                         <ul className="block w-full p-2">
                             <li
-                                onClick={() => handleLogOut({ logout, navigate, showToast })}
+                                onClick={() => {
+                                    handleLogOut({ logout, navigate, showToast });
+                                    dropdownSetter(false);
+                                }}
                                 className="cursor-pointer border-t-[1px] border-gray-600"
                             >
                                 <div className="flex items-center mt-1 hover:bg-theme-lighter">

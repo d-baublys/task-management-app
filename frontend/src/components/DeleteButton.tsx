@@ -3,11 +3,13 @@ import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import { FaTrashAlt } from "react-icons/fa";
 import { DndTileData, StateSetter } from "../lib/definitions";
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
+import useTasksContext from "../context/TasksContext";
 
 const DeleteButton = ({ confirmModeSetter }: { confirmModeSetter: StateSetter<boolean> }) => {
-    const { isDeleteMode, setIsDeleteMode, setModalPromise, tasksHookObj } = useAppContext();
-    const { deleteTask } = tasksHookObj;
+    const { isDeleteMode, setIsDeleteMode, setModalPromise } = useUiContext();
+    const { taskActions } = useTasksContext();
+    const { deleteTask } = taskActions;
 
     const showModal = () => {
         return new Promise((resolve) => {

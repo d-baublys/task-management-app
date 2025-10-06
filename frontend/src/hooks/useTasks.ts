@@ -1,3 +1,4 @@
+import useUiContext from "../context/UiContext";
 import { getApiTasks, createApiTask, updateApiTask, deleteApiTask } from "../lib/api-services";
 import {
     AddTaskParams,
@@ -7,10 +8,9 @@ import {
     UpdateTaskParams,
 } from "../lib/definitions";
 
-const useTasks = (
-    setTasks: StateSetter<TaskType[]>,
-    showToast: (icon: "success" | "failure", message: string) => void
-) => {
+const useTasks = (setTasks: StateSetter<TaskType[]>) => {
+    const { showToast } = useUiContext();
+
     const getTasks = async () => {
         try {
             const response = await getApiTasks();

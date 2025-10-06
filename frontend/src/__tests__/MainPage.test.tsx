@@ -4,8 +4,10 @@ import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Main from "../pages/Main";
 import { createAxiosResponse, createFakeTasks, createMockAxiosError } from "../lib/test-factories";
-import { ContextProvider, ContextType } from "../context/AppContext";
 import { AddTaskParams, TaskType } from "../lib/definitions";
+import { UiProvider } from "../context/UiContext";
+import { AuthProvider } from "../context/AuthContext";
+import { TasksProvider } from "../context/TasksContext";
 
 jest.mock("react-device-detect", () => ({
     isMobile: false,
@@ -24,27 +26,37 @@ jest.mock("react-router", () => ({
 
 import { createApiTask, deleteApiTask, getApiTasks, updateApiTask } from "../lib/api-services";
 
-const renderMainPage = ({ overrides }: { overrides?: Partial<ContextType> } = {}) =>
+const renderMainPage = () =>
     render(
-        <ContextProvider
-            overrides={{
-                isAuthenticated: true,
-                user: "test@example.com",
-                dragAllowed: true,
-                ...overrides,
-            }}
-        >
-            <Main />
-        </ContextProvider>
+        <UiProvider overrides={{ dragAllowed: true }}>
+            <AuthProvider
+                overrides={{
+                    isAuthenticated: true,
+                    user: "test@example.com",
+                }}
+            >
+                <TasksProvider>
+                    <Main />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
     );
 
 const renderWithEditModalOpen = async () => {
-    renderMainPage({
-        overrides: {
-            dragAllowed: false,
-            activeTaskId: 3,
-        },
-    });
+    render(
+        <UiProvider overrides={{ dragAllowed: false, activeTaskId: 3 }}>
+            <AuthProvider
+                overrides={{
+                    isAuthenticated: true,
+                    user: "test@example.com",
+                }}
+            >
+                <TasksProvider>
+                    <Main />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
+    );
 
     await waitFor(() => {
         expect(screen.getByText("First mocked task")).toBeInTheDocument();

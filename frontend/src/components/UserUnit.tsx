@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router";
 import { IoPerson, IoPersonOutline, IoCaretUp } from "react-icons/io5";
-import React from "react";
+import React, { useState } from "react";
 import Dropdown from "./Dropdown";
-import useAppContext from "../context/AppContext";
+import useAuthContext from "../context/AuthContext";
 
 const UserUnit = () => {
-    const { isAuthenticated, isDropdownActive, setIsDropdownActive, user } = useAppContext();
+    const [isDropdownActive, setIsDropdownActive] = useState<boolean>(false);
+
+    const { isAuthenticated, user } = useAuthContext();
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -43,7 +45,7 @@ const UserUnit = () => {
                     </div>
                 )}
             </button>
-            <Dropdown />
+            <Dropdown dropdownState={isDropdownActive} dropdownSetter={setIsDropdownActive} />
         </div>
     );
 };

@@ -5,20 +5,16 @@ import Tile from "./base/Tile";
 import { processTaskSwap } from "../lib/dnd-helpers";
 import useHandleClicks from "../hooks/useHandleClicks";
 import { DndTileParams, DndTileData } from "../lib/definitions";
-import useAppContext from "../context/AppContext";
+import useUiContext from "../context/UiContext";
+import useTasksContext from "../context/TasksContext";
 
 const DraggableTile = ({ id, status, description, dueDate }: DndTileParams) => {
-    const {
-        setTasks,
-        isDeleteMode,
-        dragAllowed,
-        setDragAllowed,
-        activeTaskId,
-        setActiveTaskId,
-        tasksHookObj,
-    } = useAppContext();
+    const { isDeleteMode, dragAllowed, setDragAllowed, activeTaskId, setActiveTaskId } =
+        useUiContext();
+    const { setTasks } = useTasksContext();
 
-    const { updateMultiTask } = tasksHookObj;
+    const { taskActions } = useTasksContext();
+    const { updateMultiTask } = taskActions;
 
     const { taskMouseDown } = useHandleClicks();
 
