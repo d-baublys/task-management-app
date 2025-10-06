@@ -3,9 +3,11 @@
 import { fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import LogInPage from "../pages/LogInPage";
 import React, { act, ReactNode } from "react";
-import { ContextProvider } from "../context/AppContext";
 import { createMockAxiosError } from "../lib/test-factories";
 import useAuth from "../hooks/useAuth";
+import { AuthProvider } from "../context/AuthContext";
+import { UiProvider } from "../context/UiContext";
+import { TasksProvider } from "../context/TasksContext";
 
 jest.mock("../lib/api-services", () => ({
     loginApi: jest.fn(),
@@ -40,35 +42,45 @@ import {
     verifyRecaptchaApi,
 } from "../lib/api-services";
 
-const renderUnauthenticatedPage = () => {
+const renderPassedUnauthenticatedPage = () => {
     render(
-        <ContextProvider overrides={{ isRecaptchaPassed: true }}>
-            <LogInPage />
-        </ContextProvider>
+        <UiProvider>
+            <AuthProvider>
+                <TasksProvider>
+                    <LogInPage recaptchaRenderOverride={true} />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
     );
 };
 
-const renderUnauthenticatedPageNoCaptcha = () => {
+const renderNotPassedUnauthenticatedPage = () => {
     render(
-        <ContextProvider>
-            <LogInPage />
-        </ContextProvider>
+        <UiProvider>
+            <AuthProvider>
+                <TasksProvider>
+                    <LogInPage />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
     );
 };
 
 const renderAuthenticatedPage = () => {
     render(
-        <ContextProvider
-            overrides={{ isRecaptchaPassed: true, isAuthenticated: true, user: "test@example.com" }}
-        >
-            <LogInPage />
-        </ContextProvider>
+        <UiProvider>
+            <AuthProvider overrides={{ isAuthenticated: true, user: "test@example.com" }}>
+                <TasksProvider>
+                    <LogInPage recaptchaRenderOverride={true} />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
     );
 };
 
 describe("LogInPage", () => {
     it("calls the expected APIs on log in", async () => {
-        renderUnauthenticatedPage();
+        renderPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -94,7 +106,7 @@ describe("LogInPage", () => {
             })
         );
 
-        renderUnauthenticatedPage();
+        renderPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -121,7 +133,7 @@ describe("LogInPage", () => {
         (getTokenApi as jest.Mock).mockResolvedValue({ data: { access_token: "fake_token" } });
         (getApiTasks as jest.Mock).mockResolvedValue({ data: [] });
 
-        renderUnauthenticatedPage();
+        renderPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -143,7 +155,7 @@ describe("LogInPage", () => {
                 status: 401,
             })
         );
-        renderUnauthenticatedPage();
+        renderPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -168,7 +180,7 @@ describe("LogInPage", () => {
                 status: 500,
             })
         );
-        renderUnauthenticatedPage();
+        renderPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -189,15 +201,19 @@ describe("LogInPage", () => {
         );
 
         const showToast = jest.fn();
-        const { result } = renderHook(() =>
-            useAuth({
-                isAuthenticated: true,
-                setIsAuthenticated: jest.fn(),
-                setUser: jest.fn(),
-                setIsDropdownActive: jest.fn(),
-                setLoading: jest.fn(),
-                showToast,
-            })
+
+        const wrapper = ({ children }: { children: React.ReactNode }) => (
+            <UiProvider overrides={{ showToast }}>{children}</UiProvider>
+        );
+
+        const { result } = renderHook(
+            () =>
+                useAuth({
+                    isAuthenticated: true,
+                    setIsAuthenticated: jest.fn(),
+                    setUser: jest.fn(),
+                }),
+            { wrapper }
         );
 
         renderAuthenticatedPage();
@@ -274,7 +290,7 @@ describe("LogInPage", () => {
 
         (getTokenApi as jest.Mock).mockResolvedValue({ data: { access_token: "fake_token" } });
 
-        renderUnauthenticatedPageNoCaptcha();
+        renderNotPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -300,7 +316,7 @@ describe("LogInPage", () => {
             createMockAxiosError({ detail: "reCAPTCHA not verified.", status: 403 })
         );
 
-        renderUnauthenticatedPageNoCaptcha();
+        renderNotPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");
@@ -326,7 +342,7 @@ describe("LogInPage", () => {
             createMockAxiosError({ detail: "Server error.", status: 500 })
         );
 
-        renderUnauthenticatedPageNoCaptcha();
+        renderNotPassedUnauthenticatedPage();
 
         const emailInput = screen.getByLabelText("Email");
         const passwordInput = screen.getByLabelText("Password");

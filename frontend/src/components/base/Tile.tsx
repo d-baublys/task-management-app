@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { FaCalendarAlt } from "react-icons/fa";
 import React from "react";
-import useAppContext from "../../context/AppContext";
+import useUiContext from "../../context/UiContext";
 
 interface Props {
     isDragging: boolean;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Tile = ({ isDragging, description, dueDate, width }: Props) => {
-    const { isDeleteMode } = useAppContext();
+    const { isDeleteMode } = useUiContext();
 
     return (
         <div

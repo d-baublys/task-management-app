@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { userEmail, userPassword } from "./credentials";
+import { primaryEmail, primaryPassword, secondaryEmail, secondaryPassword } from "./credentials";
 import { BoardLabels } from "../../src/lib/definitions";
 
 // ***********************************************
@@ -46,7 +46,8 @@ declare global {
     namespace Cypress {
         interface Chainable {
             visitHome(): Chainable<void>;
-            logInAsUser(): Chainable<void>;
+            logInAsPrimaryUser(): Chainable<void>;
+            logInAsSecondaryUser(): Chainable<void>;
             awaitDragAllowedTrigger(): Chainable<void>;
             awaitDebouncedDbUpdate(): Chainable<void>;
             compareTileOrder(tileDescTargetArr: string[]): Chainable<void>;
@@ -65,6 +66,7 @@ declare global {
                 dropTargetTextSelector?: string;
                 dropTargetHtmlSelector?: string;
             }): Chainable<void>;
+            resetDb(): Chainable<void>;
         }
     }
 }
@@ -73,11 +75,19 @@ Cypress.Commands.add("visitHome", () => {
     cy.visit("/");
 });
 
-Cypress.Commands.add("logInAsUser", () => {
+Cypress.Commands.add("logInAsPrimaryUser", () => {
     cy.visitHome();
 
-    cy.get("input[aria-label='Email']").type(userEmail);
-    cy.get("input[aria-label='Password']").type(userPassword);
+    cy.get("input[aria-label='Email']").type(primaryEmail);
+    cy.get("input[aria-label='Password']").type(primaryPassword);
+    cy.get("button[type='submit']").click();
+});
+
+Cypress.Commands.add("logInAsSecondaryUser", () => {
+    cy.visitHome();
+
+    cy.get("input[aria-label='Email']").type(secondaryEmail);
+    cy.get("input[aria-label='Password']").type(secondaryPassword);
     cy.get("button[type='submit']").click();
 });
 
@@ -153,4 +163,8 @@ Cypress.Commands.add("performDrop", ({ dropTargetTextSelector, dropTargetHtmlSel
     } else {
         throw new Error("performDrop: no selector provided");
     }
+});
+
+Cypress.Commands.add("resetDb", () => {
+    cy.exec("npm run db-reset");
 });

@@ -1,4 +1,4 @@
-import { userEmail, userPassword } from "../support/credentials";
+import { primaryEmail, primaryPassword } from "../support/credentials";
 
 describe("Log in page", () => {
     beforeEach(() => {
@@ -7,7 +7,7 @@ describe("Log in page", () => {
     });
 
     it("redirects on successful login", () => {
-        cy.logInAsUser();
+        cy.logInAsPrimaryUser();
 
         cy.location("pathname").should("eq", "/main");
         cy.contains("Log in successful!").should("be.visible");
@@ -15,7 +15,7 @@ describe("Log in page", () => {
 
     it("shows error message when provided email is incorrect", () => {
         cy.get("input[aria-label='Email']").type("test@example.com");
-        cy.get("input[aria-label='Password']").type(userPassword);
+        cy.get("input[aria-label='Password']").type(primaryPassword);
         cy.get("button[type='submit']").click();
         cy.contains(
             "Incorrect email address or password. Please check your credentials and try again."
@@ -23,7 +23,7 @@ describe("Log in page", () => {
     });
 
     it("shows error message when provided password is incorrect", () => {
-        cy.get("input[aria-label='Email']").type(userEmail);
+        cy.get("input[aria-label='Email']").type(primaryEmail);
         cy.get("input[aria-label='Password']").type("password123");
         cy.get("button[type='submit']").click();
         cy.contains(
@@ -32,7 +32,7 @@ describe("Log in page", () => {
     });
 
     it("doesn't submit form when any inputs are empty", () => {
-        cy.get("input[aria-label='Email']").type(userEmail);
+        cy.get("input[aria-label='Email']").type(primaryEmail);
         cy.get("button[type='submit']").click();
         cy.get("input[aria-label='Password']").then(($inputs) => {
             const passwordInput = $inputs[0] as HTMLInputElement;

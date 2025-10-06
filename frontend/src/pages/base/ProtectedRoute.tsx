@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router";
-import useAppContext from "../../context/AppContext";
+import useAuthContext from "../../context/AuthContext";
 
 const ProtectedRoute = () => {
-    const { isAuthenticated } = useAppContext();
+    const { isAuthenticated } = useAuthContext();
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

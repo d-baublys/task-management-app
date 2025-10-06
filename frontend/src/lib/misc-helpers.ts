@@ -23,7 +23,7 @@ interface UserGroupType {
 }
 
 interface UiGroupType {
-    setError: StateSetter<string>;
+    errorSetter: StateSetter<string>;
     navigate: NavigateFunction;
     showToast: (icon: "success" | "failure", message: string) => void;
     setIsRecaptchaOpen: StateSetter<boolean>;
@@ -87,7 +87,7 @@ export const handleRecaptcha = async ({
     uiGroup,
 }: HandleRecaptchaArgs) => {
     const { verifyRecaptcha } = authGroup;
-    const { setError, showToast, setIsRecaptchaOpen, setIsRecaptchaPassed } = uiGroup;
+    const { errorSetter, showToast, setIsRecaptchaOpen, setIsRecaptchaPassed } = uiGroup;
 
     try {
         await verifyRecaptcha(key);
@@ -99,7 +99,7 @@ export const handleRecaptcha = async ({
 
         if (error instanceof AxiosError || error instanceof FakeAxiosError) {
             if (error.response?.status === 403) {
-                setError(error.response.data.detail);
+                errorSetter(error.response.data.detail);
             } else {
                 showToast("failure", "reCAPTCHA error!");
             }
@@ -123,10 +123,10 @@ export const handleLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogIn
 export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogInArgs) => {
     const { login, rememberMe, setRememberMe } = authGroup;
     const { email, setEmail, password, setPassword } = userGroup;
-    const { setError, navigate, showToast } = uiGroup;
+    const { errorSetter, navigate, showToast } = uiGroup;
 
     try {
-        setError("");
+        errorSetter("");
         await login({ email, password, rememberMe });
         navigate("/main");
         showToast("success", "Log in successful!");
@@ -135,9 +135,9 @@ export const executeLogIn = async ({ authGroup, userGroup, uiGroup }: HandleLogI
 
         if (error instanceof AxiosError || error instanceof FakeAxiosError) {
             if (error.response?.status === 401) {
-                setError(error.response.data.detail);
+                errorSetter(error.response.data.detail);
             } else if ([403, 429].includes(error.response?.status ?? -1)) {
-                setError("Too many failed login attempts! Please try again later.");
+                errorSetter("Too many failed login attempts! Please try again later.");
             } else {
                 showToast("failure", "Error logging in!");
             }
@@ -164,7 +164,7 @@ export const handleLogOut = async (signOutGroup: SignOutGroup) => {
 
 export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
     const { signUp, email, password, passwordConfirm } = signUpGroup;
-    const { setError, navigate, showToast } = uiGroup;
+    const { errorSetter, navigate, showToast } = uiGroup;
 
     try {
         await signUp({ email, password, passwordConfirm });
@@ -178,7 +178,7 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
                 Object.values(error.response?.data.detail)[0] as Array<string>
             )[0];
 
-            setError(
+            errorSetter(
                 errorMessage.includes("already exists")
                     ? "An account with this email address already exists."
                     : errorMessage
@@ -187,4 +187,9 @@ export const handleSignUp = async ({ signUpGroup, uiGroup }: SignUpArgs) => {
             showToast("failure", "Error creating account. Please try again later.");
         }
     }
+};
+
+export const containsClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, elementId: string) => {
+    const element = document.getElementById(elementId);
+    return element ? element.contains(e.target as Node) : false;
 };

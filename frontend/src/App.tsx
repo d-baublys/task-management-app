@@ -1,13 +1,15 @@
-import useAppContext from "./context/AppContext";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router";
 import ProtectedRoute from "./pages/base/ProtectedRoute";
 import Main from "./pages/Main";
 import React from "react";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
+import useAuthContext from "./context/AuthContext";
+import useUiContext from "./context/UiContext";
 
 function App() {
-    const { isAuthenticated, loading } = useAppContext();
+    const { isAuthenticated } = useAuthContext();
+    const { loading } = useUiContext();
 
     if (loading) return null;
 

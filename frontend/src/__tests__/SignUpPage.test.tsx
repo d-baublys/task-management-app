@@ -3,8 +3,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import SignUpPage from "../pages/SignUpPage";
 import React from "react";
-import { ContextProvider } from "../context/AppContext";
 import { createMockAxiosError } from "../lib/test-factories";
+import { UiProvider } from "../context/UiContext";
+import { AuthProvider } from "../context/AuthContext";
+import { TasksProvider } from "../context/TasksContext";
 
 const mockNavigate = jest.fn();
 
@@ -22,9 +24,13 @@ import { signupApi } from "../lib/api-services";
 
 const renderPage = () => {
     render(
-        <ContextProvider>
-            <SignUpPage />
-        </ContextProvider>
+        <UiProvider>
+            <AuthProvider>
+                <TasksProvider>
+                    <SignUpPage />
+                </TasksProvider>
+            </AuthProvider>
+        </UiProvider>
     );
 };
 

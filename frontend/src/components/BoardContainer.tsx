@@ -1,10 +1,10 @@
 import React from "react";
 import Board from "./Board";
-import useAppContext from "../context/AppContext";
 import { BoardLabels, boardsData } from "../lib/definitions";
+import useTasksContext from "../context/TasksContext";
 
 const BoardContainer = () => {
-    const { tasks } = useAppContext();
+    const { tasks } = useTasksContext();
 
     return (
         <div className="flex justify-between w-full h-full gap-x-[2%]">

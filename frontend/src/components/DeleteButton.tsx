@@ -2,17 +2,19 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import BoardButton from "./base/BoardButton";
 import { FaTrashAlt } from "react-icons/fa";
-import { DndTileData } from "../lib/definitions";
-import useAppContext from "../context/AppContext";
+import { DndTileData, StateSetter } from "../lib/definitions";
+import useUiContext from "../context/UiContext";
+import useTasksContext from "../context/TasksContext";
 
-const DeleteButton = () => {
-    const { deleteTask, isDeleteMode, setIsConfirmOpen, setModalPromise, setIsDeleteMode } =
-        useAppContext();
+const DeleteButton = ({ confirmModeSetter }: { confirmModeSetter: StateSetter<boolean> }) => {
+    const { isDeleteMode, setIsDeleteMode, setModalPromise } = useUiContext();
+    const { taskActions } = useTasksContext();
+    const { deleteTask } = taskActions;
 
     const showModal = () => {
         return new Promise((resolve) => {
             setIsDeleteMode(false);
-            setIsConfirmOpen(true);
+            confirmModeSetter(true);
             setModalPromise(() => resolve);
         });
     };
