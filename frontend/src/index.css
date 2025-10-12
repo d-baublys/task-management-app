@@ -5,8 +5,8 @@
 
 @layer base {
     body {
-        @apply text-gray-600;
-        @apply bg-white;
+        @apply base-text-color;
+        @apply base-background-color;
         @apply theme-transition;
     }
 
@@ -19,16 +19,12 @@
 
 @layer components {
     .dark {
-        @apply text-gray-200;
-        @apply bg-gray-900;
+        @apply text-gray-light;
+        @apply bg-gray-dark;
     }
 
-    .fixed-text-colour {
-        @apply text-gray-600;
-    }
-
-    .dark-theme-dark-text {
-        @apply text-gray-900;
+    .fixed-text-color {
+        @apply base-text-color;
     }
 
     .theme-transition {
@@ -43,6 +39,16 @@
         transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out,
             ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out,
             ease-in-out;
+    }
+}
+
+@layer utilities {
+    .base-text-color {
+        @apply text-gray-mid;
+    }
+
+    .base-background-color {
+        @apply bg-bare-base;
     }
 }
 

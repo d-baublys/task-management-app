@@ -61,7 +61,7 @@ const Modal = ({ variant, modalState, modalSetter, currentTask }: Props) => {
         <DarkBackdrop handleClick={handleCancel} foregroundElementId={elementId}>
             <div
                 id={elementId}
-                className="flex flex-col justify-center my-2 items-center w-modal-spacing-sm md:w-modal-spacing h-modal-spacing-sm md:h-modal-spacing rounded-2xl bg-gray-100 dark:bg-gray-700 theme-transition drop-shadow-modal"
+                className="flex flex-col justify-center my-2 items-center w-modal-spacing-sm md:w-modal-spacing h-modal-spacing-sm md:h-modal-spacing rounded-2xl bg-gray-100 dark:bg-gray-mid theme-transition drop-shadow-modal"
             >
                 <div className="w-[85%] sm:w-[80%] md:w-3/4 h-[85%] md:h-4/5">
                     <form
@@ -74,7 +74,7 @@ const Modal = ({ variant, modalState, modalSetter, currentTask }: Props) => {
                                 aria-label="Task status"
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="w-full h-8 px-2 rounded-md bg-gray-300 dark:dark-theme-dark-text theme-transition"
+                                className="w-full h-8 px-2 rounded-md bg-gray-300 fixed-text-color"
                             >
                                 <option value="" disabled hidden>
                                     Select status...
@@ -92,7 +92,7 @@ const Modal = ({ variant, modalState, modalSetter, currentTask }: Props) => {
                                 aria-label="Task description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="w-full px-2 rounded-md bg-gray-300 resize-none dark:dark-theme-dark-text theme-transition"
+                                className="w-full px-2 rounded-md bg-gray-300 resize-none fixed-text-color"
                                 rows={5}
                                 placeholder="Enter description..."
                                 maxLength={Number(process.env.REACT_APP_DESC_CHAR_LIMIT)}
@@ -104,7 +104,7 @@ const Modal = ({ variant, modalState, modalSetter, currentTask }: Props) => {
                                 aria-label="Task due date"
                                 type="date"
                                 value={dueDate}
-                                className="w-full h-8 px-2 rounded-md bg-gray-300 dark:dark-theme-dark-text theme-transition"
+                                className="w-full h-8 px-2 rounded-md bg-gray-300 fixed-text-color"
                                 onChange={(e) => setDueDate(e.target.value)}
                             />
                         </fieldset>

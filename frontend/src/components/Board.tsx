@@ -51,7 +51,7 @@ const Board = ({ boardLabel, boardCode, boardTasks }: Props) => {
                 dropRef(el);
             }}
         >
-            <h2 className="py-2 text-center text-lg md:text-xl font-semibold dark:text-white theme-transition">
+            <h2 className="py-2 text-center text-lg md:text-xl font-semibold dark:text-gray-light theme-transition">
                 {boardLabel}
             </h2>
             <div ref={excludeRef} className="flex flex-col w-full">

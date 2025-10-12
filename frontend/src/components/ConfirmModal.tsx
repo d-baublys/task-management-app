@@ -33,7 +33,7 @@ const ConfirmModal = ({ modalState, modalSetter }: BaseModalProps) => {
         <DarkBackdrop handleClick={handleCancel} foregroundElementId={elementId}>
             <div
                 id={elementId}
-                className="flex flex-col justify-center items-center w-modal-spacing-sm md:w-modal-spacing h-confirm-height-sm md:h-confirm-height rounded-2xl bg-gray-100 dark:bg-gray-700 theme-transition drop-shadow-modal"
+                className="flex flex-col justify-center items-center w-modal-spacing-sm md:w-modal-spacing h-confirm-height-sm md:h-confirm-height rounded-2xl bg-gray-100 dark:bg-gray-mid theme-transition drop-shadow-modal"
             >
                 <p>Are you sure you want to delete this task?</p>
                 <div className="flex justify-between h-1/4 gap-6 md:gap-12 mt-8">

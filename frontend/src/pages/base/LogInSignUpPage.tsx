@@ -40,7 +40,7 @@ export default function LogInSignUpPage({
         >
             <div className="flex-grow xs:mx-[3rem] md:!mx-[5rem] max-w-[37.5rem]">
                 <div
-                    className={`relative flex flex-col w-full my-[5rem] rounded-md bg-white dark:bg-gray-700 drop-shadow-md theme-transition-all origin-top ${conditionalClasses}`}
+                    className={`relative flex flex-col w-full my-[5rem] rounded-md bg-bare-base dark:bg-gray-mid drop-shadow-md theme-transition-all origin-top ${conditionalClasses}`}
                 >
                     <LoginSignUpForm
                         variant={variant}

@@ -153,6 +153,7 @@ export default function LoginSignUpForm({
                         <div className="w-[264px] md:w-[304px]">
                             <div className="w-min scale-[86.84%] md:scale-100 origin-left">
                                 <ReCaptcha
+                                    key={theme}
                                     theme={theme}
                                     onChange={(key: string | null) =>
                                         handleRecaptcha({ key, authGroup, userGroup, uiGroup })

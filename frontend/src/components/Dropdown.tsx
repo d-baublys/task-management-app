@@ -72,7 +72,7 @@ const Dropdown = ({
                                     handleLogOut({ logout, navigate, showToast });
                                     dropdownSetter(false);
                                 }}
-                                className="cursor-pointer border-t-[1px] border-gray-600 dark:border-gray-200 theme-transition"
+                                className="cursor-pointer border-t-[1px] border-gray-mid dark:border-gray-200 theme-transition"
                             >
                                 <div className="flex items-center mt-1 hover:bg-light-theme-lighter dark:hover:bg-dark-theme-light theme-transition-all">
                                     <IoLogOut className="text-lg mr-2" />

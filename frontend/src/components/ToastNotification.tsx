@@ -20,7 +20,7 @@ const ToastNotification = () => {
     return (
         <div
             data-testid="toast-notification"
-            className={`toast fixed top-5 md:top-10 right-0 sm:right-5 md:right-10 w-[22rem] h-24 bg-gray-300 overflow-hidden z-[5000] before:absolute before:inset-0 before:blur-sm before:bg-white dark:before:dark:bg-gray-700 theme-transition before:z-[-1] ${
+            className={`toast fixed top-5 md:top-10 right-0 sm:right-5 md:right-10 w-[22rem] h-24 bg-gray-mid dark:bg-bare-base overflow-hidden z-[5000] before:absolute before:inset-0 before:blur-sm before:bg-bare-base dark:before:dark:bg-gray-mid theme-transition before:z-[-1] rounded-xl before:rounded-xl ${
                 notification && isToastOpen
                     ? "gradual-on opacity-100 scale-100"
                     : notification
@@ -29,7 +29,7 @@ const ToastNotification = () => {
             }`}
         >
             {notification && (
-                <div className="flex flex-col justify-center items-center w-full h-full text-gray-500 dark:text-gray-200 theme-transition">
+                <div className="flex flex-col justify-center items-center w-full h-full text-gray-mid dark:text-gray-light theme-transition">
                     <div className="flex w-full h-1/2">
                         <div className="flex justify-end items-center w-20">
                             {notification?.icon && <Icon className="text-2xl mr-2" />}

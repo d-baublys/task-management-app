@@ -9,13 +9,13 @@ export default function ModeButton() {
         <button
             onClick={toggleTheme}
             className={`flex h-5/6 justify-center items-center aspect-square border border-black [border-radius:50%] p-1 cursor-pointer ${
-                theme === "light" ? "bg-gray-700" : "bg-white text-gray-700"
+                theme === "light" ? "bg-gray-mid" : "bg-bare-base"
             }`}
         >
             {theme === "light" ? (
-                <IoMoon className="h-full w-full text-white" />
+                <IoMoon className="h-full w-full text-bare-base" />
             ) : (
-                <IoSunny className="h-full w-full" />
+                <IoSunny className="h-full w-full text-gray-mid" />
             )}
         </button>
     );

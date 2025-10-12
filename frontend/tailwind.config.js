@@ -1,18 +1,29 @@
 /** @type {import('tailwindcss').Config} */
+
+import colors from "tailwindcss/colors";
+
+const customColors = {
+    "light-theme-lighter": "rgb(234, 245, 255)",
+    "light-theme-light": "rgb(219, 234, 247)",
+    "light-theme-medium": "rgb(122, 186, 242)",
+    "light-theme-dark": "rgb(102, 169, 229)",
+    "dark-theme-lighter": "rgb(24 107 180)",
+    "dark-theme-light": "rgb(21 94 157)",
+    "dark-theme-medium": "rgb(14 53 88)",
+    "dark-theme-dark": "rgb(6 27 45)",
+};
+
 module.exports = {
     content: ["./src/**/*.{html,js,ts,tsx}"],
     darkMode: "class",
     theme: {
         extend: {
             colors: {
-                "light-theme-lighter": "rgb(234, 245, 255)",
-                "light-theme-light": "rgb(219, 234, 247)",
-                "light-theme-medium": "rgb(122, 186, 242)",
-                "light-theme-dark": "rgb(102, 169, 229)",
-                "dark-theme-lighter": "rgb(102, 169, 229)",
-                "dark-theme-light": "rgb(21 94 157)",
-                "dark-theme-medium": "rgb(14 53 88)",
-                "dark-theme-dark": "rgb(6 27 45)",
+                ...customColors,
+                "gray-light": colors.gray[200],
+                "gray-mid": colors.gray[700],
+                "gray-dark": colors.gray[900],
+                "bare-base": colors.white,
             },
             spacing: {
                 "board-btn-spacing-xl": "5rem",
@@ -38,13 +49,10 @@ module.exports = {
                 dropdown: "0 5px 5px rgba(0,0,0,0.05)",
             },
             backgroundImage: {
-                "light-board-gradient":
-                    "linear-gradient(to right, rgb(219, 234, 247) 0, rgb(234, 245, 255) 40% 60%, rgb(219, 234, 247) 100%)",
-                "dark-board-gradient":
-                    "linear-gradient(to right, rgb(21 94 157) 0, rgb(102, 169, 229) 40% 60%, rgb(21 94 157) 100%)",
-                "light-button-gradient":
-                    "radial-gradient(rgb(122, 186, 242) 50%, rgb(102, 169, 229) 80%)",
-                "dark-button-gradient": "radial-gradient(rgb(21 94 157) 50%, rgb(14 53 88) 80%)",
+                "light-board-gradient": `linear-gradient(to right, ${customColors["light-theme-light"]} 0, ${customColors["light-theme-lighter"]} 40% 60%, ${customColors["light-theme-light"]} 100%)`,
+                "dark-board-gradient": `linear-gradient(to right, ${customColors["dark-theme-light"]} 0, ${customColors["dark-theme-lighter"]} 40% 60%, ${customColors["dark-theme-light"]} 100%)`,
+                "light-button-gradient": `radial-gradient(${customColors["light-theme-medium"]} 50%, ${customColors["light-theme-dark"]} 80%)`,
+                "dark-button-gradient": `radial-gradient(${customColors["dark-theme-light"]} 50%, ${customColors["dark-theme-medium"]} 80%)`,
             },
         },
     },

@@ -23,13 +23,13 @@ const UserUnit = () => {
             <button
                 data-testid="nav-action-button"
                 onClick={handleClick}
-                className="relative flex items-center px-2 py-1 max-w-full bg-gray-300 dark:bg-gray-600 group hover:bg-gray-400 dark:hover:bg-gray-400 dark:text-gray-200 hover:drop-shadow-md rounded-3xl theme-transition-all cursor-pointer z-20"
+                className="relative flex items-center px-2 py-1 max-w-full bg-gray-300 dark:bg-gray-600 group hover:bg-gray-400 dark:hover:bg-gray-400 dark:text-gray-light hover:drop-shadow-md rounded-3xl theme-transition-all cursor-pointer z-20"
             >
-                <div className="rounded-full mr-1 p-1 bg-white fixed-text-colour -translate-x-[4px]">
+                <div className="rounded-full mr-1 p-1 bg-bare-base fixed-text-color -translate-x-[4px]">
                     {isAuthenticated ? <IoPerson /> : <IoPersonOutline />}
                 </div>
                 <span
-                    className={`group-hover:text-white dark:group-hover:text-gray-600 theme-transition-all overflow-ellipsis whitespace-nowrap overflow-hidden ${
+                    className={`group-hover:text-white dark:group-hover:text-gray-mid theme-transition-all overflow-ellipsis whitespace-nowrap overflow-hidden ${
                         !isAuthenticated ? "pr-1" : ""
                     }`}
                 >
@@ -37,7 +37,7 @@ const UserUnit = () => {
                 </span>
                 {isAuthenticated && (
                     <div
-                        className={`ml-1 translate-y-[1px] group-hover:text-white dark:group-hover:text-gray-600 theme-transition-all ${
+                        className={`ml-1 translate-y-[1px] group-hover:text-white dark:group-hover:text-gray-mid theme-transition-all ${
                             isDropdownActive ? "rotate-0" : "rotate-180"
                         }`}
                     >
