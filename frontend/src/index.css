@@ -4,14 +4,45 @@
 @tailwind utilities;
 
 @layer base {
-    html {
+    body {
         @apply text-gray-600;
+        @apply bg-white;
+        @apply theme-transition;
     }
 
     @media (max-width: 767px) {
         body {
             @apply text-sm;
         }
+    }
+}
+
+@layer components {
+    .dark {
+        @apply text-gray-200;
+        @apply bg-gray-900;
+    }
+
+    .fixed-text-colour {
+        @apply text-gray-600;
+    }
+
+    .dark-theme-dark-text {
+        @apply text-gray-900;
+    }
+
+    .theme-transition {
+        @apply transition-colors duration-300 ease-in-out;
+    }
+
+    .theme-transition-all {
+        transition-property: color, background-color, border-color, text-decoration-color, fill,
+            stroke, opacity, box-shadow, transform, filter, backdrop-filter, height;
+        transition-duration: 300ms, 300ms, 300ms, 300ms, 300ms, 300ms, 150ms, 150ms, 150ms, 150ms,
+            150ms, 150ms;
+        transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out,
+            ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out, ease-in-out,
+            ease-in-out;
     }
 }
 

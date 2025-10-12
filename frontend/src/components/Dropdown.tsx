@@ -60,11 +60,10 @@ const Dropdown = ({
                     </clipPath>
                 </defs>
             </svg>
-            <div className="absolute top-1/2 right-0 drop-shadow-dropdown will-change-[filter] z-10">
+            <div className={`absolute top-1/2 right-0 drop-shadow-dropdown will-change-[filter] z-10 transition duration-200 ease-in-out origin-[right_15%] ${
+                        dropdownState ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}>
                 <div
-                    className={`clipped flex flex-col justify-end w-36 min-h-24 bg-theme-light text-sm transition duration-200 ease-in-out origin-[right_15%] ${
-                        dropdownState ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
-                    }`}
+                    className={`clipped flex flex-col justify-end w-36 min-h-24 bg-light-theme-light dark:bg-dark-theme-medium text-sm theme-transition`}
                 >
                     {dropdownState && (
                         <ul className="block w-full p-2">
@@ -73,9 +72,9 @@ const Dropdown = ({
                                     handleLogOut({ logout, navigate, showToast });
                                     dropdownSetter(false);
                                 }}
-                                className="cursor-pointer border-t-[1px] border-gray-600"
+                                className="cursor-pointer border-t-[1px] border-gray-600 dark:border-gray-200 theme-transition"
                             >
-                                <div className="flex items-center mt-1 hover:bg-theme-lighter">
+                                <div className="flex items-center mt-1 hover:bg-light-theme-lighter dark:hover:bg-dark-theme-light theme-transition-all">
                                     <IoLogOut className="text-lg mr-2" />
                                     <span>Log Out</span>
                                 </div>

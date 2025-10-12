@@ -1,5 +1,6 @@
 import React from "react";
 import UserUnit from "./UserUnit";
+import ModeButton from "./ModeButton";
 
 const Header = () => {
     return (
@@ -7,8 +8,11 @@ const Header = () => {
             <div className="flex justify-center items-center h-full text-base xs:text-xl sm:!text-2xl md:!text-3xl font-medium">
                 DB's Task Management App
             </div>
-            <div className="flex justify-end items-center flex-1 h-full">
-                <UserUnit />
+            <div className="flex items-center flex-1 h-full">
+                <div className="flex w-full h-[30px] md:h-8 justify-end items-center gap-1 sm:gap-4">
+                    <ModeButton />
+                    <UserUnit />
+                </div>
             </div>
         </div>
     );

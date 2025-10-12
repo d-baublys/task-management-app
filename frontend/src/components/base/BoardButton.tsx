@@ -17,7 +17,7 @@ const BoardButton = ({ onClick, dropRef, isOver, IconComponent, zIndex = 10, ...
             ref={(el) => {
                 dropRef?.(el);
             }}
-            className={`sticky flex justify-center items-center top-board-btn-top w-board-btn-spacing-sm h-board-btn-spacing-sm lg:w-board-btn-spacing-lg lg:h-board-btn-spacing-lg xl:w-board-btn-spacing-xl xl:h-board-btn-spacing-xl rounded-full bg-button-gradient hover:scale-110 hover:opacity-80 hover:drop-shadow-md active:drop-shadow-md transition ${
+            className={`sticky flex justify-center items-center top-board-btn-top w-board-btn-spacing-sm h-board-btn-spacing-sm lg:w-board-btn-spacing-lg lg:h-board-btn-spacing-lg xl:w-board-btn-spacing-xl xl:h-board-btn-spacing-xl rounded-full bg-light-button-gradient dark:bg-dark-button-gradient hover:scale-110 hover:opacity-80 hover:drop-shadow-md active:drop-shadow-md theme-transition-all ${
                 isOver && "opacity-80 drop-shadow-md scale-110"
             }`}
             style={{

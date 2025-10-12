@@ -15,12 +15,12 @@ const Tile = ({ isDragging, description, dueDate, width }: Props) => {
 
     return (
         <div
-            className={`tile bg-theme-dark p-2 drop-shadow-md select-none touch-none ${
+            className={`tile bg-light-theme-dark dark:bg-dark-theme-light theme-transition p-2 drop-shadow-md select-none touch-none ${
                 isDragging ? "opacity-50" : "hover:opacity-80"
             } ${isDragging || isDeleteMode ? "cursor-move" : "cursor-pointer"}`}
             style={{ width: width ? `${width}px` : "100%" }}
         >
-            <div className={`task-description w full px-2 py-1 bg-white`}>{description}</div>
+            <div className={`task-description w full px-2 py-1 bg-white dark:bg-gray-700 dark:text-white theme-transition`}>{description}</div>
             <div className="mt-2 text-white">
                 <div className="flex items-center">
                     <FaCalendarAlt className="inline pr-2 text-xl md:text-[1.33rem]" />

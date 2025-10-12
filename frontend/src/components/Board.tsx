@@ -44,14 +44,16 @@ const Board = ({ boardLabel, boardCode, boardTasks }: Props) => {
 
     return (
         <div
-            className={`status-board relative before:content-[""] before:absolute before:inset-0 w-full rounded-xl before:rounded-xl min-h-full py-2 before:bg-board-gradient before:drop-shadow-board before:pointer-events-none before:z-[-1] ${
+            className={`status-board relative before:content-[""] before:absolute before:inset-0 w-full rounded-xl before:rounded-xl min-h-full py-2 before:bg-light-board-gradient dark:before:bg-dark-board-gradient theme-transition before:drop-shadow-board before:pointer-events-none before:z-[-1] ${
                 isOver && !isDeleteMode ? "before:opacity-80" : "before:opacity-50"
             }`}
             ref={(el) => {
                 dropRef(el);
             }}
         >
-            <h2 className="py-2 text-center text-lg md:text-xl font-semibold">{boardLabel}</h2>
+            <h2 className="py-2 text-center text-lg md:text-xl font-semibold dark:text-white theme-transition">
+                {boardLabel}
+            </h2>
             <div ref={excludeRef} className="flex flex-col w-full">
                 {boardTasks.map((tile: TaskType) => (
                     <DraggableTile

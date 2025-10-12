@@ -5,6 +5,7 @@ import App from "./App";
 import { UiProvider } from "./context/UiContext";
 import { AuthProvider } from "./context/AuthContext";
 import { TasksProvider } from "./context/TasksContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const container = document.getElementById("root");
 
@@ -18,7 +19,9 @@ root.render(
         <UiProvider>
             <AuthProvider>
                 <TasksProvider>
-                    <App />
+                    <ThemeProvider>
+                        <App />
+                    </ThemeProvider>
                 </TasksProvider>
             </AuthProvider>
         </UiProvider>

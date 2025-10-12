@@ -8,6 +8,7 @@ import { FormVariants, StateSetter } from "../lib/definitions";
 import FormInput from "./FormInput";
 import useUiContext from "../context/UiContext";
 import useAuthContext from "../context/AuthContext";
+import useThemeContext from "../context/ThemeContext";
 
 interface Props {
     variant: FormVariants;
@@ -32,6 +33,7 @@ export default function LoginSignUpForm({
 }: Props) {
     const { showToast } = useUiContext();
     const { auth } = useAuthContext();
+    const { theme } = useThemeContext();
     const { verifyRecaptcha, login, signUp } = auth;
 
     const [email, setEmail] = useState<string>("");
@@ -151,6 +153,7 @@ export default function LoginSignUpForm({
                         <div className="w-[264px] md:w-[304px]">
                             <div className="w-min scale-[86.84%] md:scale-100 origin-left">
                                 <ReCaptcha
+                                    theme={theme}
                                     onChange={(key: string | null) =>
                                         handleRecaptcha({ key, authGroup, userGroup, uiGroup })
                                     }

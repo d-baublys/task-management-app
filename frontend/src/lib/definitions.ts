@@ -81,3 +81,5 @@ export type BoardCodes = (typeof boardsData)[BoardLabels];
 export type AddUpdateResponse = Promise<AxiosResponse<TaskType> | undefined>;
 export type AddUpdateMultiResponse = Promise<(AxiosResponse<TaskType> | undefined)[] | undefined>;
 export type GeneralApiResponse<T> = Promise<AxiosResponse<T> | undefined>;
+
+export type ThemeOptions = "light" | "dark";

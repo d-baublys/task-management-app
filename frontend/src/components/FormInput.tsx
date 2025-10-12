@@ -33,7 +33,7 @@ export default function FormInput({
             <legend className="mb-1">{legendText}</legend>
             <label className="flex w-full bg-gray-300 focus-within:outline outline-blue-600 outline-2">
                 <input
-                    className="w-[93%] px-2 h-8  bg-inherit outline-none"
+                    className="w-[93%] px-2 h-8 bg-inherit outline-none fixed-text-colour"
                     type={type === "email" ? type : passwordVisiblityBoolean ? "text" : "password"}
                     value={value}
                     required
@@ -44,7 +44,7 @@ export default function FormInput({
             {type === "password" && (
                 <button
                     type="button"
-                    className="absolute right-2 top-1/4 cursor-pointer"
+                    className="absolute right-2 top-1/4 cursor-pointer fixed-text-colour"
                     onClick={() => passwordVisibilitySetter?.((prev) => !prev)}
                 >
                     {passwordVisiblityBoolean ? <IoEyeOff /> : <IoEye />}
