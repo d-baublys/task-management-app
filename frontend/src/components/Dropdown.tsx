@@ -53,8 +53,8 @@ const Dropdown = ({
                             height={menuHeight - menuRadius}
                         ></rect>
                         <rect
-                            x={(menuWidth / 3) * 2}
-                            width={menuWidth / 3}
+                            x={(menuWidth / 4) * 3}
+                            width={menuWidth / 4}
                             height={menuHeight - menuRadius}
                         ></rect>
                     </clipPath>
