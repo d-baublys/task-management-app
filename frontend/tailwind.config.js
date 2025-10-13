@@ -54,6 +54,10 @@ module.exports = {
                 "light-button-gradient": `radial-gradient(${customColors["light-theme-medium"]} 50%, ${customColors["light-theme-dark"]} 80%)`,
                 "dark-button-gradient": `radial-gradient(${customColors["dark-theme-light"]} 50%, ${customColors["dark-theme-medium"]} 80%)`,
             },
+            transitionDuration: {
+                colors: "var(--duration-colors)",
+                others: "var(--duration-others)",
+            },
         },
     },
     plugins: [],

@@ -1,6 +1,6 @@
 import React from "react";
 import UserButton from "./UserButton";
-import ModeButton from "./ModeButton";
+import ThemeButton from "./ThemeButton";
 
 const Header = () => {
     return (
@@ -10,7 +10,7 @@ const Header = () => {
             </div>
             <div className="flex items-center flex-1 h-full">
                 <div className="flex w-full h-[30px] md:h-8 justify-end items-center gap-4">
-                    <ModeButton />
+                    <ThemeButton />
                     <UserButton />
                 </div>
             </div>

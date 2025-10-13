@@ -4,11 +4,18 @@ import { IoMoon, IoSunny } from "react-icons/io5";
 import HeaderButton from "./base/HeaderButton";
 import { ThemeOptions } from "../lib/definitions";
 
-export default function ModeButton() {
+export default function ThemeButton() {
     const { theme, toggleTheme } = useThemeContext();
     const [isAnimated, setIsAnimated] = useState<boolean>(false);
 
-    const duration = 300;
+    const durationVar = window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--duration-colors");
+
+    if (!durationVar)
+        throw new Error("Theme button: Color transition duration CSS variable not found.");
+
+    const duration = parseInt(durationVar);
 
     const handleClick = () => {
         if (isAnimated) return;
@@ -21,25 +28,17 @@ export default function ModeButton() {
         }, duration);
     };
 
-    const animations = {
-        buttonBackground: `transition-colors duration-300 ease-in-out`,
-        iconOpacity: `transition-opacity duration-[450ms] ease-in-out`,
-        iconSpin: `animate-[spin_300ms_ease-in-out_1]`,
-    };
-
     const generateIconClasses = (iconTheme: ThemeOptions) =>
-        `absolute ${animations["iconOpacity"]} ${
+        `absolute transition-opacity duration-[var(--duration-extended)] ease-in-out ${
             theme === iconTheme ? "opacity-100" : "opacity-0"
         } ${iconTheme === "dark" ? "text-gray-mid" : "text-bare-base"}`;
 
     return (
         <HeaderButton onClick={handleClick}>
             <div
-                className={`relative flex h-full justify-center items-center aspect-square border border-black [border-radius:50%] p-1 cursor-pointer ${
-                    animations["buttonBackground"]
-                } ${theme === "light" ? "bg-gray-mid" : "bg-bare-base"} ${
-                    isAnimated ? animations["iconSpin"] : ""
-                }`}
+                className={`relative flex h-full justify-center items-center aspect-square border border-black [border-radius:50%] p-1 cursor-pointer theme-transition ${
+                    theme === "light" ? "bg-gray-mid" : "bg-bare-base"
+                } ${isAnimated ? "animate-[spin_var(--duration-colors)_ease-in-out_1]" : ""}`}
             >
                 <IoMoon className={generateIconClasses("light")} />
                 <IoSunny className={generateIconClasses("dark")} />
