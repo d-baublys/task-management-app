@@ -20,6 +20,7 @@ module.exports = {
         extend: {
             colors: {
                 ...customColors,
+                "gray-lighter": colors.gray[50],
                 "gray-light": colors.gray[200],
                 "gray-mid": colors.gray[700],
                 "gray-dark": colors.gray[900],
