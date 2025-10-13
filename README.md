@@ -28,6 +28,7 @@ Live Demo: https://task-management-app-bice-psi.vercel.app
 - Integrating Cypress testing in the context of a Python backend
 - Working with drag-and-drop mechanics in both Jest unit tests and Cypress e2e tests
 - Testing with and around reCAPTCHA
+- Implementing "dark mode" with smooth transitions
 
 ## Demonstrates
 - Adaptability to frontend framework practices and workflow
