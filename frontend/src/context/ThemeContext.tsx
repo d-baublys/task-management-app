@@ -12,15 +12,21 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [theme, setTheme] = useState<ThemeOptions>("light");
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem("task-app-theme") as ThemeOptions;
+        document.body.classList.add("no-transition");
 
-        if (savedTheme) {
-            setTheme(savedTheme);
+        const savedTheme = localStorage.getItem("task-app-theme") as ThemeOptions | null;
+        const systemDark = !savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const activeTheme = savedTheme ?? (systemDark ? "dark" : "light");
 
-            if (savedTheme === "dark") {
-                document.body.classList.add("dark");
-            }
-        }
+        document.body.classList.toggle("dark", activeTheme === "dark");
+        localStorage.setItem("task-app-theme", activeTheme);
+        setTheme(activeTheme);
+
+        const timeout = setTimeout(() => {
+            document.body.classList.remove("no-transition");
+        }, 50);
+
+        return () => clearTimeout(timeout);
     }, []);
 
     const toggleTheme = () => {

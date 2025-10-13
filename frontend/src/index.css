@@ -56,6 +56,10 @@
     .base-background-color {
         @apply bg-bare-base;
     }
+
+    .no-transition {
+        transition: none !important;
+    }
 }
 
 html,
