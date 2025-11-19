@@ -23,8 +23,8 @@ Live Demo: https://task-management-app-bice-psi.vercel.app
 - Integrating captcha protection with reCAPTCHA
 - Using and customising Tailwind CSS
 - Deploying frontend with Vercel
-- Adapting existing codebase and tests to use static typing
-
+---
+- Adapting existing codebase to use static typing
 - Integrating Cypress testing in the context of a Python backend
 - Working with drag-and-drop mechanics in both Jest unit tests and Cypress e2e tests
 - Testing with and around reCAPTCHA
@@ -37,7 +37,7 @@ Live Demo: https://task-management-app-bice-psi.vercel.app
 - Consideration about overall user experience and interaction edge cases
 - An understanding of cookies and authentication tokens through manual management
 - Consideration about API and authentication security
+---
 - Testing frontend, backend, and overall integration
-- Proficiency in TypeScript
-
+- Basic understanding of TypeScript
 - Ability to revisit an older project to test and refactor with the latest knowledge and skills
